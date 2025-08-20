@@ -46,7 +46,8 @@
       "Bash(node:*)",
       "Bash(npm:*)",
       "Bash(./scripts/validate-build.sh:*)",
-      "Bash(export NODE_OPTIONS='--max-old-space-size=4096')"
+      "Bash(export NODE_OPTIONS='--max-old-space-size=4096')",
+      "Bash(gh auth:*)"
     ],
     "deny": [],
     "ask": []
