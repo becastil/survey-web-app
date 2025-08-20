@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__archon__manage_project",
+      "mcp__archon__perform_rag_query",
+      "mcp__archon__manage_task",
+      "Bash(npx create-next-app:*)",
+      "Bash(mv:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm install)",
+      "Bash(rm:*)",
+      "mcp__archon__get_available_sources",
+      "mcp__archon__search_code_examples",
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest init:*)",
+      "Bash(npm run dev:*)",
+      "mcp__archon__get_project_features",
+      "Bash(touch:*)",
+      "Bash(git init:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
