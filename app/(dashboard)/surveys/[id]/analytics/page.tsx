@@ -22,9 +22,12 @@ export default function SurveyAnalyticsPage() {
     responsesByDay: Record<string, unknown>[];
     completionByStatus: Record<string, unknown>[];
     responsesByQuestion: Record<string, unknown>[];
+    timeDistribution?: Record<string, unknown>[];
+    dropoffPoints?: Record<string, unknown>[];
   }>({
-    questionResponses: [],
-    completionFunnel: [],
+    responsesByDay: [],
+    completionByStatus: [],
+    responsesByQuestion: [],
     timeDistribution: [],
     dropoffPoints: [],
   });
@@ -37,6 +40,7 @@ export default function SurveyAnalyticsPage() {
 
   useEffect(() => {
     loadSurveyAnalytics();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [surveyId]);
 
   const loadSurveyAnalytics = async () => {
@@ -89,8 +93,9 @@ export default function SurveyAnalyticsPage() {
       }));
 
       setAnalyticsData({
-        questionResponses,
-        completionFunnel,
+        responsesByDay: [], // Will be populated from actual data
+        completionByStatus: completionFunnel,
+        responsesByQuestion: questionResponses,
         timeDistribution,
         dropoffPoints,
       });
