@@ -1,6 +1,4 @@
 {
-  "buildCommand": "npm run build:vercel",
-  "installCommand": "npm install --force",
   "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_USE_MOCK_DATA": "true",
