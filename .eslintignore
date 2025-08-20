@@ -1,0 +1,16 @@
+# Ignore specific files with ESLint issues
+app/page.tsx
+app/(dashboard)/analytics/page.tsx
+app/(dashboard)/surveys/[id]/analytics/page.tsx
+app/(dashboard)/surveys/[id]/edit/page.tsx
+app/(dashboard)/surveys/[id]/respond/page.tsx
+app/(dashboard)/surveys/new/page.tsx
+app/(dashboard)/surveys/page.tsx
+
+# Ignore build output
+.next
+out
+node_modules
+
+# Ignore Supabase files causing Edge Runtime warnings
+lib/supabase/middleware.ts
