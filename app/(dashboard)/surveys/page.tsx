@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,10 +25,40 @@ export default function SurveysPage() {
     loadSurveys();
   }, []);
 
+  const filterSurveys = useCallback(() => {
+    let filtered = [...surveys];
+    
+    if (searchTerm) {
+      filtered = filtered.filter(survey => 
+        survey.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        survey.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    if (statusFilter && statusFilter !== 'all') {
+      filtered = filtered.filter(survey => survey.status === statusFilter);
+    }
+    
+    setFilteredSurveys(filtered);
+  }, [surveys, searchTerm, statusFilter]);
+
+  const loadStats = useCallback(async () => {
+    const newStats: { [key: string]: unknown } = {};
+    for (const survey of surveys) {
+      try {
+        const surveyStats = await surveyService.getSurveyStats(survey.id);
+        newStats[survey.id] = surveyStats;
+      } catch (error) {
+        console.error(`Failed to load stats for survey ${survey.id}:`, error);
+      }
+    }
+    setStats(newStats);
+  }, [surveys]);
+
   useEffect(() => {
     filterSurveys();
     loadStats();
-  }, [surveys, searchTerm, statusFilter]);
+  }, [filterSurveys, loadStats]);
 
   const loadSurveys = async () => {
     try {
@@ -42,37 +72,6 @@ export default function SurveysPage() {
     }
   };
 
-  const loadStats = async () => {
-    const newStats: { [key: string]: unknown } = {};
-    for (const survey of surveys) {
-      try {
-        const surveyStats = await surveyService.getSurveyStats(survey.id);
-        newStats[survey.id] = surveyStats;
-      } catch (error) {
-        console.error(`Failed to load stats for survey ${survey.id}:`, error);
-      }
-    }
-    setStats(newStats);
-  };
-
-  const filterSurveys = () => {
-    let filtered = [...surveys];
-
-    // Filter by status
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(survey => survey.status === statusFilter);
-    }
-
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(survey =>
-        survey.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        survey.description?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setFilteredSurveys(filtered);
-  };
 
   const handleArchive = async (surveyId: string) => {
     try {

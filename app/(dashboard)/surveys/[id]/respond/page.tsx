@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -28,18 +28,7 @@ export default function SurveyRespondPage() {
   const [submitted, setSubmitted] = useState(false);
   const [responseId, setResponseId] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadSurveyData();
-    // Check if there's a saved response in progress
-    const savedProgress = localStorage.getItem(`survey-progress-${surveyId}`);
-    if (savedProgress) {
-      const { answers: savedAnswers, responseId: savedResponseId } = JSON.parse(savedProgress);
-      setAnswers(savedAnswers);
-      setResponseId(savedResponseId);
-    }
-  }, [surveyId]);
-
-  const loadSurveyData = async () => {
+  const loadSurveyData = useCallback(async () => {
     try {
       setLoading(true);
       const [surveyData, questionsData] = await Promise.all([
@@ -60,7 +49,18 @@ export default function SurveyRespondPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [surveyId, router]);
+
+  useEffect(() => {
+    loadSurveyData();
+    // Check if there's a saved response in progress
+    const savedProgress = localStorage.getItem(`survey-progress-${surveyId}`);
+    if (savedProgress) {
+      const { answers: savedAnswers, responseId: savedResponseId } = JSON.parse(savedProgress);
+      setAnswers(savedAnswers);
+      setResponseId(savedResponseId);
+    }
+  }, [surveyId, loadSurveyData]);
 
   const handleAnswerChange = (questionId: string, value: unknown) => {
     const newAnswers = { ...answers, [questionId]: value };

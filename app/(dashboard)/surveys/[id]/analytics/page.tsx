@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -38,11 +38,7 @@ export default function SurveyAnalyticsPage() {
     mostSkippedQuestion: '',
   });
 
-  useEffect(() => {
-    loadSurveyAnalytics();
-  }, [surveyId]);
-
-  const loadSurveyAnalytics = async () => {
+  const loadSurveyAnalytics = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -111,7 +107,11 @@ export default function SurveyAnalyticsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [surveyId]);
+
+  useEffect(() => {
+    loadSurveyAnalytics();
+  }, [loadSurveyAnalytics]);
 
   const handleExport = () => {
     // Mock export functionality

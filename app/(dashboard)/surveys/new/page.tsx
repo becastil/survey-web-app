@@ -141,7 +141,7 @@ export default function NewSurveyPage() {
       
       // Create questions
       for (const question of questions) {
-        const { tempId: _, ...questionData } = question;
+        const { tempId, ...questionData } = question;
         // tempId is used for React keys but not needed in the API call
         await surveyService.createQuestion({
           ...questionData,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -30,11 +30,7 @@ export default function EditSurveyPage() {
   const [saving, setSaving] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
 
-  useEffect(() => {
-    loadSurveyData();
-  }, [surveyId]);
-
-  const loadSurveyData = async () => {
+  const loadSurveyData = useCallback(async () => {
     try {
       setLoading(true);
       const [surveyData, questionsData] = await Promise.all([
@@ -58,7 +54,11 @@ export default function EditSurveyPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [surveyId, router]);
+
+  useEffect(() => {
+    loadSurveyData();
+  }, [loadSurveyData]);
 
   const addQuestion = () => {
     const newQuestion: Question = {
