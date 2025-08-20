@@ -1,0 +1,16 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    "react/jsx-no-undef": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/no-unused-vars": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["app/page.tsx"],
+      "rules": {
+        "react/jsx-no-undef": "off"
+      }
+    }
+  ]
+}
