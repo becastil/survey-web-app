@@ -26,7 +26,12 @@ export interface Question {
   question_type: 'single_choice' | 'multiple_choice' | 'text' | 'number' | 'date' | 'scale';
   required: boolean;
   order: number;
-  options?: QuestionOption[];
+  options?: string[];
+  help_text?: string;
+  scale_min?: number;
+  scale_max?: number;
+  scale_label_min?: string;
+  scale_label_max?: string;
   validation_rules?: ValidationRule[];
 }
 
@@ -45,12 +50,15 @@ export interface Response {
   status: 'in_progress' | 'completed';
   started_at: string;
   completed_at?: string;
+  completion_percentage?: number;
 }
 
 export interface Answer {
   id: string;
   response_id: string;
   question_id: string;
+  survey_id: string;
+  answer_value?: string;
   answer_text?: string;
   answer_number?: number;
   answer_date?: string;

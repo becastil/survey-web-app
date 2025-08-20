@@ -1,17 +1,40 @@
 {
   "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install --legacy-peer-deps",
+  "installCommand": "npm install --force",
   "framework": "nextjs",
-  "outputDirectory": ".next",
   "env": {
     "NEXT_PUBLIC_USE_MOCK_DATA": "true",
     "NEXT_PUBLIC_APP_NAME": "Healthcare Survey Dashboard",
-    "NEXT_PUBLIC_APP_URL": "https://survey-web-app.vercel.app"
+    "NEXT_PUBLIC_APP_URL": "@VERCEL_URL"
   },
   "build": {
     "env": {
-      "NEXT_PUBLIC_USE_MOCK_DATA": "true"
+      "NEXT_PUBLIC_USE_MOCK_DATA": "true",
+      "NODE_OPTIONS": "--max-old-space-size=4096"
     }
-  }
+  },
+  "functions": {
+    "app/api/auth/callback/route.ts": {
+      "maxDuration": 10
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ]
 }
