@@ -18,7 +18,7 @@ export default function SurveysPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [stats, setStats] = useState<{ [key: string]: unknown }>({});
+  const [stats, setStats] = useState<{ [key: string]: { total: number; completed: number; inProgress: number; completionRate: number } }>({});
   const router = useRouter();
 
   useEffect(() => {
@@ -252,7 +252,7 @@ export default function SurveysPage() {
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">
-              {Object.values(stats).reduce((sum: number, stat: unknown) => sum + ((stat as { total?: number })?.total || 0), 0)}
+              {Object.values(stats).reduce((sum: number, stat) => sum + (stat?.total || 0), 0)}
             </p>
           </CardContent>
         </Card>
@@ -264,7 +264,7 @@ export default function SurveysPage() {
             <p className="text-2xl font-bold">
               {surveys.length > 0 
                 ? Math.round(
-                    Object.values(stats).reduce((sum: number, stat: unknown) => sum + ((stat as { completionRate?: number })?.completionRate || 0), 0) / 
+                    Object.values(stats).reduce((sum: number, stat) => sum + (stat?.completionRate || 0), 0) / 
                     Object.values(stats).length
                   )
                 : 0}%

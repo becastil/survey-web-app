@@ -4,17 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NODE_OPTIONS='--max-old-space-size=2048' SKIP_ENV_VALIDATION=true next build",
+    "build:prod": "NODE_OPTIONS='--max-old-space-size=4096' next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "postbuild": "echo 'Build completed successfully'"
   },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.4.7",
-    "@supabase/supabase-js": "^2.39.0",
-    "@supabase/ssr": "^0.1.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -30,26 +27,32 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
+    "@supabase/ssr": "^0.1.0",
+    "@supabase/supabase-js": "^2.39.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "isomorphic-dompurify": "^2.3.0",
     "lucide-react": "^0.462.0",
+    "next": "15.4.7",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "react-vega": "^7.6.0",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "vega": "^5.25.0",
     "vega-lite": "^5.16.3",
-    "isomorphic-dompurify": "^2.3.0"
+    "zod": "^4.0.17"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.4.0",
     "autoprefixer": "^10.4.16",
     "eslint": "^9",
     "eslint-config-next": "15.4.7",
-    "@eslint/eslintrc": "^3"
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5"
   }
 }

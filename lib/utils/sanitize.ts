@@ -34,23 +34,23 @@ export function sanitizeText(input: string | unknown): string {
  * @param data - The JSON data to sanitize
  * @returns Sanitized JSON object
  */
-export function sanitizeJson(data: any): any {
+export function sanitizeJson<T>(data: T): T {
   if (typeof data === 'string') {
-    return sanitizeText(data);
+    return sanitizeText(data) as T;
   }
   
   if (Array.isArray(data)) {
-    return data.map(item => sanitizeJson(item));
+    return data.map(item => sanitizeJson(item)) as T;
   }
   
   if (data !== null && typeof data === 'object') {
-    const sanitized: any = {};
+    const sanitized: Record<string, unknown> = {};
     for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        sanitized[key] = sanitizeJson(data[key]);
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        sanitized[key] = sanitizeJson((data as Record<string, unknown>)[key]);
       }
     }
-    return sanitized;
+    return sanitized as T;
   }
   
   return data;

@@ -23,7 +23,7 @@ export default function SurveyRespondPage() {
   const [survey, setSurvey] = useState<Survey | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<{ [questionId: string]: unknown }>({});
+  const [answers, setAnswers] = useState<{ [questionId: string]: string | number | string[] }>({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -176,7 +176,7 @@ export default function SurveyRespondPage() {
       case 'single_choice':
         return (
           <RadioGroup
-            value={currentAnswer || ''}
+            value={(currentAnswer as string) || ''}
             onValueChange={(value) => handleAnswerChange(question.id, value)}
           >
             <div className="space-y-2">
@@ -193,18 +193,18 @@ export default function SurveyRespondPage() {
         );
 
       case 'multiple_choice':
-        const selectedOptions = currentAnswer || [];
+        const selectedOptions = (currentAnswer as string[]) || [];
         return (
           <div className="space-y-2">
             {question.options?.map((option, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <Checkbox
                   id={`${question.id}-${index}`}
-                  checked={selectedOptions.includes(option)}
+                  checked={(selectedOptions as string[]).includes(option)}
                   onCheckedChange={(checked) => {
                     const newSelected = checked
-                      ? [...selectedOptions, option]
-                      : selectedOptions.filter((o: string) => o !== option);
+                      ? [...(selectedOptions as string[]), option]
+                      : (selectedOptions as string[]).filter((o: string) => o !== option);
                     handleAnswerChange(question.id, newSelected);
                   }}
                 />
@@ -229,12 +229,12 @@ export default function SurveyRespondPage() {
               type="range"
               min={min}
               max={max}
-              value={currentAnswer || min}
+              value={(currentAnswer as number) || min}
               onChange={(e) => handleAnswerChange(question.id, parseInt(e.target.value))}
               className="w-full"
             />
             <div className="text-center text-lg font-semibold">
-              {currentAnswer || min}
+              {(currentAnswer as number) || min}
             </div>
           </div>
         );
@@ -242,7 +242,7 @@ export default function SurveyRespondPage() {
       case 'text':
         return (
           <Textarea
-            value={currentAnswer || ''}
+            value={(currentAnswer as string) || ''}
             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
             placeholder="Enter your response..."
             rows={4}
@@ -253,7 +253,7 @@ export default function SurveyRespondPage() {
         return (
           <Input
             type="number"
-            value={currentAnswer || ''}
+            value={(currentAnswer as string) || ''}
             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
             placeholder="Enter a number..."
           />
@@ -263,7 +263,7 @@ export default function SurveyRespondPage() {
         return (
           <Input
             type="date"
-            value={currentAnswer || ''}
+            value={(currentAnswer as string) || ''}
             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
           />
         );
@@ -272,7 +272,7 @@ export default function SurveyRespondPage() {
         return (
           <Input
             type="text"
-            value={currentAnswer || ''}
+            value={(currentAnswer as string) || ''}
             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
             placeholder="Enter your response..."
           />

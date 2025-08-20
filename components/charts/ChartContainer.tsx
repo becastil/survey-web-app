@@ -1,7 +1,7 @@
 'use client';
 
 import { VegaLite } from 'react-vega';
-import { VisualizationSpec } from 'vega-embed';
+import type { VisualizationSpec } from 'vega-embed';
 
 interface ChartContainerProps {
   spec: VisualizationSpec;
@@ -18,7 +18,8 @@ export default function ChartContainer({
   height = 300,
   className = '',
 }: ChartContainerProps) {
-  const finalSpec = {
+  // Ensure spec is properly typed
+  const finalSpec: VisualizationSpec = {
     ...spec,
     width,
     height,
@@ -38,9 +39,9 @@ export default function ChartContainer({
         labelColor: '#6b7280',
         titleColor: '#374151',
       },
-      ...spec.config,
+      ...(spec.config || {}),
     },
-  };
+  } as VisualizationSpec;
 
   return (
     <div className={`flex items-center justify-center ${className}`}>

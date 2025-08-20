@@ -22,6 +22,8 @@ export default function SurveyAnalyticsPage() {
     responsesByDay: Record<string, unknown>[];
     completionByStatus: Record<string, unknown>[];
     responsesByQuestion: Record<string, unknown>[];
+    questionResponses?: Record<string, unknown>[];
+    completionFunnel?: Record<string, unknown>[];
     timeDistribution?: Record<string, unknown>[];
     dropoffPoints?: Record<string, unknown>[];
   }>({
@@ -82,7 +84,7 @@ export default function SurveyAnalyticsPage() {
       ];
 
       // Dropoff points
-      const dropoffPoints = questionsData.slice(0, 5).map((q, index) => ({
+      const dropoffPoints = questionsData.slice(0, 5).map((_, index) => ({
         question: `Q${index + 1}`,
         dropoffRate: Math.random() * 10 + 2, // Random between 2-12%
       }));
@@ -91,6 +93,8 @@ export default function SurveyAnalyticsPage() {
         responsesByDay: [], // Will be populated from actual data
         completionByStatus: completionFunnel,
         responsesByQuestion: questionResponses,
+        questionResponses: questionResponses, // Add for backward compatibility
+        completionFunnel: completionFunnel, // Add for backward compatibility
         timeDistribution,
         dropoffPoints,
       });
@@ -230,7 +234,7 @@ export default function SurveyAnalyticsPage() {
           </CardHeader>
           <CardContent>
             <BarChart
-              data={analyticsData.questionResponses}
+              data={analyticsData.questionResponses || analyticsData.responsesByQuestion}
               xField="question"
               yField="responses"
               width={500}
@@ -246,7 +250,7 @@ export default function SurveyAnalyticsPage() {
           </CardHeader>
           <CardContent>
             <BarChart
-              data={analyticsData.completionFunnel}
+              data={analyticsData.completionFunnel || analyticsData.completionByStatus}
               xField="stage"
               yField="count"
               width={500}
@@ -262,7 +266,7 @@ export default function SurveyAnalyticsPage() {
           </CardHeader>
           <CardContent>
             <PieChart
-              data={analyticsData.timeDistribution}
+              data={analyticsData.timeDistribution || []}
               categoryField="range"
               valueField="count"
               width={500}
@@ -278,7 +282,7 @@ export default function SurveyAnalyticsPage() {
           </CardHeader>
           <CardContent>
             <BarChart
-              data={analyticsData.dropoffPoints}
+              data={analyticsData.dropoffPoints || []}
               xField="question"
               yField="dropoffRate"
               width={500}

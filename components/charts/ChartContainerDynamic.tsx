@@ -11,16 +11,6 @@ const ChartLoading = () => (
   </div>
 );
 
-// Error fallback component
-const ChartError = ({ error }: { error?: string }) => (
-  <div className="flex items-center justify-center h-full w-full p-4">
-    <div className="text-center">
-      <p className="text-gray-500">Unable to load chart</p>
-      {error && <p className="text-xs text-gray-400 mt-1">{error}</p>}
-    </div>
-  </div>
-);
-
 interface ChartContainerProps {
   spec: VisualizationSpec;
   data?: Record<string, unknown>[];

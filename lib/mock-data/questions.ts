@@ -9,12 +9,7 @@ export const mockQuestions: { [surveyId: string]: Question[] } = {
       question_type: 'single_choice',
       required: true,
       order: 1,
-      options: [
-        { id: 'opt1-1', question_id: 'q1-1', option_text: 'Full-time employee', order: 1 },
-        { id: 'opt1-2', question_id: 'q1-1', option_text: 'Part-time employee', order: 2 },
-        { id: 'opt1-3', question_id: 'q1-1', option_text: 'Contract worker', order: 3 },
-        { id: 'opt1-4', question_id: 'q1-1', option_text: 'Retired', order: 4 },
-      ],
+      options: ['Full-time employee', 'Part-time employee', 'Contract worker', 'Retired'],
     },
     {
       id: 'q1-2',
@@ -23,13 +18,7 @@ export const mockQuestions: { [surveyId: string]: Question[] } = {
       question_type: 'scale',
       required: true,
       order: 2,
-      options: [
-        { id: 'opt2-1', question_id: 'q1-2', option_text: '1 - Very Dissatisfied', order: 1 },
-        { id: 'opt2-2', question_id: 'q1-2', option_text: '2 - Dissatisfied', order: 2 },
-        { id: 'opt2-3', question_id: 'q1-2', option_text: '3 - Neutral', order: 3 },
-        { id: 'opt2-4', question_id: 'q1-2', option_text: '4 - Satisfied', order: 4 },
-        { id: 'opt2-5', question_id: 'q1-2', option_text: '5 - Very Satisfied', order: 5 },
-      ],
+      options: ['1 - Very Dissatisfied', '2 - Dissatisfied', '3 - Neutral', '4 - Satisfied', '5 - Very Satisfied'],
     },
     {
       id: 'q1-3',
@@ -38,17 +27,7 @@ export const mockQuestions: { [surveyId: string]: Question[] } = {
       question_type: 'multiple_choice',
       required: false,
       order: 3,
-      options: [
-        { id: 'opt3-1', question_id: 'q1-3', option_text: 'Primary care physician', order: 1 },
-        { id: 'opt3-2', question_id: 'q1-3', option_text: 'Specialist visits', order: 2 },
-        { id: 'opt3-3', question_id: 'q1-3', option_text: 'Emergency room', order: 3 },
-        { id: 'opt3-4', question_id: 'q1-3', option_text: 'Urgent care', order: 4 },
-        { id: 'opt3-5', question_id: 'q1-3', option_text: 'Mental health services', order: 5 },
-        { id: 'opt3-6', question_id: 'q1-3', option_text: 'Preventive care', order: 6 },
-        { id: 'opt3-7', question_id: 'q1-3', option_text: 'Prescription medications', order: 7 },
-        { id: 'opt3-8', question_id: 'q1-3', option_text: 'Dental care', order: 8 },
-        { id: 'opt3-9', question_id: 'q1-3', option_text: 'Vision care', order: 9 },
-      ],
+      options: ['Primary care physician', 'Specialist visits', 'Emergency room', 'Urgent care', 'Mental health services', 'Preventive care', 'Prescription medications', 'Dental care', 'Vision care'],
     },
     {
       id: 'q1-4',
@@ -81,11 +60,7 @@ export const mockQuestions: { [surveyId: string]: Question[] } = {
       question_type: 'single_choice',
       required: true,
       order: 7,
-      options: [
-        { id: 'opt7-1', question_id: 'q1-7', option_text: 'In-person visits', order: 1 },
-        { id: 'opt7-2', question_id: 'q1-7', option_text: 'Telehealth/Virtual visits', order: 2 },
-        { id: 'opt7-3', question_id: 'q1-7', option_text: 'Combination of both', order: 3 },
-      ],
+      options: ['In-person visits', 'Telehealth/Virtual visits', 'Combination of both'],
     },
     {
       id: 'q1-8',
@@ -104,16 +79,7 @@ export const mockQuestions: { [surveyId: string]: Question[] } = {
       question_type: 'multiple_choice',
       required: true,
       order: 1,
-      options: [
-        { id: 'opt2-1-1', question_id: 'q2-1', option_text: 'Health insurance', order: 1 },
-        { id: 'opt2-1-2', question_id: 'q2-1', option_text: 'Dental insurance', order: 2 },
-        { id: 'opt2-1-3', question_id: 'q2-1', option_text: 'Vision insurance', order: 3 },
-        { id: 'opt2-1-4', question_id: 'q2-1', option_text: 'Retirement savings', order: 4 },
-        { id: 'opt2-1-5', question_id: 'q2-1', option_text: 'Life insurance', order: 5 },
-        { id: 'opt2-1-6', question_id: 'q2-1', option_text: 'Disability insurance', order: 6 },
-        { id: 'opt2-1-7', question_id: 'q2-1', option_text: 'Flexible spending account', order: 7 },
-        { id: 'opt2-1-8', question_id: 'q2-1', option_text: 'Paid time off', order: 8 },
-      ],
+      options: ['Health insurance', 'Dental insurance', 'Vision insurance', 'Retirement savings', 'Life insurance', 'Disability insurance', 'Flexible spending account', 'Paid time off'],
     },
     {
       id: 'q2-2',
@@ -122,13 +88,7 @@ export const mockQuestions: { [surveyId: string]: Question[] } = {
       question_type: 'scale',
       required: true,
       order: 2,
-      options: [
-        { id: 'opt2-2-1', question_id: 'q2-2', option_text: '1 - Not at all', order: 1 },
-        { id: 'opt2-2-2', question_id: 'q2-2', option_text: '2 - Slightly', order: 2 },
-        { id: 'opt2-2-3', question_id: 'q2-2', option_text: '3 - Moderately', order: 3 },
-        { id: 'opt2-2-4', question_id: 'q2-2', option_text: '4 - Well', order: 4 },
-        { id: 'opt2-2-5', question_id: 'q2-2', option_text: '5 - Very well', order: 5 },
-      ],
+      options: ['1 - Not at all', '2 - Slightly', '3 - Moderately', '4 - Well', '5 - Very well'],
     },
     {
       id: 'q2-3',
@@ -147,10 +107,7 @@ export const mockQuestions: { [surveyId: string]: Question[] } = {
       question_type: 'single_choice',
       required: true,
       order: 1,
-      options: [
-        { id: 'opt3-1-1', question_id: 'q3-1', option_text: 'Yes', order: 1 },
-        { id: 'opt3-1-2', question_id: 'q3-1', option_text: 'No', order: 2 },
-      ],
+      options: ['Yes', 'No'],
     },
     {
       id: 'q3-2',
@@ -159,14 +116,7 @@ export const mockQuestions: { [surveyId: string]: Question[] } = {
       question_type: 'multiple_choice',
       required: false,
       order: 2,
-      options: [
-        { id: 'opt3-2-1', question_id: 'q3-2', option_text: 'Fitness challenges', order: 1 },
-        { id: 'opt3-2-2', question_id: 'q3-2', option_text: 'Nutrition counseling', order: 2 },
-        { id: 'opt3-2-3', question_id: 'q3-2', option_text: 'Stress management', order: 3 },
-        { id: 'opt3-2-4', question_id: 'q3-2', option_text: 'Smoking cessation', order: 4 },
-        { id: 'opt3-2-5', question_id: 'q3-2', option_text: 'Mental health support', order: 5 },
-        { id: 'opt3-2-6', question_id: 'q3-2', option_text: 'Health screenings', order: 6 },
-      ],
+      options: ['Fitness challenges', 'Nutrition counseling', 'Stress management', 'Smoking cessation', 'Mental health support', 'Health screenings'],
     },
   ],
 };
