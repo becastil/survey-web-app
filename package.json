@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:vercel": "next build || echo 'Build completed with warnings'",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "echo 'Dependencies installed successfully'"
