@@ -40,7 +40,6 @@ export default function SurveyAnalyticsPage() {
 
   useEffect(() => {
     loadSurveyAnalytics();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [surveyId]);
 
   const loadSurveyAnalytics = async () => {

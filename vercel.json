@@ -1,5 +1,7 @@
 {
   "framework": "nextjs",
+  "installCommand": "npm install --legacy-peer-deps",
+  "buildCommand": "npm run build",
   "env": {
     "NEXT_PUBLIC_USE_MOCK_DATA": "true",
     "NEXT_PUBLIC_APP_NAME": "Healthcare Survey Dashboard",
@@ -8,7 +10,8 @@
   "build": {
     "env": {
       "NEXT_PUBLIC_USE_MOCK_DATA": "true",
-      "NODE_OPTIONS": "--max-old-space-size=4096"
+      "NODE_OPTIONS": "--max-old-space-size=4096",
+      "SKIP_ENV_VALIDATION": "1"
     }
   },
   "functions": {

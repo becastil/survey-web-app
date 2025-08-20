@@ -23,7 +23,16 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(npm run build:*)",
-      "Bash(git ls-tree:*)"
+      "Bash(git ls-tree:*)",
+      "Bash(ls:*)",
+      "Bash(/dev/null)",
+      "Bash(npx next build:*)",
+      "Bash(SKIP_ENV_VALIDATION=1 npx --yes next@15.4.7 build)",
+      "Bash(export SKIP_ENV_VALIDATION=1)",
+      "Bash(npx:*)",
+      "Bash(./node_modules/.bin/next build:*)",
+      "Bash(chmod:*)",
+      "Bash(./validate-build.sh:*)"
     ],
     "deny": [],
     "ask": []
