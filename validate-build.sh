@@ -1,101 +1,90 @@
 #!/bin/bash
 
-echo "=== Vercel Build Validation ==="
+echo "🔍 Validating Vercel deployment readiness..."
 echo ""
 
-# Check for critical files
-echo "✓ Checking critical files..."
-files_ok=true
-
-if [ ! -f "package.json" ]; then
-    echo "  ✗ package.json missing"
-    files_ok=false
+# Check for package-lock.json
+if [ -f "package-lock.json" ]; then
+    echo "✅ package-lock.json exists"
 else
-    echo "  ✓ package.json found"
+    echo "❌ package-lock.json missing - run: npm install --legacy-peer-deps"
+    exit 1
 fi
 
-if [ ! -f "next.config.ts" ]; then
-    echo "  ✗ next.config.ts missing"
-    files_ok=false
+# Check for localStorage SSR issues
+echo ""
+echo "Checking for localStorage SSR issues..."
+LOCALSTORAGE_ISSUES=$(grep -r "localStorage\." --include="*.tsx" --include="*.ts" app/ components/ lib/ 2>/dev/null | grep -v "typeof window" | wc -l)
+if [ "$LOCALSTORAGE_ISSUES" -eq 0 ]; then
+    echo "✅ All localStorage calls are protected"
 else
-    echo "  ✓ next.config.ts found"
+    echo "⚠️  Found $LOCALSTORAGE_ISSUES unprotected localStorage calls"
 fi
 
-if [ ! -f ".npmrc" ]; then
-    echo "  ✗ .npmrc missing"
-    files_ok=false
+# Check TypeScript config
+echo ""
+echo "Checking TypeScript configuration..."
+if grep -q "ignoreBuildErrors: true" next.config.ts 2>/dev/null; then
+    echo "❌ TypeScript errors are being ignored in next.config.ts"
 else
-    echo "  ✓ .npmrc found (legacy-peer-deps enabled)"
+    echo "✅ TypeScript errors are not ignored"
 fi
 
-if [ ! -f "vercel.json" ]; then
-    echo "  ✗ vercel.json missing"
-    files_ok=false
+# Check ESLint config
+if grep -q "ignoreDuringBuilds: true" next.config.ts 2>/dev/null; then
+    echo "❌ ESLint errors are being ignored in next.config.ts"
 else
-    echo "  ✓ vercel.json found"
+    echo "✅ ESLint errors are not ignored"
 fi
 
+# Check build script
 echo ""
-echo "✓ Checking import fixes..."
-
-# Check for CardDescription fix
-if grep -q "CardTitle, CardDescription" app/page.tsx; then
-    echo "  ✓ CardDescription import fixed in app/page.tsx"
+echo "Checking build script..."
+if grep -q '"build": "next build --no-lint"' package.json; then
+    echo "❌ Build script skips linting"
 else
-    echo "  ✗ CardDescription import not fixed in app/page.tsx"
+    echo "✅ Build script includes linting"
 fi
 
+# Check for security headers
 echo ""
-echo "✓ Checking package versions..."
-
-# Check lucide-react version
-if grep -q '"lucide-react": "^0.462.0"' package.json; then
-    echo "  ✓ lucide-react updated to React 19 compatible version"
+echo "Checking security headers in vercel.json..."
+if [ -f "vercel.json" ]; then
+    if grep -q "Content-Security-Policy" vercel.json; then
+        echo "✅ CSP header configured"
+    else
+        echo "⚠️  Missing Content-Security-Policy header"
+    fi
 else
-    echo "  ✗ lucide-react version needs updating"
+    echo "⚠️  vercel.json not found"
 fi
 
+# Check for mock data mode
 echo ""
-echo "✓ Checking React hooks..."
-
-# Check for eslint-disable-next-line in React hooks
-if grep -r "eslint-disable-next-line react-hooks" app/ --include="*.tsx" --include="*.jsx" 2>/dev/null | grep -q .; then
-    echo "  ✗ React hook dependencies still have eslint-disable comments"
+echo "Checking authentication configuration..."
+if grep -q 'NEXT_PUBLIC_USE_MOCK_DATA: "true"' vercel.json 2>/dev/null; then
+    echo "⚠️  Mock data mode is enabled in production"
 else
-    echo "  ✓ React hook dependencies cleaned up"
+    echo "✅ Mock data mode not hardcoded"
 fi
 
+# Try to run type checking
 echo ""
-echo "=== Build Commands for Vercel ==="
-echo ""
-echo "Install Command: npm install --legacy-peer-deps"
-echo "Build Command: npm run build"
-echo ""
-echo "=== Summary ==="
-echo ""
-
-if [ "$files_ok" = true ]; then
-    echo "✅ All critical files present"
+echo "Running TypeScript type check..."
+if npx tsc --noEmit 2>/dev/null; then
+    echo "✅ TypeScript compilation successful"
 else
-    echo "❌ Some critical files missing"
+    echo "⚠️  TypeScript compilation has warnings/errors"
 fi
 
+# Final summary
 echo ""
-echo "=== Next Steps ==="
+echo "========================================="
+echo "Validation Complete!"
+echo "========================================="
 echo ""
-echo "1. Commit all changes:"
-echo "   git add -A && git commit -m 'Fix Vercel deployment issues'"
-echo ""
-echo "2. Push to repository:"
-echo "   git push origin main"
-echo ""
-echo "3. Deploy to Vercel:"
-echo "   - The build should now succeed with the fixes"
-echo "   - Monitor the build logs for any remaining issues"
-echo ""
-echo "=== Fixed Issues ==="
-echo "✓ CardDescription import error resolved"
-echo "✓ React 19 compatibility with lucide-react"
-echo "✓ Legacy peer deps enabled for compatibility"
-echo "✓ React hook exhaustive deps warnings removed"
-echo "✓ Build configuration optimized for Vercel"
+echo "Next steps:"
+echo "1. Fix any ❌ issues above"
+echo "2. Review ⚠️  warnings"
+echo "3. Run: npm run build"
+echo "4. Deploy to Vercel"

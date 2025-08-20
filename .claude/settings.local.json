@@ -32,7 +32,13 @@
       "Bash(npx:*)",
       "Bash(./node_modules/.bin/next build:*)",
       "Bash(chmod:*)",
-      "Bash(./validate-build.sh:*)"
+      "Bash(./validate-build.sh:*)",
+      "Bash(tree:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm run lint:*)",
+      "Bash(SKIP_ENV_VALIDATION=1 npx next build)",
+      "Bash(npm ci:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

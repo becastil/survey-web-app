@@ -1,6 +1,6 @@
 'use client';
 
-import ChartContainer from './ChartContainer';
+import ChartContainer from './ChartContainerDynamic';
 
 interface LineChartProps {
   data: Record<string, unknown>[];

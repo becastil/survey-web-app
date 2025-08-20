@@ -13,6 +13,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { surveyService } from '@/lib/services/survey-service';
 import { Question } from '@/types';
 import { Plus, Trash2, GripVertical, Eye, Save, ArrowLeft, Copy } from 'lucide-react';
+import { sanitizeText, sanitizeJson } from '@/lib/utils/sanitize';
 
 type QuestionType = Question['question_type'];
 
@@ -131,20 +132,20 @@ export default function NewSurveyPage() {
     try {
       setSaving(true);
       
-      // Create the survey
+      // Create the survey with sanitized data
       const survey = await surveyService.createSurvey({
-        title: surveyTitle,
-        description: surveyDescription,
+        title: sanitizeText(surveyTitle),
+        description: sanitizeText(surveyDescription),
         status: surveyStatus,
         created_by: 'current-user', // Mock user
       });
       
-      // Create questions
+      // Create questions with sanitization
       for (const question of questions) {
         const { tempId, ...questionData } = question;
         // tempId is used for React keys but not needed in the API call
         await surveyService.createQuestion({
-          ...questionData,
+          ...sanitizeJson(questionData),
           survey_id: survey.id,
         });
       }

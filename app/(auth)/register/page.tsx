@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { UserRole } from '@/types/database';
+import { sanitizeEmail, sanitizeText } from '@/lib/utils/sanitize';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -42,13 +43,13 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      // Sign up the user
+      // Sign up the user with sanitized data
       const { data, error: signUpError } = await supabase.auth.signUp({
-        email: formData.email,
+        email: sanitizeEmail(formData.email),
         password: formData.password,
         options: {
           data: {
-            full_name: formData.fullName,
+            full_name: sanitizeText(formData.fullName),
             role: formData.role,
           },
         },

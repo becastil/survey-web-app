@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { sanitizeText, sanitizeJson } from '@/lib/utils/sanitize';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
 import { surveyService } from '@/lib/services/survey-service';
@@ -54,11 +55,13 @@ export default function SurveyRespondPage() {
   useEffect(() => {
     loadSurveyData();
     // Check if there's a saved response in progress
-    const savedProgress = localStorage.getItem(`survey-progress-${surveyId}`);
-    if (savedProgress) {
-      const { answers: savedAnswers, responseId: savedResponseId } = JSON.parse(savedProgress);
-      setAnswers(savedAnswers);
-      setResponseId(savedResponseId);
+    if (typeof window !== 'undefined') {
+      const savedProgress = localStorage.getItem(`survey-progress-${surveyId}`);
+      if (savedProgress) {
+        const { answers: savedAnswers, responseId: savedResponseId } = JSON.parse(savedProgress);
+        setAnswers(savedAnswers);
+        setResponseId(savedResponseId);
+      }
     }
   }, [surveyId, loadSurveyData]);
 
@@ -67,11 +70,13 @@ export default function SurveyRespondPage() {
     setAnswers(newAnswers);
     
     // Save progress to localStorage
-    localStorage.setItem(`survey-progress-${surveyId}`, JSON.stringify({
-      answers: newAnswers,
-      responseId,
-      timestamp: new Date().toISOString(),
-    }));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(`survey-progress-${surveyId}`, JSON.stringify({
+        answers: newAnswers,
+        responseId,
+        timestamp: new Date().toISOString(),
+      }));
+    }
   };
 
   const handlePrevious = () => {
@@ -100,11 +105,13 @@ export default function SurveyRespondPage() {
         setResponseId(response.id);
         
         // Save response ID to localStorage
-        localStorage.setItem(`survey-progress-${surveyId}`, JSON.stringify({
-          answers,
-          responseId: response.id,
-          timestamp: new Date().toISOString(),
-        }));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(`survey-progress-${surveyId}`, JSON.stringify({
+            answers,
+            responseId: response.id,
+            timestamp: new Date().toISOString(),
+          }));
+        }
       }
 
       // Save answers
@@ -138,18 +145,20 @@ export default function SurveyRespondPage() {
         completed_at: new Date().toISOString(),
       });
 
-      // Submit all answers
+      // Submit all answers with sanitization
       const answersToSubmit = Object.entries(answers).map(([questionId, value]) => ({
         response_id: response.id,
         question_id: questionId,
         survey_id: surveyId,
-        answer_value: typeof value === 'object' ? JSON.stringify(value) : String(value),
+        answer_value: typeof value === 'object' ? JSON.stringify(sanitizeJson(value)) : sanitizeText(value),
       }));
 
       await surveyService.submitAnswers(answersToSubmit);
       
       // Clear saved progress
-      localStorage.removeItem(`survey-progress-${surveyId}`);
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(`survey-progress-${surveyId}`);
+      }
       
       setSubmitted(true);
     } catch (error) {

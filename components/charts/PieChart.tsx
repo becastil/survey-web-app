@@ -1,6 +1,6 @@
 'use client';
 
-import ChartContainer from './ChartContainer';
+import ChartContainer from './ChartContainerDynamic';
 
 interface PieChartProps {
   data: Record<string, unknown>[];
