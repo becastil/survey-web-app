@@ -51,7 +51,9 @@
       "WebSearch",
       "Bash(SKIP_ENV_VALIDATION=true npx next build)",
       "Bash(curl:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(git config:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": [],
