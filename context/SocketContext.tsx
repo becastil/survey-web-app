@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { socketManager, SocketClient } from '@/lib/socket/client';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 
 interface SocketContextValue {
   socket: SocketClient | null;
