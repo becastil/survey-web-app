@@ -1,0 +1,16 @@
+Metric,Q1_2024,Q2_2024,Q3_2024,Q4_2024,Target,Benchmark,Priority
+Patient_Safety_Index,95.2,95.8,96.1,96.5,97.0,94.5,High
+Infection_Rate,1.2,1.1,0.9,0.8,0.5,1.5,Critical
+Readmission_Rate,8.5,8.2,7.8,7.5,6.0,9.2,High
+Mortality_Rate,2.1,2.0,1.9,1.8,1.5,2.5,Critical
+Length_of_Stay,4.2,4.1,4.0,3.9,3.5,4.5,Medium
+Emergency_Response_Time,12.5,12.2,11.8,11.5,10.0,15.0,High
+Surgery_Success_Rate,98.5,98.7,98.9,99.1,99.5,97.8,Medium
+Patient_Fall_Rate,2.8,2.6,2.4,2.2,1.5,3.5,High
+Medication_Error_Rate,0.8,0.7,0.6,0.5,0.3,1.2,Critical
+Hand_Hygiene_Compliance,92.5,93.2,94.1,94.8,98.0,88.5,Medium
+Pressure_Ulcer_Rate,1.5,1.4,1.2,1.1,0.8,2.0,High
+Central_Line_Infection,0.9,0.8,0.7,0.6,0.3,1.5,Critical
+Sepsis_Mortality,15.2,14.8,14.5,14.1,12.0,18.5,High
+VTE_Prevention,96.8,97.1,97.4,97.7,98.5,95.2,Medium
+Surgical_Site_Infection,2.1,2.0,1.8,1.7,1.0,2.8,High

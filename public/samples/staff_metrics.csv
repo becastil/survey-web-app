@@ -1,0 +1,15 @@
+Department,Employees,Retention_Rate,Satisfaction_Score,Training_Hours,Overtime_Hours,Average_Salary,Turnover_Cost,Performance_Score
+Emergency,45,87,8.2,120,450,75000,125000,8.5
+Surgery,38,92,8.8,145,380,85000,95000,9.1
+ICU,52,89,8.5,130,520,78000,115000,8.8
+Maternity,28,94,9.1,110,220,72000,65000,9.3
+Outpatient,34,91,8.7,100,180,68000,70000,8.6
+Administration,25,93,8.6,80,120,65000,45000,8.4
+Pharmacy,18,95,8.9,90,150,73000,35000,9.0
+Radiology,22,88,8.3,115,290,82000,85000,8.7
+Laboratory,15,96,8.8,105,110,71000,25000,8.9
+Physical_Therapy,12,92,9.0,125,95,69000,30000,8.8
+Nutrition,8,94,8.7,85,65,62000,20000,8.5
+Security,20,85,7.9,40,380,45000,95000,7.8
+Housekeeping,35,82,7.6,35,425,38000,155000,7.5
+Maintenance,14,88,8.1,75,225,52000,45000,8.2

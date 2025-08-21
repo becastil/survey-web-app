@@ -50,13 +50,15 @@
       "Bash(gh auth:*)",
       "WebSearch",
       "Bash(SKIP_ENV_VALIDATION=true npx next build)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(cp:*)"
     ],
     "deny": [],
     "ask": [],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [
-      "/tmp"
+      "/tmp",
+      "/mnt/c/Users/becas/Downloads"
     ]
   }
 }
