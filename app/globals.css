@@ -46,8 +46,8 @@
     --animation-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     
     /* Font families */
-    --font-headline: var(--font-space-grotesk);
-    --font-body: var(--font-inter);
+    --font-headline: var(--font-open-sans);
+    --font-body: var(--font-open-sans);
   }
 
   .dark {
@@ -76,6 +76,7 @@
 @layer base {
   body {
     @apply bg-background text-foreground;
+    font-family: 'Open Sans', sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
