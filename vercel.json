@@ -7,7 +7,10 @@
     "NEXT_PUBLIC_APP_NAME": "Healthcare Survey Dashboard",
     "NEXT_PUBLIC_APP_URL": "$VERCEL_URL",
     "NEXT_PUBLIC_SUPABASE_URL": "https://placeholder.supabase.co",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "placeholder-anon-key"
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "placeholder-anon-key",
+    "NEXT_PUBLIC_ARCHON_API_URL": "DUMMY_http://localhost:8000/api",
+    "NEXT_PUBLIC_ARCHON_WS_URL": "DUMMY_ws://localhost:8000/ws",
+    "ARCHON_API_KEY": "DUMMY_archon_api_key"
   },
   "build": {
     "env": {
