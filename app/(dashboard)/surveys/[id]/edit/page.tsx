@@ -13,6 +13,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { surveyService } from '@/lib/services/survey-service';
 import { Survey, Question } from '@/types';
 import { Plus, Trash2, GripVertical, Eye, Save, ArrowLeft, Copy } from 'lucide-react';
+import { safeLocalStorage } from '@/lib/utils/storage';
+import { sanitizeText } from '@/lib/utils/sanitize';
 
 type QuestionType = Question['question_type'];
 
@@ -165,17 +167,22 @@ export default function EditSurveyPage() {
       
       // Update the survey
       await surveyService.updateSurvey(surveyId, {
-        title: surveyTitle,
-        description: surveyDescription,
+        title: sanitizeText(surveyTitle),
+        description: sanitizeText(surveyDescription),
         status: surveyStatus,
       });
       
       // For mock data, we'll just update localStorage
       // In a real app, you'd update each question individually
       const questionsKey = `questions-${surveyId}`;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(questionsKey, JSON.stringify(questions));
-      }
+      // Sanitize questions before saving
+      const sanitizedQuestions = questions.map(q => ({
+        ...q,
+        question_text: sanitizeText(q.question_text),
+        description: q.description ? sanitizeText(q.description) : q.description,
+        options: q.options ? q.options.map(opt => sanitizeText(opt)) : q.options
+      }));
+      safeLocalStorage.setItem(questionsKey, JSON.stringify(sanitizedQuestions));
       
       alert('Survey updated successfully!');
       router.push('/surveys');

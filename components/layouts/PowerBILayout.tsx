@@ -32,6 +32,9 @@ export function PowerBILayout({
 
   // Check for mobile view
   useEffect(() => {
+    // Only check window on client side
+    if (typeof window === 'undefined') return;
+    
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
       if (window.innerWidth < 768) {
@@ -46,6 +49,9 @@ export function PowerBILayout({
 
   // Handle keyboard shortcuts
   useEffect(() => {
+    // Only add event listeners on client side
+    if (typeof window === 'undefined') return;
+    
     const handleKeyPress = (e: KeyboardEvent) => {
       // Ctrl/Cmd + B: Toggle sidebar
       if ((e.ctrlKey || e.metaKey) && e.key === 'b') {

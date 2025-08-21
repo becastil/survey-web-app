@@ -16,7 +16,6 @@ import {
   AlertTriangle,
   CheckCircle,
   XCircle,
-  TrendingUp,
   Activity,
   RefreshCw,
   Shield,
@@ -26,7 +25,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Area, ComposedChart } from 'recharts';
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Area, ComposedChart } from 'recharts';
 
 interface DataPoint {
   timestamp: string;

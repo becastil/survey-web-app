@@ -130,8 +130,8 @@ function determineQuestionType(text: string): 'text' | 'multiple_choice' | 'rati
  * Generate default suggestions when KB is unavailable
  */
 async function generateDefaultSuggestions(
-  context?: string,
-  existingQuestions?: Question[]
+  _context?: string,
+  _existingQuestions?: Question[]
 ): Promise<SuggestedQuestion[]> {
   const healthcareSuggestions: SuggestedQuestion[] = [
     {
@@ -182,10 +182,10 @@ async function generateDefaultSuggestions(
   ];
 
   // Filter out suggestions that might duplicate existing questions
-  const existingTexts = existingQuestions?.map(q => q.text.toLowerCase()) || [];
+  const existingTexts = _existingQuestions?.map((q: any) => q.text?.toLowerCase()) || [];
   
   return healthcareSuggestions.filter(suggestion => 
-    !existingTexts.some(existing => 
+    !existingTexts.some((existing: any) => 
       existing.includes(suggestion.text.toLowerCase().slice(0, 20))
     )
   );

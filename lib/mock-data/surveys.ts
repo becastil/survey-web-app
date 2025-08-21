@@ -86,7 +86,7 @@ export const mockSurveys: Survey[] = [
     created_by: 'analyst-2',
     created_at: '2025-01-20T00:00:00Z',
     updated_at: '2025-01-20T16:00:00Z',
-    start_date: null,
-    end_date: null,
+    start_date: undefined,
+    end_date: undefined,
   },
 ];

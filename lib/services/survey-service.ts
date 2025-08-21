@@ -3,6 +3,7 @@ import { mockSurveys } from '@/lib/mock-data/surveys';
 import { mockQuestions } from '@/lib/mock-data/questions';
 import { mockResponses, mockAnswers, getResponseStats, getResponseTrend } from '@/lib/mock-data/responses';
 import { createClient } from '@/lib/supabase/client';
+import { safeLocalStorage } from '@/lib/utils/storage';
 
 const USE_MOCK_DATA = process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true' || !process.env.NEXT_PUBLIC_SUPABASE_URL;
 
@@ -13,7 +14,7 @@ class SurveyService {
   async getSurveys(): Promise<Survey[]> {
     if (USE_MOCK_DATA) {
       // Get from localStorage if exists, otherwise use mock data
-      const stored = typeof window !== 'undefined' ? localStorage.getItem('surveys') : null;
+      const stored = safeLocalStorage.getItem('surveys');
       return stored ? JSON.parse(stored) : mockSurveys;
     }
 
@@ -53,9 +54,7 @@ class SurveyService {
     if (USE_MOCK_DATA) {
       const surveys = await this.getSurveys();
       const updated = [...surveys, newSurvey];
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('surveys', JSON.stringify(updated));
-      }
+      safeLocalStorage.setItem('surveys', JSON.stringify(updated));
       return newSurvey;
     }
 
@@ -81,9 +80,7 @@ class SurveyService {
         updated_at: new Date().toISOString(),
       };
       
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('surveys', JSON.stringify(surveys));
-      }
+      safeLocalStorage.setItem('surveys', JSON.stringify(surveys));
       return surveys[index];
     }
 
@@ -102,9 +99,7 @@ class SurveyService {
     if (USE_MOCK_DATA) {
       const surveys = await this.getSurveys();
       const filtered = surveys.filter(s => s.id !== id);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('surveys', JSON.stringify(filtered));
-      }
+      safeLocalStorage.setItem('surveys', JSON.stringify(filtered));
       return;
     }
 
@@ -119,7 +114,7 @@ class SurveyService {
   // Question operations
   async getQuestions(surveyId: string): Promise<Question[]> {
     if (USE_MOCK_DATA) {
-      const stored = typeof window !== 'undefined' ? localStorage.getItem(`questions-${surveyId}`) : null;
+      const stored = safeLocalStorage.getItem(`questions-${surveyId}`);
       return stored ? JSON.parse(stored) : (mockQuestions[surveyId] || []);
     }
 
@@ -142,9 +137,7 @@ class SurveyService {
     if (USE_MOCK_DATA) {
       const questions = await this.getQuestions(question.survey_id);
       const updated = [...questions, newQuestion];
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(`questions-${question.survey_id}`, JSON.stringify(updated));
-      }
+      safeLocalStorage.setItem(`questions-${question.survey_id}`, JSON.stringify(updated));
       return newQuestion;
     }
 
@@ -161,7 +154,7 @@ class SurveyService {
   // Response operations
   async getResponses(surveyId?: string): Promise<Response[]> {
     if (USE_MOCK_DATA) {
-      const stored = typeof window !== 'undefined' ? localStorage.getItem('responses') : null;
+      const stored = safeLocalStorage.getItem('responses');
       const responses = stored ? JSON.parse(stored) : mockResponses;
       return surveyId ? responses.filter((r: Response) => r.survey_id === surveyId) : responses;
     }
@@ -185,9 +178,7 @@ class SurveyService {
     if (USE_MOCK_DATA) {
       const responses = await this.getResponses();
       const updated = [...responses, newResponse];
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('responses', JSON.stringify(updated));
-      }
+      safeLocalStorage.setItem('responses', JSON.stringify(updated));
       return newResponse;
     }
 
@@ -214,8 +205,8 @@ class SurveyService {
 
     if (error) throw error;
 
-    const completed = data?.filter(r => r.status === 'completed').length || 0;
-    const inProgress = data?.filter(r => r.status === 'in_progress').length || 0;
+    const completed = data?.filter((r: any) => r.status === 'completed').length || 0;
+    const inProgress = data?.filter((r: any) => r.status === 'in_progress').length || 0;
     const total = data?.length || 0;
 
     return {
@@ -245,7 +236,7 @@ class SurveyService {
 
     // Group by date and count
     const trend: { [key: string]: number } = {};
-    data?.forEach(response => {
+    data?.forEach((response: any) => {
       const date = new Date(response.started_at).toISOString().split('T')[0];
       trend[date] = (trend[date] || 0) + 1;
     });
@@ -266,13 +257,11 @@ class SurveyService {
         updated_at: new Date().toISOString(),
       }));
 
-      const stored = typeof window !== 'undefined' ? localStorage.getItem('answers') : null;
+      const stored = safeLocalStorage.getItem('answers');
       const existing = stored ? JSON.parse(stored) : mockAnswers;
       const updated = [...existing, ...newAnswers];
       
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('answers', JSON.stringify(updated));
-      }
+      safeLocalStorage.setItem('answers', JSON.stringify(updated));
       return newAnswers;
     }
 
@@ -287,7 +276,7 @@ class SurveyService {
 
   async getAnswers(responseId: string): Promise<Answer[]> {
     if (USE_MOCK_DATA) {
-      const stored = typeof window !== 'undefined' ? localStorage.getItem('answers') : null;
+      const stored = safeLocalStorage.getItem('answers');
       const answers = stored ? JSON.parse(stored) : mockAnswers;
       return answers.filter((a: Answer) => a.response_id === responseId);
     }

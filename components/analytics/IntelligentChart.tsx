@@ -26,7 +26,6 @@ import {
 } from 'recharts';
 import { 
   TrendingUp, 
-  TrendingDown, 
   AlertCircle, 
   Info,
   Sparkles,

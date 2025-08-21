@@ -17,7 +17,7 @@ function generateResponses(surveyId: string, count: number): Response[] {
       started_at: responseDate.toISOString(),
       completed_at: Math.random() > 0.1 ? 
         new Date(responseDate.getTime() + 15 * 60000).toISOString() : 
-        null,
+        undefined,
     });
   }
   
@@ -39,6 +39,7 @@ export const mockAnswers: Answer[] = [
     id: `answer-1-${i}`,
     response_id: `response-survey-1-${i}`,
     question_id: 'q1-1',
+    survey_id: 'survey-1',
     selected_option_ids: [i % 4 === 0 ? 'opt1-1' : i % 4 === 1 ? 'opt1-2' : i % 4 === 2 ? 'opt1-3' : 'opt1-4'],
     created_at: '2025-01-15T10:00:00Z',
     updated_at: '2025-01-15T10:00:00Z',
@@ -49,6 +50,7 @@ export const mockAnswers: Answer[] = [
     id: `answer-2-${i}`,
     response_id: `response-survey-1-${i}`,
     question_id: 'q1-2',
+    survey_id: 'survey-1',
     selected_option_ids: [
       i % 5 === 0 ? 'opt2-1' : 
       i % 5 === 1 ? 'opt2-2' : 
@@ -64,6 +66,7 @@ export const mockAnswers: Answer[] = [
     id: `answer-3-${i}`,
     response_id: `response-survey-1-${i}`,
     question_id: 'q1-3',
+    survey_id: 'survey-1',
     selected_option_ids: [
       'opt3-1',
       ...(Math.random() > 0.5 ? ['opt3-2'] : []),
@@ -81,6 +84,7 @@ export const mockAnswers: Answer[] = [
     id: `answer-4-${i}`,
     response_id: `response-survey-1-${i}`,
     question_id: 'q1-4',
+    survey_id: 'survey-1',
     answer_number: Math.floor(Math.random() * 10000) + 500,
     created_at: '2025-01-15T10:00:00Z',
     updated_at: '2025-01-15T10:00:00Z',
@@ -91,6 +95,7 @@ export const mockAnswers: Answer[] = [
     id: `answer-5-${i}`,
     response_id: `response-survey-1-${i}`,
     question_id: 'q1-5',
+    survey_id: 'survey-1',
     answer_text: [
       'High deductibles make it difficult to afford care',
       'Limited network of specialists in my area',

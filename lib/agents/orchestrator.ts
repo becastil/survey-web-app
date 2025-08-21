@@ -216,7 +216,7 @@ export function getAgentOrchestrator(): AgentOrchestrator {
 /**
  * Register default agents
  */
-function registerDefaultAgents(orchestrator: AgentOrchestrator) {
+function registerDefaultAgents(_orchestrator: AgentOrchestrator) {
   // Import and register all default agents
   // These will be created in separate files
   // For now, we'll add placeholders

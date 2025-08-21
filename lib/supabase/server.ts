@@ -1,7 +1,6 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import type { MockSupabaseClient } from './types';
-import { Database } from '@/types/database';
 
 // Create a proper mock client
 function createMockClient(): MockSupabaseClient {

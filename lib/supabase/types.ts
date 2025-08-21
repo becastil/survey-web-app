@@ -49,7 +49,7 @@ export interface MockSupabaseClient {
 }
 
 // Type guard to check if we're using mock client
-export function isMockClient(client: unknown): client is MockSupabaseClient {
+export function isMockClient(_client: unknown): _client is MockSupabaseClient {
   return process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true' || 
          !process.env.NEXT_PUBLIC_SUPABASE_URL;
 }

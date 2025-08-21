@@ -11,6 +11,7 @@ import { surveyService } from '@/lib/services/survey-service';
 import { Survey } from '@/types';
 import { formatDate } from '@/lib/utils';
 import { Plus, Search, Edit, Archive, BarChart, Users, Calendar, Filter } from 'lucide-react';
+import { sanitizeText } from '@/lib/utils/sanitize';
 
 export default function SurveysPage() {
   const [surveys, setSurveys] = useState<Survey[]>([]);
@@ -138,7 +139,7 @@ export default function SurveysPage() {
               <Input
                 placeholder="Search surveys..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => setSearchTerm(sanitizeText(e.target.value))}
                 className="pl-10"
               />
             </div>

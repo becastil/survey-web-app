@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_OPTIONS='--max-old-space-size=2048' SKIP_ENV_VALIDATION=true next build --no-lint",
-    "build:prod": "NODE_OPTIONS='--max-old-space-size=4096' next build",
+    "build": "SKIP_ENV_VALIDATION=true next build",
+    "build:prod": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -58,6 +58,7 @@
     "@types/plotly.js": "^3.0.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-plotly.js": "^2.6.3",
     "autoprefixer": "^10.4.16",
     "eslint": "^9",
     "eslint-config-next": "15.4.7",

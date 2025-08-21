@@ -17,7 +17,6 @@ import {
   LogOut,
   Settings,
   HelpCircle,
-  Command,
   ChevronRight,
   Moon,
   Sun,
@@ -31,7 +30,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { createClient } from '@/lib/supabase/client';
 import { CommandPalette } from '@/components/ui/CommandPalette';
@@ -43,7 +41,7 @@ interface TopBarProps {
 }
 
 export function TopBar({ onMenuClick, onFilterClick, showFilterButton }: TopBarProps) {
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [_searchOpen, _setSearchOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const router = useRouter();
@@ -71,6 +69,9 @@ export function TopBar({ onMenuClick, onFilterClick, showFilterButton }: TopBarP
 
   // Handle keyboard shortcut for command palette
   React.useEffect(() => {
+    // Only add event listeners on client side
+    if (typeof window === 'undefined') return;
+    
     const handleKeyPress = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();

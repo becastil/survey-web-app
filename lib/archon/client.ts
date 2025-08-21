@@ -9,8 +9,7 @@ import {
   KBResponse, 
   CodeExample, 
   KBSource, 
-  RAGResponse,
-  CachedResponse 
+  RAGResponse
 } from './types';
 import { archonConfig } from '@/lib/config/archon.config';
 import { ArchonAuth } from './auth';

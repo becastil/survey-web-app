@@ -53,7 +53,9 @@
       "Bash(curl:*)",
       "Bash(cp:*)",
       "Bash(git config:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(bash:*)",
+      "Bash(./validate-fixes.sh)"
     ],
     "deny": [],
     "ask": [],

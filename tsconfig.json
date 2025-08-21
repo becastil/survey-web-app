@@ -1,25 +1,21 @@
-// TODO: Re-enable noUnusedLocals and noUnusedParameters after fixing all unused variables
-// Tracking issue: Fix TypeScript strict mode violations  
-// Date disabled: 2025-08-21
-// This is a TEMPORARY fix to unblock Vercel deployment
+// TypeScript strict mode re-enabled after fixing all violations
+// Date enabled: 2025-08-21
 {
   "compilerOptions": {
     "target": "ES2020",
     "lib": ["dom", "dom.iterable", "esnext", "ES2020", "ESNext.AsyncIterable"],
     "allowJs": true,
     "skipLibCheck": true,
-    // TEMPORARY: Relaxed for deployment - TODO: Re-enable strict mode
-    "strict": false,
-    "strictNullChecks": false,
-    "strictFunctionTypes": false,
-    "strictBindCallApply": false,
-    "strictPropertyInitialization": false,
-    "noImplicitThis": false,
-    // TEMPORARY: Disabled for deployment - TODO: Re-enable and fix type issues
-    "noImplicitAny": false,
-    // TEMPORARY: Disabled for deployment - TODO: Re-enable and fix unused vars
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    // Strict mode enabled for production-quality code
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

@@ -56,7 +56,7 @@ export default function KBPoweredAnalyticsPage() {
   const [selectedSurvey, _setSelectedSurvey] = useState('survey-2024-q1');
   // TODO: Implement time range filter to use setTimeRange
   const [timeRange, _setTimeRange] = useState('7d');
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [_refreshKey, setRefreshKey] = useState(0);
   
   // Mock survey data
   const surveyData = {
@@ -104,7 +104,7 @@ export default function KBPoweredAnalyticsPage() {
   const timeSeriesData = generateMockData();
   
   // Use KB to get survey summary
-  const { data: surveySummary } = useArchonQuery(
+  const { data: _surveySummary } = useArchonQuery(
     `Summarize key metrics and trends for ${selectedSurvey}`,
     {
       cacheKey: `summary:${selectedSurvey}`,

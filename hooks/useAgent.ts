@@ -5,7 +5,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { getAgentOrchestrator } from '@/lib/agents/orchestrator';
-import { Agent, AgentStatus, AgentInput, AgentResult } from '@/lib/archon/types';
+import { AgentStatus, AgentInput } from '@/lib/archon/types';
 
 interface UseAgentOptions {
   autoExecute?: boolean;

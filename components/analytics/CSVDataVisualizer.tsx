@@ -1,12 +1,12 @@
 'use client';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, FileText, Loader2, BarChart, LineChart, PieChart, Scatter, Map, TrendingUp } from 'lucide-react';
+import { Upload, FileText, Loader2, BarChart, LineChart, PieChart, Dot, Map, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import dynamic from 'next/dynamic';
+import { sanitizeText } from '@/lib/utils/sanitize';
 
 // Dynamically import Plotly to avoid SSR issues
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
@@ -33,10 +33,6 @@ export function CSVDataVisualizer() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState('');
   const [error, setError] = useState('');
-  
-  const chartId = useMemo(() => 
-    `chart-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, []
-  );
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -50,14 +46,14 @@ export function CSVDataVisualizer() {
         reader.readAsText(file);
       });
 
-      // Parse CSV
+      // Parse CSV with sanitization
       const lines = text.trim().split('\n');
-      const headers = lines[0].split(',').map(h => h.trim());
+      const headers = lines[0].split(',').map(h => sanitizeText(h.trim()));
       
-      // Parse rows
+      // Parse rows with sanitization
       const rows: any[] = [];
       for (let i = 1; i < Math.min(100, lines.length); i++) {
-        const values = lines[i].split(',').map(v => v.trim());
+        const values = lines[i].split(',').map(v => sanitizeText(v.trim()));
         const row: any = {};
         headers.forEach((header, index) => {
           row[header] = values[index] || '';
@@ -74,7 +70,8 @@ export function CSVDataVisualizer() {
   };
 
   const runAnalysis = async () => {
-    if (!csvData || !analysisQuery.trim()) {
+    const sanitizedQuery = sanitizeText(analysisQuery.trim());
+    if (!csvData || !sanitizedQuery) {
       setError('Please upload a CSV file and enter an analysis query');
       return;
     }
@@ -99,10 +96,6 @@ export function CSVDataVisualizer() {
   };
 
   const generateMockAnalysis = (data: CSVData, query: string): AnalysisResult => {
-    const numericColumns = data.headers.filter(header => {
-      const sample = data.rows.slice(0, 5).map(row => row[header]);
-      return sample.every(val => !isNaN(Number(val)) && val !== '');
-    });
 
     // Simple query analysis
     if (query.toLowerCase().includes('trend') || query.toLowerCase().includes('time')) {
@@ -450,7 +443,7 @@ export function CSVDataVisualizer() {
                 { icon: BarChart, label: 'Bar Charts', color: 'text-blue-600' },
                 { icon: LineChart, label: 'Line Charts', color: 'text-green-600' },
                 { icon: PieChart, label: 'Pie Charts', color: 'text-purple-600' },
-                { icon: Scatter, label: 'Scatter Plots', color: 'text-orange-600' },
+                { icon: Dot, label: 'Scatter Plots', color: 'text-orange-600' },
                 { icon: Map, label: 'Geographic Maps', color: 'text-red-600' },
                 { icon: TrendingUp, label: '3D Visualizations', color: 'text-pink-600' },
                 { icon: BarChart, label: 'Financial Charts', color: 'text-indigo-600' },

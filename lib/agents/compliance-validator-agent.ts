@@ -30,7 +30,6 @@ export class ComplianceValidatorAgent extends BaseAgent {
         regulations?: string[];
       };
 
-      const archonClient = getArchonClient();
       const issues: ComplianceIssue[] = [];
       const recommendations: string[] = [];
 
@@ -115,7 +114,7 @@ export class ComplianceValidatorAgent extends BaseAgent {
 
     // Check for PHI handling
     const phiQuestions = questions.filter(q => 
-      this.containsPHI(q.text)
+      q.text && this.containsPHI(q.text)
     );
 
     if (phiQuestions.length > 0 && !survey.settings?.encryptionEnabled) {
@@ -130,8 +129,8 @@ export class ComplianceValidatorAgent extends BaseAgent {
 
     // Check for consent
     const hasConsent = questions.some(q => 
-      q.text.toLowerCase().includes('consent') || 
-      q.text.toLowerCase().includes('agree')
+      q.text?.toLowerCase().includes('consent') || 
+      q.text?.toLowerCase().includes('agree')
     );
 
     if (!hasConsent && phiQuestions.length > 0) {
@@ -156,7 +155,7 @@ export class ComplianceValidatorAgent extends BaseAgent {
 
     // Check for personal data
     const personalDataQuestions = questions.filter(q =>
-      this.containsPersonalData(q.text)
+      q.text && this.containsPersonalData(q.text)
     );
 
     if (personalDataQuestions.length > 0) {
@@ -189,7 +188,7 @@ export class ComplianceValidatorAgent extends BaseAgent {
   /**
    * Get HIPAA recommendations
    */
-  private getHIPAARecommendations(survey: Survey): string[] {
+  private getHIPAARecommendations(_survey: Survey): string[] {
     return [
       'Implement access controls and audit logs',
       'Use secure transmission protocols (HTTPS/TLS)',
@@ -202,7 +201,7 @@ export class ComplianceValidatorAgent extends BaseAgent {
   /**
    * Get GDPR recommendations
    */
-  private getGDPRRecommendations(survey: Survey): string[] {
+  private getGDPRRecommendations(_survey: Survey): string[] {
     return [
       'Add privacy policy link',
       'Implement right to erasure (delete user data)',

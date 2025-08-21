@@ -25,15 +25,15 @@ import {
   TrendingUp,
   BarChart3,
   PieChart,
-  AlertCircle,
-  CheckCircle
+  AlertCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
 import ReactMarkdown from 'react-markdown';
+import { sanitizeText } from '@/lib/utils/sanitize';
 
 interface InsightMessage {
   id: string;
@@ -107,7 +107,7 @@ export function InsightPanel({
   }, [messages]);
 
   const handleSendMessage = async (prompt?: string) => {
-    const messageText = prompt || input;
+    const messageText = sanitizeText(prompt || input);
     if (!messageText.trim()) return;
     
     // Add user message
@@ -168,9 +168,11 @@ export function InsightPanel({
             }
           );
           
-          // Consume the stream
-          for await (const chunk of stream) {
-            if (abortControllerRef.current?.signal.aborted) break;
+          // Consume the stream if it's iterable
+          if (stream && typeof (stream as any)[Symbol.asyncIterator] === 'function') {
+            for await (const _chunk of stream as unknown as AsyncIterable<string>) {
+              if (abortControllerRef.current?.signal.aborted) break;
+            }
           }
           
           // Add metadata after streaming completes
@@ -198,10 +200,10 @@ export function InsightPanel({
           cacheTTL: 60
         });
         
-        assistantMessage.content = response.data.content || 'Unable to generate insights at this time.';
+        assistantMessage.content = (response as any)?.data?.content || 'Unable to generate insights at this time.';
         assistantMessage.metadata = {
-          confidence: response.data.confidence || 0.8,
-          sources: response.data.sources || ['Archon KB']
+          confidence: (response as any)?.data?.confidence || 0.8,
+          sources: (response as any)?.data?.sources || ['Archon KB']
         };
         
         setMessages(prev => [...prev, assistantMessage]);
@@ -342,10 +344,10 @@ export function InsightPanel({
                   )}>
                     {message.type === 'assistant' ? (
                       <ReactMarkdown className="prose prose-sm dark:prose-invert max-w-none">
-                        {message.content || (isThinking ? 'Thinking...' : '')}
+                        {sanitizeText(message.content || (isThinking ? 'Thinking...' : ''))}
                       </ReactMarkdown>
                     ) : (
-                      <p className="text-sm">{message.content}</p>
+                      <p className="text-sm">{sanitizeText(message.content)}</p>
                     )}
                   </div>
                   
@@ -446,7 +448,7 @@ export function InsightPanel({
           <div className="flex gap-2">
             <Textarea
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => setInput(sanitizeText(e.target.value))}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();

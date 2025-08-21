@@ -216,7 +216,7 @@ export function VerticalNav({ collapsed, onToggle }: VerticalNavProps) {
 
         {hasChildren && isExpanded && !collapsed && (
           <div className="mt-1 space-y-1">
-            {item.children.map(child => renderNavItem(child, level + 1))}
+            {item.children?.map(child => renderNavItem(child, level + 1))}
           </div>
         )}
       </div>

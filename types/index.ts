@@ -17,6 +17,18 @@ export interface Survey {
   updated_at: string;
   start_date?: string;
   end_date?: string;
+  questions?: Question[];
+  settings?: SurveySettings;
+}
+
+export interface SurveySettings {
+  anonymousResponses?: boolean;
+  allowMultipleSubmissions?: boolean;
+  showProgressBar?: boolean;
+  randomizeQuestions?: boolean;
+  requireAuth?: boolean;
+  encryptionEnabled?: boolean;
+  dataRetentionDays?: number;
 }
 
 export interface Question {
@@ -33,6 +45,10 @@ export interface Question {
   scale_label_min?: string;
   scale_label_max?: string;
   validation_rules?: ValidationRule[];
+  // Additional properties for compatibility
+  description?: string;
+  text?: string;
+  type?: string; // Alternative to question_type for compatibility
 }
 
 export interface QuestionOption {

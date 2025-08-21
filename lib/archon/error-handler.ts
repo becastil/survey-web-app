@@ -152,7 +152,7 @@ export class ArchonErrorHandler {
   /**
    * Get default error response
    */
-  private static getDefaultErrorResponse(error: any, context: string): KBResponse {
+  private static getDefaultErrorResponse(_error: any, _context: string): KBResponse {
     return {
       data: {
         content: 'An error occurred while processing your request.',

@@ -51,9 +51,8 @@ export function useFormValidation<T extends Record<string, unknown>>({
 
   const validateField = useCallback(async (field: keyof T) => {
     try {
-      // Validate single field
-      const fieldSchema = schema.pick({ [field]: true } as any);
-      await fieldSchema.parseAsync({ [field]: values[field] });
+      // Validate the entire form and extract field-specific error
+      await schema.parseAsync(values);
       
       // Clear error if validation passes
       setErrors((prev) => {
@@ -65,7 +64,7 @@ export function useFormValidation<T extends Record<string, unknown>>({
       return true;
     } catch (error) {
       if (error instanceof ZodError) {
-        const fieldError = error.errors.find((e) => e.path[0] === field);
+        const fieldError = error.issues.find((issue) => issue.path[0] === field);
         if (fieldError) {
           setErrors((prev) => ({
             ...prev,
@@ -89,9 +88,9 @@ export function useFormValidation<T extends Record<string, unknown>>({
     } catch (error) {
       if (error instanceof ZodError) {
         const newErrors: ValidationErrors = {};
-        error.errors.forEach((err) => {
-          if (err.path.length > 0) {
-            newErrors[err.path[0] as string] = err.message;
+        error.issues.forEach((issue) => {
+          if (issue.path.length > 0) {
+            newErrors[issue.path[0] as string] = issue.message;
           }
         });
         setErrors(newErrors);
