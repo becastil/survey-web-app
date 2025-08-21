@@ -48,9 +48,14 @@
       "Bash(./scripts/validate-build.sh:*)",
       "Bash(export NODE_OPTIONS='--max-old-space-size=4096')",
       "Bash(gh auth:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(SKIP_ENV_VALIDATION=true npx next build)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "/tmp"
+    ],
+    "defaultMode": "acceptEdits"
   }
 }
