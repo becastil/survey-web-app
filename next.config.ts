@@ -1,3 +1,4 @@
+import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -57,4 +58,39 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
 };
 
-export default nextConfig;
+// Sentry configuration options
+const sentryWebpackPluginOptions = {
+  // Organization and project
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  
+  // Auth token for uploading source maps
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  
+  // Suppresses all logs if true
+  silent: true,
+  
+  // Upload source maps only in production
+  dryRun: process.env.NODE_ENV !== 'production',
+  
+  // Hides source maps from generated client bundles
+  hideSourceMaps: true,
+  
+  // Automatically release tracking
+  release: {
+    autoCreate: true,
+    setCommits: {
+      auto: true,
+    },
+  },
+  
+  // Disable Sentry in development
+  disableLogger: process.env.NODE_ENV === 'development',
+};
+
+// Export with Sentry wrapper if DSN is configured
+const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
+
+export default SENTRY_DSN 
+  ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+  : nextConfig;
