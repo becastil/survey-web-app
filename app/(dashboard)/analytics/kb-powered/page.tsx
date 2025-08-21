@@ -52,8 +52,10 @@ function generateMockData() {
 }
 
 export default function KBPoweredAnalyticsPage() {
-  const [selectedSurvey, setSelectedSurvey] = useState('survey-2024-q1');
-  const [timeRange, setTimeRange] = useState('7d');
+  // TODO: Add survey selection dropdown UI to use setSelectedSurvey
+  const [selectedSurvey, _setSelectedSurvey] = useState('survey-2024-q1');
+  // TODO: Implement time range filter to use setTimeRange
+  const [timeRange, _setTimeRange] = useState('7d');
   const [refreshKey, setRefreshKey] = useState(0);
   
   // Mock survey data
