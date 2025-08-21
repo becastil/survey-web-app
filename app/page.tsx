@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { HeroBackground } from '@/components/backgrounds/HeroBackground';
@@ -65,6 +66,13 @@ export default function Home() {
   const { scrollY } = useScroll();
   const navOpacity = useTransform(scrollY, [0, 100], [0.8, 1]);
   const navBlur = useTransform(scrollY, [0, 100], [8, 12]);
+
+  // Check for demo mode and redirect to dashboard
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
+      router.push('/dashboard');
+    }
+  }, [router]);
 
   const features = [
     {
