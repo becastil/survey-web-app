@@ -81,6 +81,39 @@
 }
 
 @layer utilities {
+  /* Premium Typography System */
+  .headline-display-xl {
+    font-size: clamp(3rem, 8vw, 5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+
+  .headline-display-lg {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .body-text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75;
+    font-weight: 400;
+  }
+
+  .healthcare-metric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #8B5CF6 0%, #D946EF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   /* Custom gradient utilities */
   .bg-radial-gradient {
     background-image: radial-gradient(ellipse at center, var(--tw-gradient-stops));

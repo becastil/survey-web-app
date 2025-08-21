@@ -3,7 +3,9 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { HeroBackground } from '@/components/backgrounds/HeroBackground';
+import { AdvancedHeroBackground } from '@/components/landing/backgrounds/AdvancedHeroBackground';
+import { MetricsCounter } from '@/components/landing/MetricsCounter';
+import { InteractiveDemo } from '@/components/landing/InteractiveDemo';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardDescription } from '@/components/ui/GlassCard';
 import { 
@@ -160,8 +162,8 @@ export default function Home() {
         </div>
       </motion.nav>
 
-      {/* Hero Section with Background */}
-      <HeroBackground className="min-h-screen flex items-center">
+      {/* Hero Section with Advanced Background */}
+      <AdvancedHeroBackground className="min-h-screen flex items-center" interactive={true}>
         <section className="pt-20 pb-16 px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-7xl mx-auto">
             <motion.div 
@@ -234,7 +236,7 @@ export default function Home() {
             </motion.div>
           </div>
         </section>
-      </HeroBackground>
+      </AdvancedHeroBackground>
 
       {/* Features Grid */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
@@ -331,32 +333,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-violet-900/20 via-purple-900/20 to-fuchsia-900/20" />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, type: "spring" }}
-              >
-                <motion.div 
-                  className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400 font-headline"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
-                >
-                  {stat.value}
-                </motion.div>
-                <div className="text-gray-400 font-body">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Performance Metrics Display */}
+      <MetricsCounter />
+
+      {/* Interactive Demo Section */}
+      <InteractiveDemo />
 
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
