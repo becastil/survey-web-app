@@ -134,7 +134,7 @@ cp .env.local .env.local.backup  # If you have existing env file
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the application.
+Open [http://localhost:1994](http://localhost:1994) to view the application.
 
 ## 🌐 Deployment to Vercel
 
