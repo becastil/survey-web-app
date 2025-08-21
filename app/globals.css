@@ -10,20 +10,44 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --primary: 270 66.67% 50.59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 67% 64%;
+    --secondary-foreground: 0 0% 100%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 293 69% 64%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --ring: 270 66.67% 50.59%;
     --radius: 0.5rem;
+    
+    /* Custom color palette */
+    --color-background: #000000;
+    --color-surface: #0A0A0A;
+    --color-primary: #8B5CF6;
+    --color-secondary: #A855F7;
+    --color-accent: #D946EF;
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #D1D5DB;
+    --color-text-muted: #9CA3AF;
+    
+    /* Gradient colors */
+    --gradient-mesh-1: #8B5CF6;
+    --gradient-mesh-2: #A855F7;
+    --gradient-mesh-3: #D946EF;
+    --gradient-mesh-highlight: #FFFFFF;
+    
+    /* Animation variables */
+    --animation-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --animation-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Font families */
+    --font-headline: var(--font-space-grotesk);
+    --font-body: var(--font-inter);
   }
 
   .dark {
@@ -53,5 +77,49 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  /* Custom gradient utilities */
+  .bg-radial-gradient {
+    background-image: radial-gradient(ellipse at center, var(--tw-gradient-stops));
+  }
+  
+  /* Glow effect */
+  .glow-violet {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3);
+  }
+  
+  .glow-white {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Glass morphism */
+  .glass {
+    @apply backdrop-blur-lg bg-white/5 border border-white/10;
+  }
+  
+  .glass-dark {
+    @apply backdrop-blur-lg bg-black/20 border border-white/10;
+  }
+  
+  /* Typography */
+  .font-headline {
+    font-family: var(--font-headline), system-ui, sans-serif;
+  }
+  
+  .font-body {
+    font-family: var(--font-body), system-ui, sans-serif;
+  }
+  
+  /* Animations */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
   }
 }
