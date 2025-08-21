@@ -5,9 +5,9 @@
 
 'use client';
 
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { X, Filter, RotateCcw } from 'lucide-react';
+import { X, Filter, RotateCcw, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';

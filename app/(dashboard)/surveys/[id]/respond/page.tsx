@@ -66,7 +66,7 @@ export default function SurveyRespondPage() {
   }, [surveyId, loadSurveyData]);
 
   const handleAnswerChange = (questionId: string, value: unknown) => {
-    const newAnswers = { ...answers, [questionId]: value };
+    const newAnswers = { ...answers, [questionId]: value as string | number | string[] };
     setAnswers(newAnswers);
     
     // Save progress to localStorage

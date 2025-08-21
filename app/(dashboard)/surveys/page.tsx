@@ -43,7 +43,12 @@ export default function SurveysPage() {
   }, [surveys, searchTerm, statusFilter]);
 
   const loadStats = useCallback(async () => {
-    const newStats: { [key: string]: unknown } = {};
+    const newStats: { [key: string]: { 
+      total: number; 
+      completed: number; 
+      inProgress: number; 
+      completionRate: number; 
+    } } = {};
     for (const survey of surveys) {
       try {
         const surveyStats = await surveyService.getSurveyStats(survey.id);
