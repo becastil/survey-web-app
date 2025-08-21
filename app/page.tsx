@@ -72,7 +72,7 @@ export default function Home() {
   // Check for demo mode and redirect to dashboard
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
-      router.push('/dashboard');
+      router.push('/');
     }
   }, [router]);
 
