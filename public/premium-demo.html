@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Stack Demo - Next-Gen Insights Platform</title>
+    
+    <!-- Google Fonts - Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* AssuredPartners Brand Colors */
+        :root {
+            --ap-dark-blue: #0032E1;
+            --ap-midnight-blue: #00193C;
+            --ap-white: #FFFFFF;
+            --ap-light-gray: #F1F4FA;
+        }
+        
+        /* Apply Space Grotesk font globally */
+        * {
+            font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to bottom right, var(--ap-white), var(--ap-light-gray));
+            color: var(--ap-midnight-blue);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--ap-midnight-blue);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 50, 225, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 50, 225, 0.5); }
+        }
+        .float-animation { animation: float 3s ease-in-out infinite; }
+        .glow-animation { animation: glow 2s ease-in-out infinite; }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--ap-dark-blue) 0%, var(--ap-midnight-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .premium-card {
+            background: var(--ap-white);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--ap-light-gray);
+            box-shadow: 0 4px 6px rgba(0, 25, 60, 0.1);
+        }
+        .ap-button-primary {
+            background: var(--ap-dark-blue);
+            color: var(--ap-white);
+        }
+        .ap-button-primary:hover {
+            background: var(--ap-midnight-blue);
+        }
+        .ap-button-secondary {
+            border: 1px solid var(--ap-dark-blue);
+            color: var(--ap-dark-blue);
+            background: var(--ap-white);
+        }
+        .ap-button-secondary:hover {
+            background: var(--ap-light-gray);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="max-w-7xl mx-auto p-8">
+        <!-- Header -->
+        <div class="mb-12 text-center">
+            <div class="inline-flex items-center gap-3 mb-4">
+                <div class="p-3 rounded-xl glow-animation" style="background: var(--ap-dark-blue);">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <span class="px-3 py-1 text-sm font-medium rounded-full" style="color: var(--ap-dark-blue); border: 1px solid var(--ap-light-gray); background: var(--ap-white);">
+                    Premium Stack Demo
+                </span>
+            </div>
+            <h1 class="text-5xl font-bold gradient-text mb-4">
+                Next-Gen Insights Platform
+            </h1>
+            <p class="text-lg" style="color: var(--ap-midnight-blue); opacity: 0.8;">
+                Modern stack showcase: Motion.dev • Nivo • DuckDB-WASM • shadcn/ui
+            </p>
+        </div>
+
+        <!-- Main Demo Card -->
+        <div class="premium-card rounded-2xl shadow-2xl p-12 mb-8">
+            <div class="text-center">
+                <div class="relative inline-block mb-8 float-animation">
+                    <div class="absolute inset-0 rounded-full blur-3xl opacity-30" style="background: linear-gradient(to bottom right, var(--ap-dark-blue), var(--ap-midnight-blue));"></div>
+                    <svg class="w-20 h-20 relative z-10" style="color: var(--ap-dark-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                </div>
+                
+                <h3 class="text-2xl font-semibold mb-3" style="color: var(--ap-midnight-blue);">
+                    Drag & Drop Your Data
+                </h3>
+                <p class="mb-8" style="color: var(--ap-midnight-blue); opacity: 0.7;">
+                    CSV, Excel • Instant browser processing • Zero backend required
+                </p>
+                
+                <button onclick="showDemo()" class="px-6 py-3 ap-button-primary font-medium rounded-lg transition-all transform hover:scale-105">
+                    ✨ Simulate Upload & Process
+                </button>
+            </div>
+        </div>
+
+        <!-- Demo Results (Hidden by default) -->
+        <div id="demoResults" class="hidden space-y-6">
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="premium-card rounded-xl p-6 hover:shadow-xl transition-all">
+                    <p class="text-sm font-medium" style="color: var(--ap-midnight-blue); opacity: 0.6;">Total Records</p>
+                    <p class="text-3xl font-bold mt-1" style="color: var(--ap-midnight-blue);">15,420</p>
+                </div>
+                <div class="premium-card rounded-xl p-6 hover:shadow-xl transition-all">
+                    <p class="text-sm font-medium" style="color: var(--ap-midnight-blue); opacity: 0.6;">Avg Score</p>
+                    <p class="text-3xl font-bold mt-1" style="color: var(--ap-midnight-blue);">78.5%</p>
+                </div>
+                <div class="premium-card rounded-xl p-6 hover:shadow-xl transition-all">
+                    <p class="text-sm font-medium" style="color: var(--ap-midnight-blue); opacity: 0.6;">Growth Rate</p>
+                    <p class="text-3xl font-bold mt-1" style="color: var(--ap-dark-blue);">+24.3%</p>
+                </div>
+                <div class="premium-card rounded-xl p-6 hover:shadow-xl transition-all">
+                    <p class="text-sm font-medium" style="color: var(--ap-midnight-blue); opacity: 0.6;">Quality Score</p>
+                    <p class="text-3xl font-bold mt-1" style="color: var(--ap-dark-blue);">98%</p>
+                </div>
+            </div>
+
+            <!-- Visualization Preview -->
+            <div class="premium-card rounded-2xl p-8">
+                <h3 class="text-xl font-semibold mb-6" style="color: var(--ap-midnight-blue);">Interactive Visualizations</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="h-48 rounded-xl flex items-center justify-center" style="background: var(--ap-light-gray);">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">📊</div>
+                            <p class="text-sm font-medium" style="color: var(--ap-midnight-blue);">Bar Charts</p>
+                            <p class="text-xs mt-1" style="color: var(--ap-midnight-blue); opacity: 0.6;">Category Analysis</p>
+                        </div>
+                    </div>
+                    <div class="h-48 rounded-xl flex items-center justify-center" style="background: linear-gradient(to bottom right, var(--ap-light-gray), var(--ap-white));">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">📈</div>
+                            <p class="text-sm font-medium" style="color: var(--ap-midnight-blue);">Line Charts</p>
+                            <p class="text-xs mt-1" style="color: var(--ap-midnight-blue); opacity: 0.6;">Trend Analysis</p>
+                        </div>
+                    </div>
+                    <div class="h-48 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, var(--ap-white), var(--ap-light-gray));">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🗺️</div>
+                            <p class="text-sm font-medium" style="color: var(--ap-midnight-blue);">Heatmaps</p>
+                            <p class="text-xs mt-1" style="color: var(--ap-midnight-blue); opacity: 0.6;">Correlations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Insights -->
+            <div class="premium-card rounded-2xl p-8">
+                <h3 class="text-xl font-semibold mb-6 flex items-center gap-2" style="color: var(--ap-midnight-blue);">
+                    <span style="color: var(--ap-dark-blue);">✨</span> AI-Generated Insights
+                </h3>
+                <div class="space-y-3">
+                    <div class="flex items-start gap-3 p-4 rounded-xl" style="background: var(--ap-light-gray); border: 1px solid var(--ap-light-gray);">
+                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background: var(--ap-dark-blue); color: var(--ap-white);">1</span>
+                        <p style="color: var(--ap-midnight-blue);">Healthcare sector shows 32% YoY growth, outperforming all other segments</p>
+                    </div>
+                    <div class="flex items-start gap-3 p-4 rounded-xl" style="background: var(--ap-light-gray); border: 1px solid var(--ap-light-gray);">
+                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background: var(--ap-dark-blue); color: var(--ap-white);">2</span>
+                        <p style="color: var(--ap-midnight-blue);">Q4 projections indicate potential 18% revenue increase across all categories</p>
+                    </div>
+                    <div class="flex items-start gap-3 p-4 rounded-xl" style="background: var(--ap-light-gray); border: 1px solid var(--ap-light-gray);">
+                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background: var(--ap-dark-blue); color: var(--ap-white);">3</span>
+                        <p style="color: var(--ap-midnight-blue);">Data quality score: 98% with automated outlier detection and correction</p>
+                    </div>
+                    <div class="flex items-start gap-3 p-4 rounded-xl" style="background: var(--ap-light-gray); border: 1px solid var(--ap-light-gray);">
+                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background: var(--ap-dark-blue); color: var(--ap-white);">4</span>
+                        <p style="color: var(--ap-midnight-blue);">Customer satisfaction metrics correlate strongly with revenue growth (r=0.87)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Actions -->
+            <div class="flex justify-between">
+                <button onclick="hideDemo()" class="px-6 py-3 ap-button-secondary font-medium rounded-lg transition-all">
+                    Reset Demo
+                </button>
+                <button class="px-6 py-3 ap-button-primary font-medium rounded-lg transition-all transform hover:scale-105">
+                    📄 Export Premium Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Tech Stack Footer -->
+        <div class="mt-12 text-center">
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <span class="px-3 py-1 text-xs font-medium rounded-full" style="background: var(--ap-light-gray); color: var(--ap-midnight-blue);">Motion.dev</span>
+                <span class="px-3 py-1 text-xs font-medium rounded-full" style="background: var(--ap-light-gray); color: var(--ap-midnight-blue);">Nivo</span>
+                <span class="px-3 py-1 text-xs font-medium rounded-full" style="background: var(--ap-light-gray); color: var(--ap-midnight-blue);">DuckDB-WASM</span>
+                <span class="px-3 py-1 text-xs font-medium rounded-full" style="background: var(--ap-light-gray); color: var(--ap-midnight-blue);">shadcn/ui</span>
+            </div>
+            <p class="text-sm" style="color: var(--ap-midnight-blue); opacity: 0.7;">Premium stack for next-generation analytics</p>
+        </div>
+    </div>
+
+    <script>
+        function showDemo() {
+            const results = document.getElementById('demoResults');
+            results.classList.remove('hidden');
+            results.style.opacity = '0';
+            results.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                results.style.transition = 'all 0.5s ease-out';
+                results.style.opacity = '1';
+                results.style.transform = 'translateY(0)';
+            }, 100);
+            
+            // Animate KPI cards
+            const cards = results.querySelectorAll('.premium-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease-out';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+        
+        function hideDemo() {
+            const results = document.getElementById('demoResults');
+            results.style.transition = 'all 0.3s ease-in';
+            results.style.opacity = '0';
+            results.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                results.classList.add('hidden');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
