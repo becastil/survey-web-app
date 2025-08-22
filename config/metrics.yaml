@@ -1,0 +1,129 @@
+# Healthcare Survey Metrics Configuration
+# This file defines all the metrics, calculations, and benchmarks used in the application
+
+metrics:
+  coverage:
+    employee_coverage_rate:
+      name: "Employee Coverage Rate"
+      description: "Percentage of employees enrolled in health plans"
+      calculation: "covered_employees / total_employees"
+      benchmark: 0.85
+      format: "percentage"
+      category: "enrollment"
+    
+    dependent_coverage_rate:
+      name: "Dependent Coverage Rate"
+      description: "Percentage of employees with dependent coverage"
+      calculation: "employees_with_dependents / covered_employees"
+      benchmark: 0.60
+      format: "percentage"
+      category: "enrollment"
+
+  costs:
+    avg_premium_employee:
+      name: "Average Employee Premium"
+      description: "Average monthly premium paid by employee"
+      calculation: "sum(employee_premiums) / count(employees)"
+      benchmark: 150
+      format: "currency"
+      category: "costs"
+    
+    avg_premium_employer:
+      name: "Average Employer Premium"
+      description: "Average monthly premium paid by employer"
+      calculation: "sum(employer_premiums) / count(employees)"
+      benchmark: 450
+      format: "currency"
+      category: "costs"
+    
+    budget_increase_rate:
+      name: "Budget Increase Rate"
+      description: "Year-over-year budget increase percentage"
+      calculation: "(current_budget - previous_budget) / previous_budget"
+      benchmark: 0.05
+      format: "percentage"
+      category: "costs"
+
+  satisfaction:
+    overall_satisfaction:
+      name: "Overall Satisfaction Score"
+      description: "Average satisfaction rating across all categories"
+      calculation: "avg(satisfaction_scores)"
+      benchmark: 4.0
+      format: "rating"
+      scale: 5
+      category: "satisfaction"
+    
+    plan_satisfaction:
+      name: "Plan Satisfaction"
+      description: "Satisfaction with current health plan options"
+      calculation: "avg(plan_satisfaction_scores)"
+      benchmark: 3.8
+      format: "rating"
+      scale: 5
+      category: "satisfaction"
+
+  demographics:
+    union_percentage:
+      name: "Union Population"
+      description: "Percentage of employees in union"
+      calculation: "union_employees / total_employees"
+      format: "percentage"
+      category: "demographics"
+    
+    avg_employee_count:
+      name: "Average Organization Size"
+      description: "Average number of employees per organization"
+      calculation: "sum(employee_counts) / count(organizations)"
+      format: "number"
+      category: "demographics"
+
+# Plan types recognized by the system
+plan_types:
+  - code: "HMO"
+    name: "Health Maintenance Organization"
+    description: "Network-based healthcare with primary care physician"
+  
+  - code: "PPO"
+    name: "Preferred Provider Organization"
+    description: "Flexible network with in and out-of-network options"
+  
+  - code: "EPO"
+    name: "Exclusive Provider Organization"
+    description: "Network-only coverage except emergencies"
+  
+  - code: "HDHP"
+    name: "High Deductible Health Plan"
+    description: "Lower premiums with higher deductibles, HSA eligible"
+  
+  - code: "POS"
+    name: "Point of Service"
+    description: "Hybrid of HMO and PPO features"
+
+# Geographic regions
+regions:
+  - code: "NORCAL"
+    name: "Northern California"
+    counties: ["San Francisco", "Alameda", "Contra Costa", "Marin", "San Mateo"]
+  
+  - code: "SOCAL"
+    name: "Southern California"
+    counties: ["Los Angeles", "Orange", "San Diego", "Riverside", "San Bernardino"]
+  
+  - code: "CENTRAL"
+    name: "Central California"
+    counties: ["Fresno", "Kern", "Sacramento", "San Joaquin", "Stanislaus"]
+
+# Benchmark sources
+benchmarks:
+  source: "Kaiser Family Foundation 2024 Employer Health Benefits Survey"
+  updated: "2024-01-01"
+  notes: "Benchmarks adjusted for California market"
+
+# Calculation rules
+calculation_rules:
+  missing_data_handling: "exclude"  # exclude, zero, or average
+  outlier_detection: true
+  outlier_threshold: 3  # standard deviations
+  minimum_sample_size: 10
+  confidence_level: 0.95

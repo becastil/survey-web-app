@@ -3,9 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import BarChart from '@/components/charts/BarChart';
-import LineChart from '@/components/charts/LineChart';
-import PieChart from '@/components/charts/PieChart';
+import { PlotlyChart, createBarChart, createLineChart, createPieChart } from '@/components/charts/PlotlyChart';
 import { surveyService } from '@/lib/services/survey-service';
 import { Survey } from '@/types';
 import { TrendingUp, Users, CheckCircle, Clock, Calendar } from 'lucide-react';
@@ -271,11 +269,14 @@ export default function AnalyticsPage() {
             <CardDescription>Daily responses over the last 14 days</CardDescription>
           </CardHeader>
           <CardContent>
-            <LineChart
-              data={analyticsData.responsesByDay}
-              xField="date"
-              yField="count"
-              width={500}
+            <PlotlyChart
+              data={[
+                createLineChart(
+                  analyticsData.responsesByDay.map(d => d.date),
+                  analyticsData.responsesByDay.map(d => d.count),
+                  'Responses'
+                )
+              ]}
               height={300}
             />
           </CardContent>
@@ -287,11 +288,13 @@ export default function AnalyticsPage() {
             <CardDescription>Current response status distribution</CardDescription>
           </CardHeader>
           <CardContent>
-            <PieChart
-              data={analyticsData.completionByStatus}
-              categoryField="status"
-              valueField="count"
-              width={500}
+            <PlotlyChart
+              data={[
+                createPieChart(
+                  analyticsData.completionByStatus.map(d => d.status),
+                  analyticsData.completionByStatus.map(d => d.count)
+                )
+              ]}
               height={300}
             />
           </CardContent>
@@ -306,11 +309,14 @@ export default function AnalyticsPage() {
             <CardDescription>Distribution of responses across question types</CardDescription>
           </CardHeader>
           <CardContent>
-            <BarChart
-              data={analyticsData.responsesByQuestion}
-              xField="type"
-              yField="responses"
-              width={500}
+            <PlotlyChart
+              data={[
+                createBarChart(
+                  analyticsData.responsesByQuestion.map(d => d.type),
+                  analyticsData.responsesByQuestion.map(d => d.responses),
+                  'Responses'
+                )
+              ]}
               height={300}
             />
           </CardContent>
@@ -322,11 +328,13 @@ export default function AnalyticsPage() {
             <CardDescription>Respondent employment status breakdown</CardDescription>
           </CardHeader>
           <CardContent>
-            <PieChart
-              data={analyticsData.demographicData}
-              categoryField="category"
-              valueField="count"
-              width={500}
+            <PlotlyChart
+              data={[
+                createPieChart(
+                  analyticsData.demographicData.map(d => d.category),
+                  analyticsData.demographicData.map(d => d.count)
+                )
+              ]}
               height={300}
             />
           </CardContent>
@@ -341,11 +349,14 @@ export default function AnalyticsPage() {
             <CardDescription>Average satisfaction ratings over time</CardDescription>
           </CardHeader>
           <CardContent>
-            <LineChart
-              data={analyticsData.satisfactionScores}
-              xField="date"
-              yField="score"
-              width={500}
+            <PlotlyChart
+              data={[
+                createLineChart(
+                  analyticsData.satisfactionScores.map(d => d.date),
+                  analyticsData.satisfactionScores.map(d => d.score),
+                  'Score'
+                )
+              ]}
               height={300}
             />
           </CardContent>
@@ -357,11 +368,14 @@ export default function AnalyticsPage() {
             <CardDescription>How long respondents take to complete surveys</CardDescription>
           </CardHeader>
           <CardContent>
-            <BarChart
-              data={analyticsData.timeToComplete}
-              xField="range"
-              yField="count"
-              width={500}
+            <PlotlyChart
+              data={[
+                createBarChart(
+                  analyticsData.timeToComplete.map(d => d.range),
+                  analyticsData.timeToComplete.map(d => d.count),
+                  'Count'
+                )
+              ]}
               height={300}
             />
           </CardContent>

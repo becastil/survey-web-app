@@ -1,0 +1,251 @@
+# Field Mapping Configuration
+# Maps various column names from uploaded files to standardized field names
+
+field_mappings:
+  # Organization Information
+  organization_name:
+    standard_field: "organization_name"
+    aliases: 
+      - "org"
+      - "company"
+      - "employer"
+      - "organization"
+      - "employer_name"
+      - "company_name"
+      - "firm"
+    required: true
+    type: "string"
+    validation:
+      min_length: 2
+      max_length: 200
+  
+  # Employee Demographics
+  employee_count:
+    standard_field: "employee_count"
+    aliases:
+      - "employees"
+      - "headcount"
+      - "staff"
+      - "total_employees"
+      - "employee_total"
+      - "workforce"
+      - "fte"
+      - "full_time_equivalent"
+    required: true
+    type: "number"
+    validation:
+      min: 1
+      max: 1000000
+  
+  union_population:
+    standard_field: "union_population"
+    aliases:
+      - "union"
+      - "union_employees"
+      - "unionized"
+      - "union_member_count"
+      - "union_yes_no"
+    required: false
+    type: "boolean"
+    transform: "to_boolean"  # Converts Y/N, Yes/No, 1/0 to boolean
+  
+  # Geographic Information
+  region:
+    standard_field: "region"
+    aliases:
+      - "location"
+      - "geographic_region"
+      - "area"
+      - "territory"
+      - "zone"
+      - "district"
+    required: true
+    type: "string"
+    validation:
+      allowed_values: ["NORCAL", "SOCAL", "CENTRAL", "Northern California", "Southern California", "Central California"]
+    transform: "normalize_region"
+  
+  sub_region:
+    standard_field: "sub_region"
+    aliases:
+      - "county"
+      - "sub_area"
+      - "locality"
+      - "district"
+    required: false
+    type: "string"
+  
+  # Plan Information
+  medical_plan_types:
+    standard_field: "medical_plan_types"
+    aliases:
+      - "plan_types"
+      - "medical_plans"
+      - "health_plans"
+      - "plan_offerings"
+      - "available_plans"
+    required: true
+    type: "array"
+    transform: "parse_plan_types"  # Parses comma-separated or multi-column plans
+    validation:
+      allowed_values: ["HMO", "PPO", "EPO", "HDHP", "POS"]
+  
+  # Financial Information
+  benefit_budget_increase:
+    standard_field: "benefit_budget_increase"
+    aliases:
+      - "budget_increase"
+      - "budget_change"
+      - "benefit_increase"
+      - "budget_growth"
+      - "cost_increase"
+      - "premium_increase"
+    required: false
+    type: "number"
+    transform: "percentage_to_decimal"  # Converts 5% to 0.05
+    validation:
+      min: -0.5
+      max: 1.0
+  
+  employee_premium_monthly:
+    standard_field: "employee_premium_monthly"
+    aliases:
+      - "employee_premium"
+      - "ee_premium"
+      - "employee_cost"
+      - "employee_contribution"
+      - "monthly_premium_employee"
+    required: false
+    type: "number"
+    validation:
+      min: 0
+      max: 5000
+  
+  employer_premium_monthly:
+    standard_field: "employer_premium_monthly"
+    aliases:
+      - "employer_premium"
+      - "er_premium"
+      - "employer_cost"
+      - "employer_contribution"
+      - "company_contribution"
+    required: false
+    type: "number"
+    validation:
+      min: 0
+      max: 10000
+  
+  total_premium_monthly:
+    standard_field: "total_premium_monthly"
+    aliases:
+      - "total_premium"
+      - "total_cost"
+      - "combined_premium"
+      - "monthly_total"
+    required: false
+    type: "number"
+    calculated: true  # Can be calculated from employee + employer premiums
+    calculation: "employee_premium_monthly + employer_premium_monthly"
+  
+  # Coverage Information
+  deductible_individual:
+    standard_field: "deductible_individual"
+    aliases:
+      - "deductible"
+      - "individual_deductible"
+      - "single_deductible"
+      - "ee_deductible"
+    required: false
+    type: "number"
+    validation:
+      min: 0
+      max: 20000
+  
+  deductible_family:
+    standard_field: "deductible_family"
+    aliases:
+      - "family_deductible"
+      - "fam_deductible"
+      - "dependent_deductible"
+    required: false
+    type: "number"
+    validation:
+      min: 0
+      max: 40000
+  
+  out_of_pocket_max_individual:
+    standard_field: "oop_max_individual"
+    aliases:
+      - "oop_max"
+      - "out_of_pocket_max"
+      - "max_oop"
+      - "individual_oop"
+    required: false
+    type: "number"
+    validation:
+      min: 0
+      max: 30000
+  
+  out_of_pocket_max_family:
+    standard_field: "oop_max_family"
+    aliases:
+      - "family_oop_max"
+      - "fam_oop"
+      - "family_max_oop"
+    required: false
+    type: "number"
+    validation:
+      min: 0
+      max: 60000
+
+# Transformation Functions
+transformations:
+  to_boolean:
+    description: "Convert various formats to boolean"
+    rules:
+      - input: ["Y", "Yes", "TRUE", "1", "X"]
+        output: true
+      - input: ["N", "No", "FALSE", "0", ""]
+        output: false
+  
+  normalize_region:
+    description: "Standardize region names"
+    rules:
+      - input: ["Northern California", "North CA", "NorCal", "N. California"]
+        output: "NORCAL"
+      - input: ["Southern California", "South CA", "SoCal", "S. California"]
+        output: "SOCAL"
+      - input: ["Central California", "Central CA", "Central"]
+        output: "CENTRAL"
+  
+  parse_plan_types:
+    description: "Parse plan types from various formats"
+    delimiter: [",", ";", "|", "/"]
+    trim: true
+    uppercase: true
+  
+  percentage_to_decimal:
+    description: "Convert percentage to decimal"
+    rules:
+      - pattern: "^(\\d+)%$"
+        formula: "value / 100"
+      - pattern: "^0\\.(\\d+)$"
+        formula: "value"  # Already decimal
+
+# Data Quality Rules
+quality_checks:
+  duplicate_detection:
+    key_fields: ["organization_name", "region"]
+    action: "flag"  # flag, merge, or reject
+  
+  required_fields_coverage:
+    threshold: 0.8  # 80% of required fields must be present
+    action: "warn"
+  
+  data_type_validation:
+    strict: false  # Allow type coercion
+    
+  outlier_detection:
+    enabled: true
+    method: "iqr"  # interquartile range
+    threshold: 1.5

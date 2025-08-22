@@ -21,15 +21,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { EnhancedFileUploadZone, UploadedFile } from '@/components/upload/EnhancedFileUploadZone';
 import { HealthcareDataParser, HealthcareSurveyData } from '@/lib/parsers/healthcareDataParser';
 
-// Dynamically import Plotly to avoid SSR issues
-const Plot = dynamic(() => import('react-plotly.js'), { 
-  ssr: false,
-  loading: () => (
-    <div className="flex items-center justify-center h-96">
-      <RefreshCw className="h-8 w-8 animate-spin text-blue-500" />
-    </div>
-  )
-});
+import { 
+  PlotlyChart, 
+  createBarChart, 
+  createPieChart, 
+  createScatterChart,
+  createBoxPlot 
+} from '@/components/charts/PlotlyChart';
 
 interface ChartData {
   regional: any;

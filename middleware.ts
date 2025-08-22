@@ -2,11 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
-  // In mock data mode, bypass Supabase authentication
-  if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
-    return NextResponse.next();
-  }
-  
+  // Simple authentication check
   return await updateSession(request);
 }
 

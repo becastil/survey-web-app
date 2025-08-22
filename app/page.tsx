@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { AdvancedHeroBackground } from '@/components/landing/backgrounds/AdvancedHeroBackground';
 import { MetricsCounter } from '@/components/landing/MetricsCounter';
 import { InteractiveDemo } from '@/components/landing/InteractiveDemo';
 import { GlowButton } from '@/components/ui/GlowButton';
@@ -69,22 +68,6 @@ export default function Home() {
   const navOpacity = useTransform(scrollY, [0, 100], [0.8, 1]);
   const navBlur = useTransform(scrollY, [0, 100], [8, 12]);
 
-  // Check for demo mode and redirect to dashboard
-  useEffect(() => {
-    if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
-      router.push('/dashboard');
-    }
-  }, [router]);
-
-  // Handle demo mode activation
-  const handleDemoMode = () => {
-    // Set demo mode in localStorage
-    localStorage.setItem('demoMode', 'true');
-    localStorage.setItem('useMockData', 'true');
-    
-    // Redirect to dashboard
-    router.push('/dashboard');
-  };
 
   const features = [
     {
@@ -172,9 +155,9 @@ export default function Home() {
         </div>
       </motion.nav>
 
-      {/* Hero Section with Advanced Background */}
-      <AdvancedHeroBackground className="min-h-screen flex items-center" interactive={true}>
-        <section className="pt-20 pb-16 px-4 sm:px-6 lg:px-8 w-full">
+      {/* Hero Section */}
+      <section className="min-h-screen flex items-center bg-gradient-to-br from-violet-950 via-purple-900 to-black">
+        <div className="pt-20 pb-16 px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-7xl mx-auto">
             <motion.div 
               className="max-w-4xl"
@@ -223,31 +206,16 @@ export default function Home() {
                 <GlowButton 
                   size="lg" 
                   variant="outline"
-                  onClick={handleDemoMode}
+                  onClick={() => router.push('/login')}
                 >
-                  View Demo
+                  Sign In
                 </GlowButton>
               </motion.div>
               
-              {/* Demo Mode Badge */}
-              <motion.div 
-                className="mt-8"
-                variants={itemVariants}
-              >
-                <motion.div 
-                  className="inline-flex items-center glass px-4 py-2 rounded-full text-sm cursor-pointer hover:bg-white/10 transition-colors"
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  onClick={handleDemoMode}
-                >
-                  <Zap className="h-4 w-4 mr-2 text-violet-400" />
-                  Demo Mode Available - No signup required
-                </motion.div>
-              </motion.div>
             </motion.div>
           </div>
-        </section>
-      </AdvancedHeroBackground>
+        </div>
+      </section>
 
       {/* Features Grid */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
