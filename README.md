@@ -18,6 +18,16 @@ The application runs in **Demo Mode** by default, providing a fully functional e
 - 🎨 **Modern UI/UX** - Beautiful, responsive design with shadcn/ui components
 - 🔒 **Security Ready** - Supabase authentication integration prepared
 
+### Healthcare Data Visualization (NEW)
+- 📁 **Multi-Format File Upload** - Support for CSV, Excel (xlsx/xls), PDF, and text files
+- 🔍 **Smart Healthcare Field Detection** - Automatic recognition of medical plans, regions, employee demographics
+- 📊 **Interactive Plotly.js Charts** - 5+ chart types including regional heatmaps, plan comparisons, cost analysis
+- ✨ **Smooth Animations** - Framer Motion animations throughout the visualization interface
+- 🏥 **Healthcare-Specific Processing** - Handles HMO/PPO/EPO/HDHP plans, union populations, budget data
+- 📈 **Real-time Data Processing** - Progress indicators with validation feedback
+- 🎯 **Interactive Filtering** - Filter by region, plan type, and other dimensions
+- 📋 **Data Quality Validation** - Automatic detection of missing values and data issues
+
 ### Healthcare Enhancements
 - 🏥 **Healthcare-Compliant Templates** - HIPAA/HITECH validated report generation
 - 📊 **Advanced Data Processing** - Handle 10,000+ responses with statistical analysis
@@ -35,16 +45,18 @@ The application runs in **Demo Mode** by default, providing a fully functional e
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4
 - **UI Components**: shadcn/ui with Radix UI
-- **Charts**: React-Vega (Vega-Lite), Recharts, Plotly.js
+- **Charts**: Plotly.js (primary), React-Vega (Vega-Lite), Recharts
+- **File Upload**: react-dropzone with drag & drop support
 - **Authentication**: Supabase (optional)
 - **Database**: PostgreSQL with Supabase (optional)
 - **Deployment**: Optimized for Vercel
 
 ### Data Processing & Analytics
 - **Statistical Analysis**: simple-statistics, d3-array
-- **Data Parsing**: papaparse (CSV), exceljs (Excel)
-- **Quality Assessment**: Custom 6-dimension engine
+- **Data Parsing**: papaparse (CSV), xlsx (Excel), pdf-parse (PDF)
+- **Quality Assessment**: Custom 6-dimension engine with healthcare field validation
 - **Pattern Recognition**: Temporal analysis, seasonality detection
+- **Healthcare Processing**: Medical plan type detection, employee demographics analysis
 
 ### 3D Graphics & Animations
 - **3D Engine**: Three.js, React Three Fiber, React Three Drei
@@ -84,6 +96,12 @@ survey-web-app/
 ├── components/            
 │   ├── ui/               # Reusable UI components
 │   ├── charts/           # Chart components
+│   ├── upload/           # File upload components
+│   │   └── EnhancedFileUploadZone.tsx # Multi-format file upload
+│   ├── healthcare/       # Healthcare visualization components
+│   │   └── HealthcareDashboard.tsx    # Main dashboard with Plotly charts
+│   ├── analytics/        # Analytics components
+│   │   └── CSVDataVisualizer.tsx      # CSV data visualizer
 │   └── landing/          # Landing page components
 │       ├── backgrounds/  # 3D animated backgrounds
 │       │   └── AdvancedHeroBackground.tsx
@@ -91,6 +109,8 @@ survey-web-app/
 │       └── InteractiveDemo.tsx    # Processing pipeline demo
 ├── lib/                   
 │   ├── mock-data/        # Mock data for demo mode
+│   ├── parsers/          # Data parsing utilities
+│   │   └── healthcareDataParser.ts # Multi-format healthcare data parser
 │   ├── services/         # Service layer
 │   │   ├── data-processor.ts      # Core data processing engine
 │   │   ├── data-validator.ts      # CSV validation & scoring
@@ -211,6 +231,20 @@ SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 - `npm run typecheck` - Run TypeScript type checking
 
 ## 🎯 Key Features in Detail
+
+### Healthcare Data Visualization (CSV Analytics)
+**Access at**: `/analytics/csv`
+- **Multi-Format Upload**: Drag & drop support for CSV, Excel, PDF, and text files
+- **Smart Field Detection**: Automatically recognizes healthcare survey fields
+- **Interactive Charts**: 
+  - Regional distribution bar charts
+  - Medical plan type pie charts
+  - Cost analysis scatter plots
+  - Trend analysis line charts
+  - Employee demographics box plots
+- **Real-time Processing**: Upload progress with validation feedback
+- **Data Filtering**: Interactive filters by region, plan type, and demographics
+- **Healthcare Context**: Handles medical plan types (HMO, PPO, EPO, HDHP), union populations, budget increases
 
 ### Survey Builder
 - Drag-and-drop question ordering

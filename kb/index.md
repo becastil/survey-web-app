@@ -17,6 +17,11 @@ This knowledge base serves as the single source of truth for the Healthcare Surv
 - [System Architecture Overview](./architecture/overview.md) - High-level system design and components
 - [ADR-0001: Technology Stack](./architecture/adr/ADR-0001-tech-stack.md) - Core technology decisions and rationale
 
+### ✨ Features
+- [Healthcare Data Visualization](./features/healthcare-visualization.md) - Plotly.js charts and data processing module
+- [Survey Management](../FEATURES.md#survey-management) - Survey creation and distribution
+- [Analytics & Reporting](../FEATURES.md#analytics--reporting) - Real-time analytics and reports
+
 ### 🎨 Frontend Development
 - [Frontend Conventions](./frontend/conventions.md) - React, Next.js, and TypeScript patterns
 - [Components Cookbook](./frontend/components-cookbook.md) - Reusable component patterns and examples
@@ -69,5 +74,9 @@ The KB should be updated:
 - After post-mortems and learnings
 - During quarterly reviews
 
-Last Updated: 2025-08-20
-Version: 1.0.0
+Last Updated: 2025-08-22
+Version: 1.1.0
+
+## Recent Updates
+- **2025-08-22**: Added Healthcare Data Visualization module with Plotly.js
+- **2025-08-20**: Initial knowledge base structure
