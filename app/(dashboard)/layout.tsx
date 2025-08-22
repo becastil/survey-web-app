@@ -27,6 +27,9 @@ export default function DashboardLayout({
               <h1 className="text-xl font-semibold">Healthcare Survey Dashboard</h1>
             </div>
             <div className="flex items-center space-x-4">
+              <a href="/dashboard" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                Dashboard
+              </a>
               <a href="/surveys" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                 Surveys
               </a>
