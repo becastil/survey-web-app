@@ -72,9 +72,19 @@ export default function Home() {
   // Check for demo mode and redirect to dashboard
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
-      router.push('/');
+      router.push('/dashboard');
     }
   }, [router]);
+
+  // Handle demo mode activation
+  const handleDemoMode = () => {
+    // Set demo mode in localStorage
+    localStorage.setItem('demoMode', 'true');
+    localStorage.setItem('useMockData', 'true');
+    
+    // Redirect to dashboard
+    router.push('/dashboard');
+  };
 
   const features = [
     {
@@ -213,7 +223,7 @@ export default function Home() {
                 <GlowButton 
                   size="lg" 
                   variant="outline"
-                  onClick={() => router.push('/login')}
+                  onClick={handleDemoMode}
                 >
                   View Demo
                 </GlowButton>
@@ -225,9 +235,10 @@ export default function Home() {
                 variants={itemVariants}
               >
                 <motion.div 
-                  className="inline-flex items-center glass px-4 py-2 rounded-full text-sm"
+                  className="inline-flex items-center glass px-4 py-2 rounded-full text-sm cursor-pointer hover:bg-white/10 transition-colors"
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
+                  onClick={handleDemoMode}
                 >
                   <Zap className="h-4 w-4 mr-2 text-violet-400" />
                   Demo Mode Available - No signup required
