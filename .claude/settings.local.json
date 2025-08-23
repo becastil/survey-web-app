@@ -56,7 +56,9 @@
       "Bash(cat:*)",
       "Bash(bash:*)",
       "Bash(./validate-fixes.sh)",
-      "Bash(git rev-parse:*)"
+      "Bash(git rev-parse:*)",
+      "Bash(true)",
+      "Bash(git remote set-url:*)"
     ],
     "deny": [],
     "ask": [],

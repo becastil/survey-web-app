@@ -1,6 +1,6 @@
-# Healthcare Survey Dashboard
+# Survey Platform - Excel to Cloud Transformation
 
-A comprehensive healthcare survey platform built with Next.js, TypeScript, and Tailwind CSS. This application enables organizations to create, distribute, and analyze healthcare benefit surveys with powerful analytics and real-time insights.
+A modern cloud-based survey platform replacing Excel-based workflows for 40+ enterprise clients with real-time aggregation and interactive visualization exhibits.
 
 ## 🚀 Live Demo
 

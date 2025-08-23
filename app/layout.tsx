@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const openSans = Open_Sans({
-  variable: "--font-open-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   display: 'swap',
-  weight: ['300', '400', '600', '700'],
+  weight: ['300', '400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -22,8 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${openSans.variable} antialiased`}
-        style={{ fontFamily: "'Open Sans', sans-serif" }}
+        className={`${spaceGrotesk.variable} antialiased`}
+        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
       >
         {children}
       </body>
