@@ -45,6 +45,13 @@ const nextConfig = {
       { module: /node_modules\/@supabase/ },
     ];
     
+    // Add alias for plotly.js to use the minified version
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'plotly.js/dist/plotly': 'plotly.js-dist-min',
+      'plotly.js': 'plotly.js-dist-min',
+    };
+    
     // Add fallbacks for Node.js modules not available in browser
     if (!isServer) {
       config.resolve.fallback = {
