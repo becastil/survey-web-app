@@ -58,7 +58,10 @@
       "Bash(./validate-fixes.sh)",
       "Bash(git rev-parse:*)",
       "Bash(true)",
-      "Bash(git remote set-url:*)"
+      "Bash(git remote set-url:*)",
+      "Bash(./scripts/migrate-to-vercel.sh:*)",
+      "Bash(vercel login:*)",
+      "Bash(vercel:*)"
     ],
     "deny": [],
     "ask": [],
