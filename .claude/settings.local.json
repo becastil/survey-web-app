@@ -61,7 +61,10 @@
       "Bash(git remote set-url:*)",
       "Bash(./scripts/migrate-to-vercel.sh:*)",
       "Bash(vercel login:*)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:surveywebapp082325-fz5stmine-bens-projects-adbaf2d2.vercel.app)",
+      "WebFetch(domain:survey-web-app.vercel.app)"
     ],
     "deny": [],
     "ask": [],
