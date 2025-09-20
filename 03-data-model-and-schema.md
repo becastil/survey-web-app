@@ -750,8 +750,8 @@ create policy "response_items edit" on public.response_items for all using (
   "description": "Dental plan information with rates and coverage details",
   "pages": [
     {
-      "name": "dental_plan_info_general",
-      "title": "Plan Information - General",
+      "name": "dental_plan_info",
+      "title": "Plan Information",
       "elements": [
         {
           "type": "dropdown",
@@ -759,6 +759,12 @@ create policy "response_items edit" on public.response_items for all using (
           "title": "Plan Type",
           "isRequired": true,
           "choices": ["DPPO", "DHMO"]
+        },
+        {
+          "type": "text",
+          "name": "dental_plan_name",
+          "title": "Dental Plan Name",
+          "isRequired": true
         },
         {
           "type": "dropdown",
@@ -769,24 +775,20 @@ create policy "response_items edit" on public.response_items for all using (
         },
         {
           "type": "text",
-          "name": "dental_enrollment",
-          "title": "Enrollment",
-          "inputType": "number",
-          "min": 0
+          "name": "dental_eligible_employees_enrolled",
+          "title": "Number of Eligible Employees Enrolled"
         },
         {
           "type": "dropdown",
-          "name": "dental_funding",
-          "title": "Funding",
+          "name": "dental_funding_mechanism",
+          "title": "Funding Mechanism",
           "isRequired": true,
           "choices": ["Self-Funded", "Fully Insured"]
         },
         {
           "type": "text",
-          "name": "dental_rate_tiers",
-          "title": "Number of Rate Tiers",
-          "inputType": "number",
-          "min": 1
+          "name": "dental_total_rate_tiers",
+          "title": "Total Number of Rate Tiers"
         }
       ]
     },
@@ -795,19 +797,14 @@ create policy "response_items edit" on public.response_items for all using (
       "title": "Rates & Contributions (Monthly)",
       "elements": [
         {
-          "type": "html",
-          "name": "dental_rate_structure_instructions",
-          "html": "<h4>Choose ONE Rate Structure for Full-Time Employee Contributions by Tier</h4>"
-        },
-        {
           "type": "matrixdynamic",
           "name": "dental_rate_structure_1",
           "title": "Rate Structure 1",
           "cellType": "text",
-          "inputType": "number",
           "columns": [
-            { "name": "enrolled_count", "title": "# Enrolled", "cellType": "text", "inputType": "number" },
-            { "name": "ft_employee_contribution", "title": "Full-Time Employee Contribution/Month", "cellType": "text", "inputType": "number" }
+            { "name": "enrolled_count", "title": "# Enrolled", "cellType": "text" },
+            { "name": "total_rate_cobra_minus_2", "title": "Total Rate/Month (COBRA -2%)", "cellType": "text" },
+            { "name": "ft_employee_contribution", "title": "FT Employee Contribution/Month", "cellType": "text" }
           ],
           "rows": [
             { "value": "employee_only", "text": "Employee Only" },
@@ -821,10 +818,10 @@ create policy "response_items edit" on public.response_items for all using (
           "name": "dental_rate_structure_2",
           "title": "Rate Structure 2",
           "cellType": "text",
-          "inputType": "number",
           "columns": [
-            { "name": "enrolled_count", "title": "# Enrolled", "cellType": "text", "inputType": "number" },
-            { "name": "ft_employee_contribution", "title": "Full-Time Employee Contribution/Month", "cellType": "text", "inputType": "number" }
+            { "name": "enrolled_count", "title": "# Enrolled", "cellType": "text" },
+            { "name": "total_rate_cobra_minus_2", "title": "Total Rate/Month (COBRA -2%)", "cellType": "text" },
+            { "name": "ft_employee_contribution", "title": "FT Employee Contribution/Month", "cellType": "text" }
           ],
           "rows": [
             { "value": "employee_only", "text": "Employee Only" },
@@ -835,106 +832,58 @@ create policy "response_items edit" on public.response_items for all using (
         },
         {
           "type": "text",
-          "name": "dental_budget_increase",
-          "title": "2025 Dental Budget Increase",
-          "inputType": "number",
-          "suffix": "%"
+          "name": "dental_final_budget_increase",
+          "title": "What is the dental final budget increase after benefit changes?",
+          "placeholder": "Enter percentage"
         }
       ]
     },
     {
       "name": "dental_plan_design",
-      "title": "Plan Design",
+      "title": "Plan Design - In/Out of Network Benefits",
       "elements": [
         {
           "type": "matrix",
-          "name": "dental_annual_deductible",
-          "title": "Annual Deductible",
+          "name": "dental_benefits_table",
+          "title": "In/Out of Network Benefits",
           "columns": [
             { "value": "in_network", "text": "In-Network" },
             { "value": "out_of_network", "text": "Out-of-Network" }
           ],
           "rows": [
-            { "value": "individual", "text": "Individual" },
-            { "value": "family", "text": "Family" }
+            { "value": "annual_deductible_per_person", "text": "Annual Deductible (per person)" },
+            { "value": "maximum_annual_benefit", "text": "Maximum Annual Benefit (excludes orthodontia)" },
+            { "value": "diagnostic_preventative", "text": "Diagnostic & Preventative (Plan Pays %)" },
+            { "value": "basic_services", "text": "Basic Services (Plan Pays %)" },
+            { "value": "major_prosthodontic", "text": "Major/Prosthodontic Services (Plan Pays %)" }
           ],
           "cellType": "text"
-        },
-        {
-          "type": "matrix",
-          "name": "dental_annual_maximum_benefit",
-          "title": "Annual Maximum Benefit",
-          "columns": [
-            { "value": "maximum_benefit", "text": "Maximum Benefit" }
-          ],
-          "rows": [
-            { "value": "in_network", "text": "In-Network" },
-            { "value": "out_of_network", "text": "Out-of-Network" }
-          ],
-          "cellType": "text"
-        },
-        {
-          "type": "text",
-          "name": "diagnostics_preventative_percentage",
-          "title": "Coverage Level - Diagnostics/Preventative",
-          "inputType": "number",
-          "min": 0,
-          "max": 100,
-          "suffix": "%"
-        },
-        {
-          "type": "text",
-          "name": "basic_percentage",
-          "title": "Coverage Level - Basic",
-          "inputType": "number",
-          "min": 0,
-          "max": 100,
-          "suffix": "%"
-        },
-        {
-          "type": "text",
-          "name": "major_prosthodontic_percentage",
-          "title": "Coverage Level - Major/Prosthodontic",
-          "inputType": "number",
-          "min": 0,
-          "max": 100,
-          "suffix": "%"
         },
         {
           "type": "dropdown",
-          "name": "orthodontia_covered",
-          "title": "Orthodontia Covered",
+          "name": "orthodontic_benefit_included",
+          "title": "Does the plan include orthodontic benefit?",
           "choices": ["Yes", "No"]
         },
         {
-          "type": "dropdown",
-          "name": "orthodontia_adult_child_coverage",
-          "title": "Adult/Child Coverage",
-          "choices": ["Adult Only", "Child Only", "Both Adult and Child"],
-          "visibleIf": "{orthodontia_covered} = 'Yes'"
+          "type": "matrix",
+          "name": "orthodontic_percentages",
+          "title": "Orthodontic Coverage Percentages",
+          "columns": [
+            { "value": "percentage", "text": "Percentage" }
+          ],
+          "rows": [
+            { "value": "adults", "text": "Adults" },
+            { "value": "children", "text": "Children" }
+          ],
+          "cellType": "text",
+          "visibleIf": "{orthodontic_benefit_included} = 'Yes'"
         },
         {
           "type": "text",
-          "name": "orthodontia_coverage_level",
-          "title": "Orthodontia Coverage Level",
-          "inputType": "number",
-          "min": 0,
-          "max": 100,
-          "suffix": "%",
-          "visibleIf": "{orthodontia_covered} = 'Yes'"
-        },
-        {
-          "type": "text",
-          "name": "orthodontia_lifetime_maximum",
-          "title": "Orthodontia Lifetime Maximum",
-          "inputType": "number",
-          "min": 0,
-          "visibleIf": "{orthodontia_covered} = 'Yes'"
-        },
-        {
-          "type": "comment",
-          "name": "dental_notes",
-          "title": "Notes"
+          "name": "orthodontic_lifetime_maximum",
+          "title": "Maximum Lifetime Ortho Benefit",
+          "visibleIf": "{orthodontic_benefit_included} = 'Yes'"
         }
       ]
     }
@@ -942,21 +891,392 @@ create policy "response_items edit" on public.response_items for all using (
   "triggers": [
     {
       "type": "setvalue",
-      "expression": "{orthodontia_covered} != 'Yes'",
-      "setToName": "orthodontia_adult_child_coverage",
+      "expression": "{orthodontic_benefit_included} != 'Yes'",
+      "setToName": "orthodontic_percentages",
       "setValue": ""
     },
     {
       "type": "setvalue",
-      "expression": "{orthodontia_covered} != 'Yes'",
-      "setToName": "orthodontia_coverage_level",
+      "expression": "{orthodontic_benefit_included} != 'Yes'",
+      "setToName": "orthodontic_lifetime_maximum",
       "setValue": ""
+    }
+  ]
+}
+```
+
+### Vision Plan Block Schema (Repeatable)
+
+```json
+{
+  "title": "Vision Plan {index}",
+  "description": "Vision plan information with rates and coverage details",
+  "pages": [
+    {
+      "name": "vision_plan_info",
+      "title": "Plan Information",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "vision_plan_type",
+          "title": "Plan Type",
+          "isRequired": true,
+          "choices": ["TBD - Populate from system"]
+        },
+        {
+          "type": "text",
+          "name": "vision_plan_name",
+          "title": "Vision Plan Name",
+          "isRequired": true
+        },
+        {
+          "type": "dropdown",
+          "name": "vision_carrier_network",
+          "title": "Carrier/Network",
+          "isRequired": true,
+          "choices": ["TBD - Populate from system"]
+        },
+        {
+          "type": "dropdown",
+          "name": "vision_offered_as",
+          "title": "Offered As",
+          "isRequired": true,
+          "choices": ["Stand-alone plan", "Bundled with medical"]
+        },
+        {
+          "type": "text",
+          "name": "vision_eligible_employees_enrolled",
+          "title": "Number of Eligible Employees Enrolled"
+        },
+        {
+          "type": "dropdown",
+          "name": "vision_funding_mechanism",
+          "title": "Funding Mechanism",
+          "isRequired": true,
+          "choices": ["Self-Funded", "Fully Insured"]
+        },
+        {
+          "type": "text",
+          "name": "vision_total_rate_tiers",
+          "title": "Total Number of Rate Tiers"
+        }
+      ]
     },
     {
-      "type": "setvalue",
-      "expression": "{orthodontia_covered} != 'Yes'",
-      "setToName": "orthodontia_lifetime_maximum",
-      "setValue": ""
+      "name": "vision_rates_contributions",
+      "title": "Rates & Contributions (Monthly)",
+      "elements": [
+        {
+          "type": "matrixdynamic",
+          "name": "vision_rate_structure_1",
+          "title": "Rate Structure 1",
+          "cellType": "text",
+          "columns": [
+            { "name": "enrolled_count", "title": "# Enrolled", "cellType": "text" },
+            { "name": "total_rate_cobra_minus_2", "title": "Total Rate/Month (COBRA -2%)", "cellType": "text" },
+            { "name": "ft_employee_contribution", "title": "FT Employee Contribution/Month", "cellType": "text" }
+          ],
+          "rows": [
+            { "value": "employee_only", "text": "Employee Only" },
+            { "value": "employee_plus_1", "text": "Employee + 1" },
+            { "value": "employee_plus_2_more", "text": "Employee + 2 or More" },
+            { "value": "employee_plus_3_more", "text": "Employee + 3 or More (if applicable)" }
+          ]
+        },
+        {
+          "type": "matrixdynamic",
+          "name": "vision_rate_structure_2",
+          "title": "Rate Structure 2",
+          "cellType": "text",
+          "columns": [
+            { "name": "enrolled_count", "title": "# Enrolled", "cellType": "text" },
+            { "name": "total_rate_cobra_minus_2", "title": "Total Rate/Month (COBRA -2%)", "cellType": "text" },
+            { "name": "ft_employee_contribution", "title": "FT Employee Contribution/Month", "cellType": "text" }
+          ],
+          "rows": [
+            { "value": "employee_only", "text": "Employee Only" },
+            { "value": "employee_spouse_dp", "text": "Employee + Spouse/Domestic Partner" },
+            { "value": "employee_children", "text": "Employee + Children" },
+            { "value": "employee_family", "text": "Employee + Family" }
+          ]
+        },
+        {
+          "type": "text",
+          "name": "vision_final_budget_increase",
+          "title": "What is your 2025 vision final budget increase after benefit changes?",
+          "placeholder": "Enter percentage"
+        }
+      ]
+    },
+    {
+      "name": "vision_plan_design",
+      "title": "Plan Design - In-Network Benefits",
+      "elements": [
+        {
+          "type": "text",
+          "name": "exam_materials_copay_combined",
+          "title": "Exam and Materials Copay Combined",
+          "placeholder": "Leave blank if not applicable"
+        },
+        {
+          "type": "text",
+          "name": "exam_materials_copay",
+          "title": "Exam/Materials Copay",
+          "placeholder": "Leave blank if not applicable"
+        },
+        {
+          "type": "text",
+          "name": "exam_copay",
+          "title": "Exam Copay",
+          "placeholder": "Leave blank if not applicable"
+        },
+        {
+          "type": "text",
+          "name": "materials_copay",
+          "title": "Materials Copay",
+          "placeholder": "Leave blank if not applicable"
+        },
+        {
+          "type": "text",
+          "name": "allowance_amount_percentage",
+          "title": "Up to what dollar amount or percentage",
+          "placeholder": "Can enter $ or %"
+        },
+        {
+          "type": "text",
+          "name": "exam_standard_lenses",
+          "title": "Exam & Standard Lenses",
+          "placeholder": "e.g., 100% covered in full after copay"
+        },
+        {
+          "type": "text",
+          "name": "frames_allowance",
+          "title": "Frames",
+          "placeholder": "e.g., Up to $130"
+        },
+        {
+          "type": "text",
+          "name": "contacts_allowance",
+          "title": "Contacts",
+          "placeholder": "e.g., Up to $105"
+        },
+        {
+          "type": "dropdown",
+          "name": "exam_frequency",
+          "title": "Exam Frequency (in months)",
+          "choices": ["12 months", "24 months"]
+        },
+        {
+          "type": "dropdown",
+          "name": "lenses_frequency",
+          "title": "Lenses Frequency (in months)",
+          "choices": ["12 months", "24 months"]
+        },
+        {
+          "type": "dropdown",
+          "name": "frames_frequency",
+          "title": "Frames Frequency (in months)",
+          "choices": ["12 months", "24 months"]
+        },
+        {
+          "type": "dropdown",
+          "name": "contacts_frequency",
+          "title": "Contacts Frequency (in months)",
+          "choices": ["12 months", "24 months"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Basic Life and Disability Schema
+
+```json
+{
+  "title": "Basic Life and Disability",
+  "description": "Basic life insurance and disability benefits information",
+  "pages": [
+    {
+      "name": "basic_life_insurance",
+      "title": "Basic Life Insurance",
+      "elements": [
+        {
+          "type": "matrix",
+          "name": "life_insurance_coverage",
+          "title": "Basic Life Insurance Coverage",
+          "columns": [
+            { "value": "management", "text": "Management" },
+            { "value": "non_management", "text": "Non-Management" }
+          ],
+          "rows": [
+            { "value": "coverage_type", "text": "Coverage Type" },
+            { "value": "coverage_flat_amount", "text": "Coverage Flat Amount" },
+            { "value": "coverage_multiple_salary", "text": "Coverage Multiple of Salary" },
+            { "value": "maximum_coverage", "text": "Maximum Coverage (up to)" }
+          ],
+          "cellType": "text"
+        },
+        {
+          "type": "html",
+          "name": "life_insurance_instructions",
+          "html": "<p><strong>Instructions:</strong></p><ul><li><strong>Coverage Type:</strong> Select 'Flat Amount' or 'Multiple of Salary'</li><li><strong>Coverage Flat Amount:</strong> Enter dollar amount (leave blank if N/A)</li><li><strong>Coverage Multiple of Salary:</strong> Select 1X, 2X, 3X, 4X, 5X, or Other (leave blank if N/A)</li><li><strong>Maximum Coverage:</strong> Enter dollar amount (leave blank if N/A)</li></ul>"
+        },
+        {
+          "type": "dropdown",
+          "name": "management_coverage_type",
+          "title": "Management - Coverage Type",
+          "choices": ["Flat Amount", "Multiple of Salary"]
+        },
+        {
+          "type": "text",
+          "name": "management_flat_amount",
+          "title": "Management - Coverage Flat Amount",
+          "placeholder": "Leave blank if N/A"
+        },
+        {
+          "type": "dropdown",
+          "name": "management_multiple_salary",
+          "title": "Management - Coverage Multiple of Salary",
+          "choices": ["1X", "2X", "3X", "4X", "5X", "Other"],
+          "placeholder": "Leave blank if N/A"
+        },
+        {
+          "type": "text",
+          "name": "management_maximum_coverage",
+          "title": "Management - Maximum Coverage (up to)",
+          "placeholder": "Leave blank if N/A"
+        },
+        {
+          "type": "dropdown",
+          "name": "non_management_coverage_type",
+          "title": "Non-Management - Coverage Type",
+          "choices": ["Flat Amount", "Multiple of Salary"]
+        },
+        {
+          "type": "text",
+          "name": "non_management_flat_amount",
+          "title": "Non-Management - Coverage Flat Amount",
+          "placeholder": "Leave blank if N/A"
+        },
+        {
+          "type": "dropdown",
+          "name": "non_management_multiple_salary",
+          "title": "Non-Management - Coverage Multiple of Salary",
+          "choices": ["1X", "2X", "3X", "4X", "5X", "Other"],
+          "placeholder": "Leave blank if N/A"
+        },
+        {
+          "type": "text",
+          "name": "non_management_maximum_coverage",
+          "title": "Non-Management - Maximum Coverage (up to)",
+          "placeholder": "Leave blank if N/A"
+        }
+      ]
+    },
+    {
+      "name": "short_term_disability",
+      "title": "Short-Term Disability (STD)",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "offers_std_only",
+          "title": "Offers STD only?",
+          "isRequired": true,
+          "choices": ["Yes", "No"]
+        },
+        {
+          "type": "dropdown",
+          "name": "std_funding_option",
+          "title": "STD Funding Option",
+          "isRequired": true,
+          "choices": ["State Disability", "Self-Funded Voluntary Plan", "STD Opt-Out"]
+        }
+      ]
+    },
+    {
+      "name": "std_plan_design",
+      "title": "Short-Term Disability Plan Design (Employer Paid - Full Time Employees)",
+      "elements": [
+        {
+          "type": "matrix",
+          "name": "std_plan_design_table",
+          "title": "STD Plan Design",
+          "columns": [
+            { "value": "management", "text": "Management" },
+            { "value": "non_management", "text": "Non-Management" }
+          ],
+          "rows": [
+            { "value": "elimination_period_days", "text": "Elimination Period (in days)" },
+            { "value": "percentage_salary_coverage", "text": "Percentage of Salary Coverage" },
+            { "value": "weekly_benefit_maximum", "text": "Weekly Benefit Maximum ($)" }
+          ],
+          "cellType": "text"
+        },
+        {
+          "type": "html",
+          "name": "std_instructions",
+          "html": "<p><strong>Instructions:</strong></p><ul><li><strong>Elimination Period:</strong> Enter number of days or select from dropdown</li><li><strong>Percentage of Salary Coverage:</strong> Enter percentage (e.g., 60%)</li><li><strong>Weekly Benefit Maximum:</strong> Enter dollar amount</li></ul>"
+        }
+      ]
+    },
+    {
+      "name": "std_buy_up",
+      "title": "STD Buy-Up (Employee Paid)",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "std_buy_up_offered",
+          "title": "Do you offer an employee paid buy-up STD plan?",
+          "choices": ["Yes", "No"]
+        }
+      ]
+    },
+    {
+      "name": "ltd_plan_design",
+      "title": "Long-Term Disability Plan Design (Employer Paid - Full Time Employees)",
+      "elements": [
+        {
+          "type": "matrix",
+          "name": "ltd_plan_design_table",
+          "title": "LTD Plan Design",
+          "columns": [
+            { "value": "management", "text": "Management" },
+            { "value": "non_management", "text": "Non-Management" }
+          ],
+          "rows": [
+            { "value": "elimination_period_days", "text": "Elimination Period (in days)" },
+            { "value": "percentage_salary_coverage", "text": "Percentage of Salary Coverage" },
+            { "value": "monthly_benefit_maximum", "text": "Monthly Benefit Maximum ($)" }
+          ],
+          "cellType": "text"
+        },
+        {
+          "type": "html",
+          "name": "ltd_instructions",
+          "html": "<p><strong>Instructions:</strong></p><ul><li><strong>Elimination Period:</strong> Enter number of days or select from dropdown</li><li><strong>Percentage of Salary Coverage:</strong> Enter percentage (e.g., 60%)</li><li><strong>Monthly Benefit Maximum:</strong> Enter dollar amount</li></ul>"
+        }
+      ]
+    },
+    {
+      "name": "ltd_buy_up",
+      "title": "LTD Buy-Up (Employee Paid)",
+      "elements": [
+        {
+          "type": "matrix",
+          "name": "ltd_buy_up_table",
+          "title": "LTD Buy-Up Options",
+          "columns": [
+            { "value": "management", "text": "Management" },
+            { "value": "non_management", "text": "Non-Management" }
+          ],
+          "rows": [
+            { "value": "buy_up_offered", "text": "Do you offer an employee paid buy-up LTD plan?" }
+          ],
+          "cellType": "dropdown",
+          "choices": ["Yes", "No"]
+        }
+      ]
     }
   ]
 }

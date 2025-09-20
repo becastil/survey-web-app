@@ -579,78 +579,181 @@ Each medical plan follows the same structure with these sections:
 
 ### 10.4 Dental Plan Template (Repeatable Blocks 1-4)
 
-Each dental plan follows this structure with fewer sections than medical but similar rate table complexity:
+Each dental plan follows this structure:
 
-**Plan Information - General:**
+**Plan Information:**
 - **Plan Type** - Dropdown: "DPPO", "DHMO"
+- **Dental Plan Name** - Text input (free form)
 - **Carrier/Network** - Dropdown selection
-- **Enrollment** - Number input (number of enrolled employees)
-- **Funding** - Dropdown: "Self-Funded", "Fully Insured"
-- **Number of Rate Tiers** - Number input
+- **Number of Eligible Employees Enrolled** - Text input (free form)
+- **Funding Mechanism** - Dropdown: "Self-Funded", "Fully Insured"
+- **Total Number of Rate Tiers** - Text input (free form)
 
 **Rates & Contributions (Monthly):**
 
-*Rate Structure Selection:*
-**Choose ONE Rate Structure (same as medical) for Full-Time Employee Contributions by Tier**
-
 **Rate Structure 1 - Table Format:**
-| Coverage Tier | # Enrolled | Full-Time Employee Contribution/Month |
-|---------------|------------|--------------------------------------|
-| Employee Only | Number input | Currency input |
-| Employee + 1 | Number input | Currency input |
-| Employee + 2 or More | Number input | Currency input |
-| Employee + 3 or More (if applicable) | Number input | Currency input |
+| Coverage Tier | # Enrolled | Total Rate/Month (COBRA -2%) | FT Employee Contribution/Month |
+|---------------|------------|------------------------------|--------------------------------|
+| Employee Only | Free form number | Free form currency | Free form currency |
+| Employee + 1 | Free form number | Free form currency | Free form currency |
+| Employee + 2 or More | Free form number | Free form currency | Free form currency |
+| Employee + 3 or More (if applicable) | Free form number | Free form currency | Free form currency |
 
 **Rate Structure 2 - Table Format:**
-| Coverage Tier | # Enrolled | Full-Time Employee Contribution/Month |
-|---------------|------------|--------------------------------------|
-| Employee Only | Number input | Currency input |
-| Employee + Spouse/Domestic Partner | Number input | Currency input |
-| Employee + Children | Number input | Currency input |
-| Employee + Family | Number input | Currency input |
+| Coverage Tier | # Enrolled | Total Rate/Month (COBRA -2%) | FT Employee Contribution/Month |
+|---------------|------------|------------------------------|--------------------------------|
+| Employee Only | Free form number | Free form currency | Free form currency |
+| Employee + Spouse/Domestic Partner | Free form number | Free form currency | Free form currency |
+| Employee + Children | Free form number | Free form currency | Free form currency |
+| Employee + Family | Free form number | Free form currency | Free form currency |
 
-*Other:*
-- **2025 Dental Budget Increase** - Percentage input
+- **What is the dental final budget increase after benefit changes?** - Free form percentage input
 
-**Plan Design:**
+**Plan Design - In/Out of Network Benefits:**
 
-*In-Network vs Out-of-Network Structure:*
+| Category | In-Network | Out-of-Network |
+|----------|------------|----------------|
+| Annual Deductible (per person) | Free form currency | Free form currency |
+| Maximum Annual Benefit (excludes orthodontia) | Free form currency | Free form currency |
+| Diagnostic & Preventative (Plan Pays %) | Free form percentage | Free form percentage |
+| Basic Services (Plan Pays %) | Free form percentage | Free form percentage |
+| Major/Prosthodontic Services (Plan Pays %) | Free form percentage | Free form percentage |
 
-**Annual Deductible:**
-| Coverage Level | In-Network | Out-of-Network |
-|----------------|------------|----------------|
-| Individual | Currency input | Currency input |
-| Family | Currency input | Currency input |
+**Orthodontia Section:**
+- **Does the plan include orthodontic benefit?** - Dropdown: "Yes", "No"
 
-**Annual Maximum Benefit:**
-| Network Type | Maximum Benefit |
-|--------------|-----------------|
-| In-Network | Currency input |
-| Out-of-Network | Currency input |
+**If Orthodontic Benefit = "Yes" (conditional display):**
 
-*Coverage Levels - Plan Pay Percentage:*
-- **Diagnostics/Preventative** - Percentage input
-- **Basic** - Percentage input  
-- **Major/Prosthodontic** - Percentage input
+| Coverage | Percentage |
+|----------|------------|
+| Adults | Free form percentage |
+| Children | Free form percentage |
 
-*Orthodontia Section:*
-- **Orthodontia Covered** - Dropdown: "Yes", "No"
-
-**If Orthodontia = "Yes" (conditional display):**
-- **Adult/Child Coverage** - Dropdown: "Adult Only", "Child Only", "Both Adult and Child"
-- **Coverage Level** - Percentage input
-- **Lifetime Maximum** - Currency input
-
-*Documentation:*
-- **Notes** - Text area (free form)
+- **Maximum Lifetime Ortho Benefit** - Free form currency
 
 **Dental Plan Key Features:**
 - Simplified structure compared to medical plans
-- Same rate table format as medical for consistency
+- Rate tables with enrollment counts and contribution amounts
 - In-Network vs Out-of-Network benefit structure
-- Conditional orthodontia coverage section
+- Conditional orthodontia coverage section with separate adult/child percentages
 - Percentage-based coverage levels for different service types
-- Annual maximums and deductibles by network tier
+- Annual maximums and deductibles structure
+
+### 10.5 Vision Plan Template (Repeatable Blocks 1-2)
+
+Each vision plan follows this structure:
+
+**Plan Information:**
+- **Plan Type** - Dropdown selection
+- **Vision Plan Name** - Text input (free form)
+- **Carrier/Network** - Dropdown selection
+- **Offered As** - Dropdown: "Stand-alone plan", "Bundled with medical"
+- **Number of Eligible Employees Enrolled** - Text input (free form)
+- **Funding Mechanism** - Dropdown: "Self-Funded", "Fully Insured"
+- **Total Number of Rate Tiers** - Text input (free form)
+
+**Rates & Contributions (Monthly):**
+
+**Rate Structure 1 - Table Format:**
+| Coverage Tier | # Enrolled | Total Rate/Month (COBRA -2%) | FT Employee Contribution/Month |
+|---------------|------------|------------------------------|--------------------------------|
+| Employee Only | Free form number | Free form currency | Free form currency |
+| Employee + 1 | Free form number | Free form currency | Free form currency |
+| Employee + 2 or More | Free form number | Free form currency | Free form currency |
+| Employee + 3 or More (if applicable) | Free form number | Free form currency | Free form currency |
+
+**Rate Structure 2 - Table Format:**
+| Coverage Tier | # Enrolled | Total Rate/Month (COBRA -2%) | FT Employee Contribution/Month |
+|---------------|------------|------------------------------|--------------------------------|
+| Employee Only | Free form number | Free form currency | Free form currency |
+| Employee + Spouse/Domestic Partner | Free form number | Free form currency | Free form currency |
+| Employee + Children | Free form number | Free form currency | Free form currency |
+| Employee + Family | Free form number | Free form currency | Free form currency |
+
+- **What is your 2025 vision final budget increase after benefit changes?** - Free form percentage input
+
+**Plan Design - In-Network Benefits:**
+
+**Copays (leave blank if not applicable):**
+- **Exam and Materials Copay Combined** - Free form currency
+- **Exam/Materials Copay** - Free form currency
+- **Exam Copay** - Free form currency
+- **Materials Copay** - Free form currency
+
+**In-Network Allowances:**
+- **Up to what dollar amount or percentage** - Free form input (can enter $ or %)
+- **Exam & Standard Lenses** - Text input ("100% covered in full after copay" or free form entry)
+- **Frames** - Free form currency input (e.g., "Up to $130")
+- **Contacts** - Free form currency input (e.g., "Up to $105")
+
+**Benefit Frequency (in months):**
+| Benefit | Frequency |
+|---------|-----------|
+| Exam | Dropdown: "12 months", "24 months" |
+| Lenses | Dropdown: "12 months", "24 months" |
+| Frames | Dropdown: "12 months", "24 months" |
+| Contacts | Dropdown: "12 months", "24 months" |
+
+**Vision Plan Key Features:**
+- Simplified structure with focus on in-network benefits only
+- Rate tables identical to dental plan structure
+- Stand-alone vs bundled plan options
+- Flexible copay structure with optional fields
+- Currency and percentage allowance inputs
+- Benefit frequency controls for each service type
+
+### 10.6 Basic Life and Disability Template
+
+This section uses a two-column structure for Management and Non-Management employee categories:
+
+**Basic Life Insurance:**
+
+| Category | Management | Non-Management |
+|----------|------------|----------------|
+| **Coverage Type** | Dropdown: "Flat Amount", "Multiple of Salary" | Dropdown: "Flat Amount", "Multiple of Salary" |
+| **Coverage Flat Amount** | Free form currency (leave blank if N/A) | Free form currency (leave blank if N/A) |
+| **Coverage Multiple of Salary** | Dropdown: "1X", "2X", "3X", "4X", "5X", "Other" (leave blank if N/A) | Dropdown: "1X", "2X", "3X", "4X", "5X", "Other" (leave blank if N/A) |
+| **Maximum Coverage (up to)** | Free form currency (leave blank if N/A) | Free form currency (leave blank if N/A) |
+
+**Short-Term Disability (STD):**
+
+- **Offers STD only?** - Dropdown: "Yes", "No"
+- **STD Funding Option** - Dropdown: "State Disability", "Self-Funded Voluntary Plan", "STD Opt-Out"
+
+**Short-Term Disability Plan Design (Employer Paid - Full Time Employees):**
+
+| Category | Management | Non-Management |
+|----------|------------|----------------|
+| **Elimination Period (in days)** | Dropdown selection | Dropdown selection |
+| **Percentage of Salary Coverage** | Free form percentage | Free form percentage |
+| **Weekly Benefit Maximum ($)** | Free form currency | Free form currency |
+
+**STD Buy-Up (Employee Paid):**
+- **Do you offer an employee paid buy-up STD plan?** - Dropdown: "Yes", "No"
+
+**Long-Term Disability Plan Design (Employer Paid - Full Time Employees):**
+
+| Category | Management | Non-Management |
+|----------|------------|----------------|
+| **Elimination Period (in days)** | Dropdown selection | Dropdown selection |
+| **Percentage of Salary Coverage** | Free form percentage | Free form percentage |
+| **Monthly Benefit Maximum ($)** | Free form currency | Free form currency |
+
+**LTD Buy-Up (Employee Paid):**
+
+| Do you offer an employee paid buy-up LTD plan? | Management | Non-Management |
+|------------------------------------------------|------------|----------------|
+| | Dropdown: "Yes", "No" | Dropdown: "Yes", "No" |
+
+**Basic Life and Disability Key Features:**
+- Two-column structure differentiating Management vs Non-Management benefits
+- Flexible coverage options (flat amount or salary multiple)
+- Optional fields that can be left blank when not applicable
+- Coverage multiple dropdown with standard multipliers (1X-5X) plus "Other" option
+- STD funding options including state disability and voluntary plan choices
+- Comprehensive disability coverage including employer-paid and employee buy-up options
+- Separate STD and LTD plan designs with elimination periods and benefit maximums
+- Employee buy-up options for both short-term and long-term disability
 
 ## 11. Migration and Legacy Support
 
