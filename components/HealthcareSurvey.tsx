@@ -7,11 +7,12 @@
 
 'use client';
 
+import type { ReactNode } from "react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Model, StylesManager } from "survey-core";
 import { Survey } from "survey-react-ui";
 import { useRouter } from "next/navigation";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { healthcareBenefitsSurvey } from "../config/healthcareBenefitsSurvey";
 import { SurveySection } from "../types/survey.types";
 import "survey-core/defaultV2.css";
@@ -112,7 +113,7 @@ const convertSectionToSurveyJS = (section: SurveySection) => {
 };
 
 const getIcon = (iconName?: string) => {
-  const icons: Record<string, JSX.Element> = {
+  const icons: Record<string, ReactNode> = {
     building: <BuildingIcon />,
     hospital: <HospitalIcon />,
     tooth: <ToothIcon />,
@@ -127,14 +128,21 @@ const getIcon = (iconName?: string) => {
 
 export default function HealthcareBenefitsSurvey() {
   const router = useRouter();
-  const supabase = useMemo(
-    () =>
-      createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
-      ),
-    []
-  );
+  const supabase = useMemo<SupabaseClient | null>(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!url || !key) {
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(
+          "Supabase environment variables are not set. Auto-save and submission features are disabled." 
+        );
+      }
+      return null;
+    }
+
+    return createClient(url, key);
+  }, []);
   const [surveyModel, setSurveyModel] = useState<Model | null>(null);
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState(new Set<number>());
@@ -142,6 +150,10 @@ export default function HealthcareBenefitsSurvey() {
 
   const saveSectionData = useCallback(
     async (sectionIndex: number, data: any) => {
+      if (!supabase) {
+        return;
+      }
+
       setIsSaving(true);
       try {
         const { error } = await supabase
@@ -164,6 +176,10 @@ export default function HealthcareBenefitsSurvey() {
   );
 
   const submitCompleteSurvey = useCallback(async () => {
+    if (!supabase) {
+      return;
+    }
+
     const { error } = await supabase
       .from("survey_submissions")
       .insert({
