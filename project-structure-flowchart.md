@@ -28,6 +28,8 @@ flowchart TD
     
     README --> STEPS[10-1000-steps/<br/>📋 Implementation Tasks<br/>Detailed step-by-step guide]
     
+    README --> AGGR[10-data-aggregation-benchmarking.md<br/>📊 Data Aggregation & Analytics<br/>Benchmarking visualization system]
+    
     %% Dependencies between documents
     EXEC -.-> ARCH
     ARCH -.-> DATA
@@ -40,6 +42,12 @@ flowchart TD
     TEST -.-> DEVOPS
     DEVOPS -.-> ROLLOUT
     RENDER -.-> ROLLOUT
+    
+    %% Data aggregation dependencies
+    ARCH -.-> AGGR
+    DATA -.-> AGGR
+    FEAT -.-> AGGR
+    AGGR -.-> TEST
     
     %% 1000 Steps breakdown
     STEPS --> P1[phase-1-discovery-setup.md<br/>Steps 1-200<br/>✅ Foundation & Setup]
@@ -54,7 +62,7 @@ flowchart TD
     classDef readmeNode fill:#e8f5e8,stroke:#2e7d32,stroke-width:3px
     
     class README readmeNode
-    class EXEC,ARCH,DATA,FEAT,UX,SEC,TEST,DEVOPS,ROLLOUT,RENDER mainDocs
+    class EXEC,ARCH,DATA,FEAT,UX,SEC,TEST,DEVOPS,ROLLOUT,RENDER,AGGR mainDocs
     class STEPS,P1,P2,P3,P4,P5 phaseDocs
 ```
 
@@ -70,32 +78,34 @@ flowchart TD
 **Phase 2: Core Design**
 4. `03-data-model-and-schema.md` - Database structure
 5. `04-feature-specifications.md` - Detailed requirements
-6. `05-ux-ui-plan.md` - User interface design
+6. `10-data-aggregation-benchmarking.md` - Analytics and visualization system
+7. `05-ux-ui-plan.md` - User interface design
 
 **Phase 3: Implementation Planning**
-7. `06-security-and-compliance.md` - Security requirements
-8. `07-testing-strategy.md` - Quality assurance approach
-9. `08-devops-and-cicd.md` - Deployment pipeline
-10. `Render deployment.md` - Platform-specific deployment runbook for Render with HIPAA considerations
+8. `06-security-and-compliance.md` - Security requirements
+9. `07-testing-strategy.md` - Quality assurance approach
+10. `08-devops-and-cicd.md` - Deployment pipeline
+11. `Render deployment.md` - Platform-specific deployment runbook for Render with HIPAA considerations
 
 **Phase 4: Execution**
-11. `09-rollout-plan.md` - Deployment strategy
-12. `10-1000-steps/phase-1-discovery-setup.md` - Foundation setup tasks (Steps 1-200)
-13. `10-1000-steps/phase-2-core-development.md` - Core platform build (Steps 201-600)
-14. `10-1000-steps/phase-3-advanced-features.md` - Advanced capabilities (Steps 601-800)
-15. `10-1000-steps/phase-4-testing-security.md` - Testing & hardening (Steps 801-900)
-16. `10-1000-steps/phase-5-launch-operations.md` - Launch & operations (Steps 901-1000)
+12. `09-rollout-plan.md` - Deployment strategy
+13. `10-1000-steps/phase-1-discovery-setup.md` - Foundation setup tasks (Steps 1-200)
+14. `10-1000-steps/phase-2-core-development.md` - Core platform build (Steps 201-600)
+15. `10-1000-steps/phase-3-advanced-features.md` - Advanced capabilities (Steps 601-800)
+16. `10-1000-steps/phase-4-testing-security.md` - Testing & hardening (Steps 801-900)
+17. `10-1000-steps/phase-5-launch-operations.md` - Launch & operations (Steps 901-1000)
 
 ### 🔗 Key Dependencies
 
 | Document | Depends On | Provides Foundation For |
 |----------|------------|------------------------|
-| Architecture Blueprint | Executive Overview | Data Model, Security, DevOps |
-| Data Model & Schema | Architecture, Features | All implementation phases |
-| Feature Specifications | Architecture | UX/UI, Testing, Data Model |
-| UX/UI Plan | Features | Testing Strategy |
+| Architecture Blueprint | Executive Overview | Data Model, Security, DevOps, Data Aggregation |
+| Data Model & Schema | Architecture, Features | All implementation phases, Data Aggregation |
+| Feature Specifications | Architecture | UX/UI, Testing, Data Model, Data Aggregation |
+| Data Aggregation & Benchmarking | Architecture, Data Model, Features | Testing Strategy |
+| UX/UI Plan | Features, Data Aggregation | Testing Strategy |
 | Security & Compliance | Architecture | DevOps, Testing |
-| Testing Strategy | Features, UX/UI | DevOps |
+| Testing Strategy | Features, UX/UI, Data Aggregation | DevOps |
 | DevOps & CI/CD | Architecture, Security, Testing | Rollout Plan |
 | Rollout Plan | All previous documents | Implementation execution |
 | Render Deployment Guide | DevOps & CI/CD, Security & Compliance | Rollout Plan |
@@ -104,13 +114,15 @@ flowchart TD
 
 | Status | Count | Files |
 |--------|-------|-------|
-| ✅ Complete | 16 | README + 01-09 + Render deployment + phases 1-5 |
+| ✅ Complete | 17 | README + 01-09 + Data Aggregation + Render deployment + phases 1-5 |
 | ❌ Missing | 0 | — |
-| **Total** | **16** | **Planned documentation files** |
+| **Total** | **17** | **Planned documentation files** |
 
 ### 🎯 Phase Implementation Files
 
 All five phase files now exist with the same detailed structure established in `phase-1-discovery-setup.md`, providing actionable tasks, deliverables, and success criteria across the entire 1000-step roadmap.
+
+The **Data Aggregation & Benchmarking** document provides the critical analytics foundation that transforms raw survey responses into actionable business intelligence through real-time data processing, comparative benchmarking, and interactive visualizations.
 
 ### 🏗️ Document Structure Patterns
 
