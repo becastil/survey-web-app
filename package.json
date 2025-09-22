@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "buildnpm": "next build",
-    "buildyarn": "next build",
+    "build": "node scripts/render-build.mjs",
+    "buildnpm": "node scripts/render-build.mjs",
+    "buildyarn": "node scripts/render-build.mjs",
     "start": "next start",
     "lint": "next lint"
   },
