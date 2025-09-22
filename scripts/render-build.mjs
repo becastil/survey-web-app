@@ -15,7 +15,16 @@ const run = (command, args) =>
     child.on("error", (error) => reject(error));
   });
 
-const args = process.argv.slice(2);
+const rawArgs = process.argv.slice(2);
+const buildArgs = rawArgs.filter((arg) => arg.startsWith("--"));
+
+const ignoredArgs = rawArgs.filter((arg) => !arg.startsWith("--"));
+if (ignoredArgs.length > 0) {
+  console.warn(
+    "Ignoring unexpected build arguments:",
+    ignoredArgs.join(" ")
+  );
+}
 
 const ensureDependencies = async () => {
   const hasNext = existsSync("node_modules/next/package.json");
@@ -26,7 +35,7 @@ const ensureDependencies = async () => {
 
 try {
   await ensureDependencies();
-  await run("npx", ["--yes", "next@14.2.7", "build", ...args]);
+  await run("npx", ["--yes", "next@14.2.7", "build", ...buildArgs]);
 } catch (error) {
   console.error("Render build failed:", error);
   process.exit(1);
