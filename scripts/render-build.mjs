@@ -35,7 +35,9 @@ const ensureDependencies = async () => {
 
 try {
   await ensureDependencies();
+  console.log("Building Next.js application for static export...");
   await run("npx", ["--yes", "next@14.2.7", "build", ...buildArgs]);
+  console.log("Build completed successfully!");
 } catch (error) {
   console.error("Render build failed:", error);
   process.exit(1);

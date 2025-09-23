@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: survey-web-app
+    runtime: static
+    buildCommand: node scripts/render-build.mjs
+    staticPublishPath: out
+    branch: main
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false  # Will be set manually in dashboard
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY  
+        sync: false  # Will be set manually in dashboard
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
