@@ -8,6 +8,7 @@
     "buildnpm": "node scripts/render-build.mjs",
     "buildyarn": "node scripts/render-build.mjs",
     "start": "next start",
+    "startyarn": "next start",
     "lint": "next lint"
   },
   "dependencies": {
