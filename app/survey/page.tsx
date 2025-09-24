@@ -1,7 +1,7 @@
 'use client';
 
-import MinimalSurvey from "../../components/MinimalSurvey";
+import HealthcareSurvey from "../../components/HealthcareSurvey";
 
 export default function SurveyPage() {
-  return <MinimalSurvey />;
+  return <HealthcareSurvey />;
 }
