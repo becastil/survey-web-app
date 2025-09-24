@@ -83,7 +83,7 @@ export default function MinimalSurvey() {
       
       // Redirect to completion page after showing checkmark
       setTimeout(() => {
-        window.location.href = '/survey/complete/'
+        window.location.href = '/survey/complete'
       }, 1500)
     }
   }
@@ -168,7 +168,7 @@ export default function MinimalSurvey() {
           Redirecting...
         </p>
         <Link 
-          href="/survey/complete/"
+          href="/survey/complete"
           className="minimal-option"
           style={{ 
             marginTop: '20px', 
