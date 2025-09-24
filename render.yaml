@@ -1,7 +1,6 @@
 services:
-  - type: web
+  - type: static
     name: survey-web-app
-    runtime: static
     buildCommand: node scripts/render-build.mjs
     staticPublishPath: out
     branch: main
