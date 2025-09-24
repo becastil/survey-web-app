@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface Question {
   id: string
@@ -47,7 +47,6 @@ export default function MinimalSurvey() {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([])
   const [showingComplete, setShowingComplete] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
 
   const currentQuestion = questions[step]
   const isComplete = step >= questions.length
@@ -84,7 +83,7 @@ export default function MinimalSurvey() {
       
       // Redirect to completion page after showing checkmark
       setTimeout(() => {
-        router.push('/survey/complete')
+        window.location.href = '/survey/complete/'
       }, 1500)
     }
   }
@@ -168,13 +167,19 @@ export default function MinimalSurvey() {
         <p className="minimal-hint" style={{ marginTop: '20px', color: '#666' }}>
           Redirecting...
         </p>
-        <button 
-          onClick={() => router.push('/survey/complete')}
+        <Link 
+          href="/survey/complete/"
           className="minimal-option"
-          style={{ marginTop: '10px', cursor: 'pointer' }}
+          style={{ 
+            marginTop: '20px', 
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            color: '#0066cc',
+            display: 'block'
+          }}
         >
           Continue →
-        </button>
+        </Link>
       </div>
     )
   }
