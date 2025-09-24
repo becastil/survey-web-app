@@ -7,8 +7,8 @@
     "build": "node scripts/render-build.mjs",
     "buildnpm": "node scripts/render-build.mjs",
     "buildyarn": "node scripts/render-build.mjs",
-    "start": "npx serve out -s",
-    "startyarn": "npx serve out -s",
+    "start": "node scripts/render-start.mjs",
+    "startyarn": "node scripts/render-start.mjs",
     "lint": "next lint"
   },
   "dependencies": {
