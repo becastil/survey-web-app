@@ -130,6 +130,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                   title: "Part-Time Benefit Eligible",
                   inputType: "number",
                   min: 0,
+                  isRequired: true,
                   validators: [
                     { type: "numeric", minValue: 0 }
                   ]
@@ -140,6 +141,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                   title: "Per Diem/Non-Benefit Eligible",
                   inputType: "number",
                   min: 0,
+                  isRequired: true,
                   validators: [
                     { type: "numeric", minValue: 0 }
                   ]
@@ -178,7 +180,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                       name: "union_employee_count",
                       title: "Number of Union Employees",
                       inputType: "number",
-                      min: 0
+                      min: 0,
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0 }
+                      ]
                     },
                     {
                       type: "text",
@@ -187,7 +193,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                       inputType: "number",
                       min: 0,
                       max: 100,
-                      suffix: "%"
+                      suffix: "%",
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0, maxValue: 100 }
+                      ]
                     }
                   ]
                 }
@@ -201,267 +211,297 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "medical-plans",
       title: "Medical Plans (Including Pharmacy)",
       icon: "hospital",
-      isRepeatable: true,
-      maxInstances: 5,
       pages: [
         {
-          id: "plan-info",
-          title: "Plan Information",
+          id: "medical-plan-collection",
+          title: "Medical Plan Details",
           elements: [
             {
-              type: "panel",
-              name: "plan_basics",
-              title: "Plan Basics",
-              elements: [
+              type: "paneldynamic",
+              name: "medical_plans",
+              title: "Medical Plans",
+              description: "Provide details for each medical plan offered (up to 5).",
+              minPanelCount: 1,
+              maxPanelCount: 5,
+              panelAddText: "Add another medical plan",
+              panelRemoveText: "Remove this medical plan",
+              templateTitle: "Medical Plan #{panelIndex}",
+              renderMode: "list",
+              templateElements: [
                 {
-                  type: "dropdown",
-                  name: "plan_type",
-                  title: "Plan Type",
-                  isRequired: true,
-                  choices: ["EPO", "HDHP", "HMO", "POS", "PPO"],
-                  choicesOrder: "asc"
-                },
-                {
-                  type: "text",
-                  name: "health_plan_name",
-                  title: "Health Plan Name",
-                  isRequired: true,
-                  placeholder: "e.g., Blue Shield EPO"
-                },
-                {
-                  type: "dropdown",
-                  name: "funding_mechanism",
-                  title: "Funding Mechanism",
-                  isRequired: true,
-                  choices: ["Self-Funded", "Fully Insured"]
-                },
-                {
-                  type: "text",
-                  name: "eligible_employees_enrolled",
-                  title: "Number of Eligible Employees Enrolled",
-                  inputType: "number",
-                  min: 0
-                }
-              ]
-            },
-            {
-              type: "panel",
-              name: "union_application",
-              title: "Union Application",
-              elements: [
-                {
-                  type: "radiogroup",
-                  name: "applies_to_union",
-                  title: "Does this plan apply to union groups?",
-                  isRequired: true,
-                  choices: ["Yes", "No"]
-                },
-                {
-                  type: "radiogroup",
-                  name: "union_contribution_varies",
-                  title: "Do full-time employee contributions vary by union classification?",
-                  visibleIf: "{applies_to_union} = 'Yes'",
-                  choices: ["Yes", "No"]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: "rates-contributions",
-          title: "Rates & Contributions",
-          elements: [
-            {
-              type: "panel",
-              name: "rate_structure",
-              title: "Monthly Rate Structure",
-              elements: [
-                {
-                  type: "radiogroup",
-                  name: "rate_structure_type",
-                  title: "Select Rate Structure Type",
-                  isRequired: true,
-                  choices: [
-                    { value: "structure1", text: "Employee Only / +1 / +2 or more / +3 or more" },
-                    { value: "structure2", text: "Employee Only / +Spouse/DP / +Children / +Family" }
+                  type: "panel",
+                  name: "plan_basics",
+                  title: "Plan Basics",
+                  elements: [
+                    {
+                      type: "dropdown",
+                      name: "plan_type",
+                      title: "Plan Type",
+                      isRequired: true,
+                      choices: ["EPO", "HDHP", "HMO", "POS", "PPO"],
+                      choicesOrder: "asc"
+                    },
+                    {
+                      type: "text",
+                      name: "health_plan_name",
+                      title: "Health Plan Name",
+                      isRequired: true,
+                      placeholder: "e.g., Blue Shield EPO"
+                    },
+                    {
+                      type: "dropdown",
+                      name: "funding_mechanism",
+                      title: "Funding Mechanism",
+                      isRequired: true,
+                      choices: ["Self-Funded", "Fully Insured"]
+                    },
+                    {
+                      type: "text",
+                      name: "eligible_employees_enrolled",
+                      title: "Number of Eligible Employees Enrolled",
+                      inputType: "number",
+                      min: 0,
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0 }
+                      ]
+                    }
                   ]
                 },
                 {
-                  type: "matrixdynamic",
-                  name: "rate_tiers",
-                  title: "2025 Rates and Contributions (Monthly)",
-                  visibleIf: "{rate_structure_type} notempty",
-                  columns: [
+                  type: "panel",
+                  name: "union_application",
+                  title: "Union Application",
+                  elements: [
                     {
-                      name: "tier",
-                      title: "Coverage Tier",
-                      cellType: "expression",
-                      expression: "getTierName({rowIndex}, {rate_structure_type})"
+                      type: "radiogroup",
+                      name: "applies_to_union",
+                      title: "Does this plan apply to union groups?",
+                      isRequired: true,
+                      choices: ["Yes", "No"]
                     },
                     {
-                      name: "enrolled_count",
-                      title: "# Enrolled",
-                      cellType: "text",
-                      inputType: "number",
-                      totalType: "sum",
-                      totalDisplayStyle: "decimal"
-                    },
-                    {
-                      name: "total_rate",
-                      title: "Total Rate (COBRA -2%)",
-                      cellType: "text",
-                      inputType: "number",
-                      displayStyle: "currency"
-                    },
-                    {
-                      name: "ee_contribution",
-                      title: "Employee Contribution",
-                      cellType: "text",
-                      inputType: "number",
-                      displayStyle: "currency"
+                      type: "radiogroup",
+                      name: "union_contribution_varies",
+                      title: "Do full-time employee contributions vary by union classification?",
+                      visibleIf: "{applies_to_union} = 'Yes'",
+                      isRequired: true,
+                      choices: ["Yes", "No"]
                     }
-                  ],
-                  rowCount: 4,
-                  addRowLocation: "none"
+                  ]
                 },
                 {
-                  type: "radiogroup",
-                  name: "wellness_rates",
-                  title: "Does this plan have separate wellness/non-wellness rates?",
-                  choices: ["Yes", "No"],
-                  defaultValue: "No"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: "plan-design",
-          title: "Plan Design & Coverage",
-          elements: [
-            {
-              type: "panel",
-              name: "network_tiers",
-              title: "Network Tier Structure",
-              elements: [
-                {
-                  type: "radiogroup",
-                  name: "custom_tier1",
-                  title: "Does your organization have a custom Tier 1 network at own facilities?",
-                  choices: ["Yes", "No"],
-                  defaultValue: "No"
+                  type: "panel",
+                  name: "rate_structure",
+                  title: "Monthly Rate Structure",
+                  elements: [
+                    {
+                      type: "radiogroup",
+                      name: "rate_structure_type",
+                      title: "Select Rate Structure Type",
+                      isRequired: true,
+                      choices: [
+                        { value: "structure1", text: "Employee Only / +1 / +2 or more / +3 or more" },
+                        { value: "structure2", text: "Employee Only / +Spouse/DP / +Children / +Family" }
+                      ]
+                    },
+                    {
+                      type: "matrixdynamic",
+                      name: "rate_tiers",
+                      title: "2025 Rates and Contributions (Monthly)",
+                      visibleIf: "{rate_structure_type} notempty",
+                      allowEmptyRows: false,
+                      columns: [
+                        {
+                          name: "tier",
+                          title: "Coverage Tier",
+                          cellType: "expression",
+                          expression: "getTierName({rowIndex}, {rate_structure_type})"
+                        },
+                        {
+                          name: "enrolled_count",
+                          title: "# Enrolled",
+                          cellType: "text",
+                          inputType: "number",
+                          isRequired: true,
+                          validators: [
+                            { type: "numeric", minValue: 0 }
+                          ],
+                          totalType: "sum",
+                          totalDisplayStyle: "decimal"
+                        },
+                        {
+                          name: "total_rate",
+                          title: "Total Rate (COBRA -2%)",
+                          cellType: "text",
+                          inputType: "number",
+                          isRequired: true,
+                          validators: [
+                            { type: "numeric", minValue: 0 }
+                          ],
+                          displayStyle: "currency"
+                        },
+                        {
+                          name: "ee_contribution",
+                          title: "Employee Contribution",
+                          cellType: "text",
+                          inputType: "number",
+                          isRequired: true,
+                          validators: [
+                            { type: "numeric", minValue: 0 }
+                          ],
+                          displayStyle: "currency"
+                        }
+                      ],
+                      rowCount: 4,
+                      addRowLocation: "none"
+                    },
+                    {
+                      type: "radiogroup",
+                      name: "wellness_rates",
+                      title: "Does this plan have separate wellness/non-wellness rates?",
+                      isRequired: true,
+                      choices: ["Yes", "No"],
+                      defaultValue: "No"
+                    }
+                  ]
                 },
                 {
-                  type: "matrix",
-                  name: "deductibles",
-                  title: "Annual Deductibles",
-                  columns: [
-                    { value: "tier1", text: "Own Hospital (Tier 1)", visibleIf: "{custom_tier1} = 'Yes'" },
-                    { value: "in_network", text: "In-Network" },
-                    { value: "out_network", text: "Out-of-Network" }
-                  ],
-                  rows: [
-                    { value: "individual", text: "Individual" },
-                    { value: "family", text: "Family" }
-                  ],
-                  cellType: "text",
-                  placeholder: "Enter $0 if no deductible"
+                  type: "panel",
+                  name: "network_tiers",
+                  title: "Network Tier Structure",
+                  elements: [
+                    {
+                      type: "radiogroup",
+                      name: "custom_tier1",
+                      title: "Does your organization have a custom Tier 1 network at own facilities?",
+                      isRequired: true,
+                      choices: ["Yes", "No"],
+                      defaultValue: "No"
+                    },
+                    {
+                      type: "matrix",
+                      name: "deductibles",
+                      title: "Annual Deductibles",
+                      columns: [
+                        { value: "tier1", text: "Own Hospital (Tier 1)", visibleIf: "{custom_tier1} = 'Yes'" },
+                        { value: "in_network", text: "In-Network" },
+                        { value: "out_network", text: "Out-of-Network" }
+                      ],
+                      rows: [
+                        { value: "individual", text: "Individual" },
+                        { value: "family", text: "Family" }
+                      ],
+                      cellType: "text",
+                      placeholder: "Enter $0 if no deductible",
+                      isAllRowRequired: true
+                    },
+                    {
+                      type: "matrix",
+                      name: "out_of_pocket_max",
+                      title: "Out-of-Pocket Maximum",
+                      columns: [
+                        { value: "tier1", text: "Own Hospital (Tier 1)", visibleIf: "{custom_tier1} = 'Yes'" },
+                        { value: "in_network", text: "In-Network" },
+                        { value: "out_network", text: "Out-of-Network" }
+                      ],
+                      rows: [
+                        { value: "individual", text: "Individual" },
+                        { value: "family", text: "Family" }
+                      ],
+                      cellType: "text",
+                      isAllRowRequired: true
+                    }
+                  ]
                 },
                 {
-                  type: "matrix",
-                  name: "out_of_pocket_max",
-                  title: "Out-of-Pocket Maximum",
-                  columns: [
-                    { value: "tier1", text: "Own Hospital (Tier 1)", visibleIf: "{custom_tier1} = 'Yes'" },
-                    { value: "in_network", text: "In-Network" },
-                    { value: "out_network", text: "Out-of-Network" }
-                  ],
-                  rows: [
-                    { value: "individual", text: "Individual" },
-                    { value: "family", text: "Family" }
-                  ],
-                  cellType: "text"
-                }
-              ]
-            },
-            {
-              type: "panel",
-              name: "services_costs",
-              title: "Service Costs (What Employee Pays)",
-              elements: [
-                {
-                  type: "matrix",
-                  name: "physician_services",
-                  title: "Physician Services",
-                  columns: [
-                    { value: "tier1", text: "Own Hospital", visibleIf: "{custom_tier1} = 'Yes'" },
-                    { value: "in_network", text: "In-Network" },
-                    { value: "out_network", text: "Out-of-Network" }
-                  ],
-                  rows: [
-                    { value: "primary_care", text: "Primary Care Visit" },
-                    { value: "specialist", text: "Specialist Visit" },
-                    { value: "telemedicine", text: "Telemedicine Visit" }
-                  ],
-                  cellType: "text",
-                  placeholder: "$XX or XX%"
+                  type: "panel",
+                  name: "services_costs",
+                  title: "Service Costs (What Employee Pays)",
+                  elements: [
+                    {
+                      type: "matrix",
+                      name: "physician_services",
+                      title: "Physician Services",
+                      columns: [
+                        { value: "tier1", text: "Own Hospital", visibleIf: "{custom_tier1} = 'Yes'" },
+                        { value: "in_network", text: "In-Network" },
+                        { value: "out_network", text: "Out-of-Network" }
+                      ],
+                      rows: [
+                        { value: "primary_care", text: "Primary Care Visit" },
+                        { value: "specialist", text: "Specialist Visit" },
+                        { value: "telemedicine", text: "Telemedicine Visit" }
+                      ],
+                      cellType: "text",
+                      placeholder: "$XX or XX%",
+                      isAllRowRequired: true
+                    },
+                    {
+                      type: "matrix",
+                      name: "hospital_services",
+                      title: "Hospital Services",
+                      columns: [
+                        { value: "tier1", text: "Own Hospital", visibleIf: "{custom_tier1} = 'Yes'" },
+                        { value: "in_network", text: "In-Network" },
+                        { value: "out_network", text: "Out-of-Network" }
+                      ],
+                      rows: [
+                        { value: "inpatient", text: "Inpatient" },
+                        { value: "outpatient", text: "Outpatient" },
+                        { value: "emergency", text: "Emergency Department" },
+                        { value: "urgent_care", text: "Urgent Care" }
+                      ],
+                      cellType: "text",
+                      placeholder: "$XX or XX%",
+                      isAllRowRequired: true
+                    }
+                  ]
                 },
                 {
-                  type: "matrix",
-                  name: "hospital_services",
-                  title: "Hospital Services",
-                  columns: [
-                    { value: "tier1", text: "Own Hospital", visibleIf: "{custom_tier1} = 'Yes'" },
-                    { value: "in_network", text: "In-Network" },
-                    { value: "out_network", text: "Out-of-Network" }
-                  ],
-                  rows: [
-                    { value: "inpatient", text: "Inpatient" },
-                    { value: "outpatient", text: "Outpatient" },
-                    { value: "emergency", text: "Emergency Department" },
-                    { value: "urgent_care", text: "Urgent Care" }
-                  ],
-                  cellType: "text",
-                  placeholder: "$XX or XX%"
-                }
-              ]
-            },
-            {
-              type: "panel",
-              name: "pharmacy_benefits",
-              title: "Pharmacy Benefits",
-              elements: [
-                {
-                  type: "radiogroup",
-                  name: "separate_rx_deductible",
-                  title: "Separate pharmacy deductible?",
-                  choices: ["Yes", "No"],
-                  defaultValue: "No"
-                },
-                {
-                  type: "text",
-                  name: "rx_deductible_amount",
-                  title: "Pharmacy Deductible Amount (Individual)",
-                  visibleIf: "{separate_rx_deductible} = 'Yes'",
-                  inputType: "number",
-                  prefix: "$"
-                },
-                {
-                  type: "matrix",
-                  name: "pharmacy_copays",
-                  title: "Pharmacy Copays/Coinsurance",
-                  columns: [
-                    { value: "retail", text: "Retail (30-day)" },
-                    { value: "mail", text: "Mail Order (90-day)" }
-                  ],
-                  rows: [
-                    { value: "generic", text: "Generic" },
-                    { value: "brand_preferred", text: "Brand Preferred" },
-                    { value: "brand_nonpreferred", text: "Brand Non-Preferred" },
-                    { value: "specialty", text: "Specialty" }
-                  ],
-                  cellType: "text",
-                  placeholder: "$XX or XX%"
+                  type: "panel",
+                  name: "pharmacy_benefits",
+                  title: "Pharmacy Benefits",
+                  elements: [
+                    {
+                      type: "radiogroup",
+                      name: "separate_rx_deductible",
+                      title: "Separate pharmacy deductible?",
+                      isRequired: true,
+                      choices: ["Yes", "No"],
+                      defaultValue: "No"
+                    },
+                    {
+                      type: "text",
+                      name: "rx_deductible_amount",
+                      title: "Pharmacy Deductible Amount (Individual)",
+                      visibleIf: "{separate_rx_deductible} = 'Yes'",
+                      inputType: "number",
+                      prefix: "$",
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0 }
+                      ]
+                    },
+                    {
+                      type: "matrix",
+                      name: "pharmacy_copays",
+                      title: "Pharmacy Copays/Coinsurance",
+                      columns: [
+                        { value: "retail", text: "Retail (30-day)" },
+                        { value: "mail", text: "Mail Order (90-day)" }
+                      ],
+                      rows: [
+                        { value: "generic", text: "Generic" },
+                        { value: "brand_preferred", text: "Brand Preferred" },
+                        { value: "brand_nonpreferred", text: "Brand Non-Preferred" },
+                        { value: "specialty", text: "Specialty" }
+                      ],
+                      cellType: "text",
+                      placeholder: "$XX or XX%",
+                      isAllRowRequired: true
+                    }
+                  ]
                 }
               ]
             }
@@ -473,84 +513,109 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "dental-plans",
       title: "Dental Benefits",
       icon: "tooth",
-      isRepeatable: true,
-      maxInstances: 4,
       pages: [
         {
-          id: "dental-plan-info",
-          title: "Dental Plan Information",
+          id: "dental-plan-collection",
+          title: "Dental Plan Details",
           elements: [
             {
-              type: "panel",
-              name: "dental_basics",
-              title: "Plan Details",
-              elements: [
+              type: "paneldynamic",
+              name: "dental_plans",
+              title: "Dental Benefit Plans",
+              description: "Provide information for each dental plan (up to 4).",
+              minPanelCount: 1,
+              maxPanelCount: 4,
+              panelAddText: "Add another dental plan",
+              panelRemoveText: "Remove this dental plan",
+              templateTitle: "Dental Plan #{panelIndex}",
+              renderMode: "list",
+              templateElements: [
                 {
-                  type: "dropdown",
-                  name: "dental_plan_type",
-                  title: "Plan Type",
-                  isRequired: true,
-                  choices: ["DPPO", "DHMO", "Indemnity"]
+                  type: "panel",
+                  name: "dental_basics",
+                  title: "Plan Details",
+                  elements: [
+                    {
+                      type: "dropdown",
+                      name: "dental_plan_type",
+                      title: "Plan Type",
+                      isRequired: true,
+                      choices: ["DPPO", "DHMO", "Indemnity"]
+                    },
+                    {
+                      type: "text",
+                      name: "dental_plan_name",
+                      title: "Dental Plan Name",
+                      isRequired: true
+                    },
+                    {
+                      type: "dropdown",
+                      name: "dental_funding",
+                      title: "Funding Mechanism",
+                      isRequired: true,
+                      choices: ["Self-Funded", "Fully Insured"]
+                    },
+                    {
+                      type: "text",
+                      name: "dental_enrolled",
+                      title: "Number of Employees Enrolled",
+                      inputType: "number",
+                      min: 0,
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0 }
+                      ]
+                    }
+                  ]
                 },
                 {
-                  type: "text",
-                  name: "dental_plan_name",
-                  title: "Dental Plan Name",
-                  isRequired: true
-                },
-                {
-                  type: "dropdown",
-                  name: "dental_funding",
-                  title: "Funding Mechanism",
-                  isRequired: true,
-                  choices: ["Self-Funded", "Fully Insured"]
-                },
-                {
-                  type: "text",
-                  name: "dental_enrolled",
-                  title: "Number of Employees Enrolled",
-                  inputType: "number",
-                  min: 0
-                }
-              ]
-            },
-            {
-              type: "panel",
-              name: "dental_design",
-              title: "Plan Design",
-              elements: [
-                {
-                  type: "matrix",
-                  name: "dental_benefits",
-                  title: "Benefit Coverage (Plan Pays %)",
-                  columns: [
-                    { value: "in_network", text: "In-Network" },
-                    { value: "out_network", text: "Out-of-Network" }
-                  ],
-                  rows: [
-                    { value: "preventive", text: "Preventive & Diagnostic" },
-                    { value: "basic", text: "Basic Services" },
-                    { value: "major", text: "Major Services" },
-                    { value: "orthodontia", text: "Orthodontia" }
-                  ],
-                  cellType: "text",
-                  placeholder: "Enter %"
-                },
-                {
-                  type: "text",
-                  name: "annual_max",
-                  title: "Annual Maximum Benefit",
-                  inputType: "number",
-                  prefix: "$",
-                  placeholder: "Per person"
-                },
-                {
-                  type: "text",
-                  name: "ortho_lifetime_max",
-                  title: "Orthodontia Lifetime Maximum",
-                  inputType: "number",
-                  prefix: "$",
-                  visibleIf: "{dental_benefits.orthodontia.in_network} notempty or {dental_benefits.orthodontia.out_network} notempty"
+                  type: "panel",
+                  name: "dental_design",
+                  title: "Plan Design",
+                  elements: [
+                    {
+                      type: "matrix",
+                      name: "dental_benefits",
+                      title: "Benefit Coverage (Plan Pays %)",
+                      columns: [
+                        { value: "in_network", text: "In-Network" },
+                        { value: "out_network", text: "Out-of-Network" }
+                      ],
+                      rows: [
+                        { value: "preventive", text: "Preventive & Diagnostic" },
+                        { value: "basic", text: "Basic Services" },
+                        { value: "major", text: "Major Services" },
+                        { value: "orthodontia", text: "Orthodontia" }
+                      ],
+                      cellType: "text",
+                      placeholder: "Enter %",
+                      isAllRowRequired: true
+                    },
+                    {
+                      type: "text",
+                      name: "annual_max",
+                      title: "Annual Maximum Benefit",
+                      inputType: "number",
+                      prefix: "$",
+                      placeholder: "Per person",
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0 }
+                      ]
+                    },
+                    {
+                      type: "text",
+                      name: "ortho_lifetime_max",
+                      title: "Orthodontia Lifetime Maximum",
+                      inputType: "number",
+                      prefix: "$",
+                      visibleIf: "{dental_benefits.orthodontia.in_network} notempty or {dental_benefits.orthodontia.out_network} notempty",
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0 }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -562,92 +627,122 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "vision-plans",
       title: "Vision Benefits",
       icon: "eye",
-      isRepeatable: true,
-      maxInstances: 2,
       pages: [
         {
-          id: "vision-plan-info",
+          id: "vision-plan-collection",
           title: "Vision Plan Information",
           elements: [
             {
-              type: "panel",
-              name: "vision_basics",
-              title: "Plan Details",
-              elements: [
-                {
-                  type: "text",
-                  name: "vision_plan_name",
-                  title: "Vision Plan Name",
-                  isRequired: true
-                },
-                {
-                  type: "dropdown",
-                  name: "vision_offered_as",
-                  title: "Offered As",
-                  isRequired: true,
-                  choices: ["Stand-alone plan", "Bundled with medical"]
-                },
-                {
-                  type: "dropdown",
-                  name: "vision_contribution",
-                  title: "Employee Contribution",
-                  choices: ["100% Employer Paid", "100% Employee Paid", "Cost Shared"]
-                }
-              ]
-            },
-            {
-              type: "panel",
-              name: "vision_benefits",
-              title: "Benefit Coverage",
-              elements: [
-                {
-                  type: "matrix",
-                  name: "vision_frequency",
-                  title: "Benefit Frequency",
-                  columns: [
-                    { value: "frequency", text: "Coverage Frequency" }
-                  ],
-                  rows: [
-                    { value: "exam", text: "Eye Exam" },
-                    { value: "lenses", text: "Lenses" },
-                    { value: "frames", text: "Frames" },
-                    { value: "contacts", text: "Contact Lenses" }
-                  ],
-                  cellType: "dropdown",
-                  cellChoices: ["Every 12 months", "Every 24 months", "Not covered"]
-                },
+              type: "paneldynamic",
+              name: "vision_plans",
+              title: "Vision Benefit Plans",
+              description: "Provide information for each vision plan (up to 2).",
+              minPanelCount: 1,
+              maxPanelCount: 2,
+              panelAddText: "Add another vision plan",
+              panelRemoveText: "Remove this vision plan",
+              templateTitle: "Vision Plan #{panelIndex}",
+              renderMode: "list",
+              templateElements: [
                 {
                   type: "panel",
-                  name: "vision_copays",
-                  title: "Copays and Allowances",
+                  name: "vision_basics",
+                  title: "Plan Details",
                   elements: [
                     {
                       type: "text",
-                      name: "exam_copay",
-                      title: "Exam Copay",
-                      inputType: "number",
-                      prefix: "$"
+                      name: "vision_plan_name",
+                      title: "Vision Plan Name",
+                      isRequired: true
                     },
                     {
-                      type: "text",
-                      name: "materials_copay",
-                      title: "Materials Copay",
-                      inputType: "number",
-                      prefix: "$"
+                      type: "dropdown",
+                      name: "vision_offered_as",
+                      title: "Offered As",
+                      isRequired: true,
+                      choices: ["Stand-alone plan", "Bundled with medical"]
                     },
                     {
-                      type: "text",
-                      name: "frames_allowance",
-                      title: "Frames Allowance",
-                      inputType: "number",
-                      prefix: "$"
+                      type: "dropdown",
+                      name: "vision_contribution",
+                      title: "Employee Contribution",
+                      isRequired: true,
+                      choices: ["100% Employer Paid", "100% Employee Paid", "Cost Shared"]
+                    }
+                  ]
+                },
+                {
+                  type: "panel",
+                  name: "vision_benefits",
+                  title: "Benefit Coverage",
+                  elements: [
+                    {
+                      type: "matrix",
+                      name: "vision_frequency",
+                      title: "Benefit Frequency",
+                      columns: [
+                        { value: "frequency", text: "Coverage Frequency" }
+                      ],
+                      rows: [
+                        { value: "exam", text: "Eye Exam" },
+                        { value: "lenses", text: "Lenses" },
+                        { value: "frames", text: "Frames" },
+                        { value: "contacts", text: "Contact Lenses" }
+                      ],
+                      cellType: "dropdown",
+                      cellChoices: ["Every 12 months", "Every 24 months", "Not covered"],
+                      isAllRowRequired: true
                     },
                     {
-                      type: "text",
-                      name: "contacts_allowance",
-                      title: "Contact Lenses Allowance",
-                      inputType: "number",
-                      prefix: "$"
+                      type: "panel",
+                      name: "vision_copays",
+                      title: "Copays and Allowances",
+                      elements: [
+                        {
+                          type: "text",
+                          name: "exam_copay",
+                          title: "Exam Copay",
+                          inputType: "number",
+                          prefix: "$",
+                          isRequired: true,
+                          validators: [
+                            { type: "numeric", minValue: 0 }
+                          ]
+                        },
+                        {
+                          type: "text",
+                          name: "materials_copay",
+                          title: "Materials Copay",
+                          inputType: "number",
+                          prefix: "$",
+                          isRequired: true,
+                          validators: [
+                            { type: "numeric", minValue: 0 }
+                          ]
+                        },
+                        {
+                          type: "text",
+                          name: "frames_allowance",
+                          title: "Frames Allowance",
+                          inputType: "number",
+                          prefix: "$",
+                          isRequired: true,
+                          validators: [
+                            { type: "numeric", minValue: 0 }
+                          ]
+                        },
+                        {
+                          type: "text",
+                          name: "contacts_allowance",
+                          title: "Contact Lenses Allowance",
+                          inputType: "number",
+                          prefix: "$",
+                          isRequired: true,
+                          validators: [
+                            { type: "numeric", minValue: 0 }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }
@@ -685,7 +780,8 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                     { value: "salary_multiple", text: "Multiple of Salary" },
                     { value: "maximum", text: "Maximum Coverage ($)" }
                   ],
-                  cellType: "text"
+                  cellType: "text",
+                  isAllRowRequired: true
                 }
               ]
             }
@@ -704,6 +800,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                   type: "dropdown",
                   name: "std_offering",
                   title: "STD Offering",
+                  isRequired: true,
                   choices: [
                     "State Disability Insurance only",
                     "Self-Funded Voluntary Plan",
@@ -725,7 +822,8 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                     { value: "salary_percentage", text: "% of Salary Coverage" },
                     { value: "weekly_max", text: "Weekly Maximum ($)" }
                   ],
-                  cellType: "text"
+                  cellType: "text",
+                  isAllRowRequired: true
                 }
               ]
             },
@@ -747,12 +845,14 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                     { value: "salary_percentage", text: "% of Salary Coverage" },
                     { value: "monthly_max", text: "Monthly Maximum ($)" }
                   ],
-                  cellType: "text"
+                  cellType: "text",
+                  isAllRowRequired: true
                 },
                 {
                   type: "radiogroup",
                   name: "ltd_buyup",
                   title: "Offer employee-paid buy-up LTD?",
+                  isRequired: true,
                   choices: ["Yes", "No"]
                 }
               ]
@@ -779,6 +879,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                   type: "dropdown",
                   name: "dc_plan_type",
                   title: "Plan Type",
+                  isRequired: true,
                   choices: ["401(k)", "403(b)", "457", "None"]
                 },
                 {
@@ -790,6 +891,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                       type: "radiogroup",
                       name: "employer_match_type",
                       title: "Employer Contribution Type",
+                      isRequired: true,
                       choices: ["Fixed match", "Graduated by tenure", "Flat contribution", "None"]
                     },
                     {
@@ -798,18 +900,24 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                       title: "Employer Match (%)",
                       visibleIf: "{employer_match_type} contains 'match'",
                       inputType: "number",
-                      suffix: "%"
+                      suffix: "%",
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0, maxValue: 100 }
+                      ]
                     },
                     {
                       type: "text",
                       name: "vesting_schedule",
                       title: "Vesting Schedule",
-                      placeholder: "e.g., 100% after 2 years"
+                      placeholder: "e.g., 100% after 2 years",
+                      isRequired: true
                     },
                     {
                       type: "radiogroup",
                       name: "auto_enrollment",
                       title: "Auto-enrollment?",
+                      isRequired: true,
                       choices: ["Yes", "No"]
                     },
                     {
@@ -817,7 +925,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                       name: "participation_rate",
                       title: "Current Participation Rate",
                       inputType: "number",
-                      suffix: "%"
+                      suffix: "%",
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0, maxValue: 100 }
+                      ]
                     }
                   ]
                 }
@@ -845,6 +957,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                   type: "dropdown",
                   name: "pto_type",
                   title: "PTO Integration",
+                  isRequired: true,
                   choices: [
                     "Fully Integrated (Single PTO bank)",
                     "Separate (Vacation, Sick, etc.)",
@@ -861,21 +974,33 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                       name: "pto_new_hire_hours",
                       title: "Starting Hours (New Hires)",
                       inputType: "number",
-                      suffix: "hours/year"
+                      suffix: "hours/year",
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0 }
+                      ]
                     },
                     {
                       type: "text",
                       name: "pto_max_hours",
                       title: "Maximum Hours (Tenured)",
                       inputType: "number",
-                      suffix: "hours/year"
+                      suffix: "hours/year",
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0 }
+                      ]
                     },
                     {
                       type: "text",
                       name: "pto_accrual_cap",
                       title: "Accrual Cap",
                       inputType: "number",
-                      suffix: "hours"
+                      suffix: "hours",
+                      isRequired: true,
+                      validators: [
+                        { type: "numeric", minValue: 0 }
+                      ]
                     }
                   ]
                 },
@@ -884,7 +1009,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                   name: "holidays_count",
                   title: "Number of Holidays",
                   inputType: "number",
-                  suffix: "days/year"
+                  suffix: "days/year",
+                  isRequired: true,
+                  validators: [
+                    { type: "numeric", minValue: 0 }
+                  ]
                 }
               ]
             }
@@ -912,7 +1041,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                   title: "Select the top 3 most critical issues facing your workforce",
                   isRequired: true,
                   validators: [
-                    { type: "answercount", minCount: 1, maxCount: 3 }
+                    { type: "answercount", minCount: 3, maxCount: 3 }
                   ],
                   choices: [
                     "Cost of benefits",
@@ -957,7 +1086,8 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                     { value: "reference_pricing", text: "Reference-based pricing" },
                     { value: "pbm_change", text: "Change PBM strategy" }
                   ],
-                  cellType: "radiogroup"
+                  cellType: "radiogroup",
+                  isAllRowRequired: true
                 }
               ]
             }
@@ -976,6 +1106,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                   type: "checkbox",
                   name: "rx_strategies",
                   title: "Select all pharmacy management strategies in use or planned",
+                  isRequired: true,
                   choices: [
                     "Tighter formulary management",
                     "Mandatory generic programs",
@@ -987,12 +1118,15 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                     "340B program participation",
                     "GLP-1 coverage strategy",
                     "Biosimilar adoption"
-                  ]
+                  ],
+                  hasNone: true,
+                  noneText: "None/Not applicable"
                 },
                 {
                   type: "radiogroup",
                   name: "rebate_retention",
                   title: "Do you receive 100% of pharmacy rebates?",
+                  isRequired: true,
                   choices: ["Yes", "No", "Unknown"]
                 }
               ]
@@ -1023,7 +1157,8 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                 { value: "diabetes_prevention", text: "Diabetes Prevention Program" },
                 { value: "weight_management", text: "Weight Management Program" }
               ],
-              cellType: "radiogroup"
+              cellType: "radiogroup",
+              isAllRowRequired: true
             }
           ]
         }

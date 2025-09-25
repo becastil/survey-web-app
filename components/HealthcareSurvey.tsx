@@ -9,7 +9,7 @@
 
 import type { ReactNode } from "react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Model, StylesManager } from "survey-core";
+import { FunctionFactory, Model, StylesManager } from "survey-core";
 import { Survey } from "survey-react-ui";
 import { useRouter } from "next/navigation";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
@@ -18,6 +18,33 @@ import { SurveySection } from "../types/survey.types";
 import "survey-core/defaultV2.css";
 
 StylesManager.applyTheme("defaultV2");
+
+FunctionFactory.Instance.register("getTierName", (rowIndex: number, rateStructureType: string) => {
+  const tiersByStructure: Record<string, string[]> = {
+    structure1: [
+      "Employee Only",
+      "Employee +1",
+      "Employee +2 or more",
+      "Employee +3 or more"
+    ],
+    structure2: [
+      "Employee Only",
+      "Employee +Spouse/DP",
+      "Employee +Children",
+      "Employee +Family"
+    ]
+  };
+
+  const key = rateStructureType && tiersByStructure[rateStructureType] ? rateStructureType : "structure1";
+  const tiers = tiersByStructure[key];
+  const normalizedIndex = typeof rowIndex === "number" ? rowIndex : parseInt(String(rowIndex), 10);
+
+  if (Number.isNaN(normalizedIndex) || normalizedIndex < 0 || normalizedIndex >= tiers.length) {
+    return "Coverage Tier";
+  }
+
+  return tiers[normalizedIndex];
+});
 
 interface SurveyNavigationProps {
   sections: SurveySection[];
