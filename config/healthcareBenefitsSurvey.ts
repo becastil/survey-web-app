@@ -21,6 +21,42 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
   },
   sections: [
     {
+      id: "introduction",
+      title: "Introduction",
+      icon: "building",
+      pages: [
+        {
+          id: "introduction-placeholder",
+          title: "Overview",
+          elements: [
+            {
+              type: "html",
+              name: "introduction_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "definitions",
+      title: "Definitions",
+      icon: "building",
+      pages: [
+        {
+          id: "definitions-placeholder",
+          title: "Key Terms",
+          elements: [
+            {
+              type: "html",
+              name: "definitions_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
       id: "general-info",
       title: "General Information",
       icon: "building",
@@ -208,8 +244,8 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       ]
     },
     {
-      id: "medical-plans",
-      title: "Medical Plans (Including Pharmacy)",
+      id: "medical-plan-1",
+      title: "Medical Plan 1",
       icon: "hospital",
       pages: [
         {
@@ -510,8 +546,80 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       ]
     },
     {
-      id: "dental-plans",
-      title: "Dental Benefits",
+      id: "medical-plan-2",
+      title: "Medical Plan 2",
+      icon: "hospital",
+      pages: [
+        {
+          id: "medical-plan-2-placeholder",
+          title: "Coming Soon",
+          elements: [
+            {
+              type: "html",
+              name: "medical_plan_2_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "medical-plan-3",
+      title: "Medical Plan 3",
+      icon: "hospital",
+      pages: [
+        {
+          id: "medical-plan-3-placeholder",
+          title: "Coming Soon",
+          elements: [
+            {
+              type: "html",
+              name: "medical_plan_3_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "medical-plan-4",
+      title: "Medical Plan 4",
+      icon: "hospital",
+      pages: [
+        {
+          id: "medical-plan-4-placeholder",
+          title: "Coming Soon",
+          elements: [
+            {
+              type: "html",
+              name: "medical_plan_4_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "medical-plan-5",
+      title: "Medical Plan 5",
+      icon: "hospital",
+      pages: [
+        {
+          id: "medical-plan-5-placeholder",
+          title: "Coming Soon",
+          elements: [
+            {
+              type: "html",
+              name: "medical_plan_5_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "dental-plan-1",
+      title: "Dental Plan 1",
       icon: "tooth",
       pages: [
         {
@@ -624,8 +732,80 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       ]
     },
     {
-      id: "vision-plans",
-      title: "Vision Benefits",
+      id: "dental-plan-2",
+      title: "Dental Plan 2",
+      icon: "tooth",
+      pages: [
+        {
+          id: "dental-plan-2-placeholder",
+          title: "Coming Soon",
+          elements: [
+            {
+              type: "html",
+              name: "dental_plan_2_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "dental-plan-3",
+      title: "Dental Plan 3",
+      icon: "tooth",
+      pages: [
+        {
+          id: "dental-plan-3-placeholder",
+          title: "Coming Soon",
+          elements: [
+            {
+              type: "html",
+              name: "dental_plan_3_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "dental-plan-4",
+      title: "Dental Plan 4",
+      icon: "tooth",
+      pages: [
+        {
+          id: "dental-plan-4-placeholder",
+          title: "Coming Soon",
+          elements: [
+            {
+              type: "html",
+              name: "dental_plan_4_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "dental-plan-5",
+      title: "Dental Plan 5",
+      icon: "tooth",
+      pages: [
+        {
+          id: "dental-plan-5-placeholder",
+          title: "Coming Soon",
+          elements: [
+            {
+              type: "html",
+              name: "dental_plan_5_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "vision-plan-1",
+      title: "Vision Plan 1",
       icon: "eye",
       pages: [
         {
@@ -753,8 +933,26 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       ]
     },
     {
-      id: "life-disability",
-      title: "Life & Disability Benefits",
+      id: "vision-plan-2",
+      title: "Vision Plan 2",
+      icon: "eye",
+      pages: [
+        {
+          id: "vision-plan-2-placeholder",
+          title: "Coming Soon",
+          elements: [
+            {
+              type: "html",
+              name: "vision_plan_2_placeholder",
+              html: "<div class=\"text-gray-500 text-sm\">0 - no data is configured in this section yet.</div>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "basic-life-disability",
+      title: "Basic Life and Disability",
       icon: "shield",
       pages: [
         {
@@ -863,7 +1061,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
     },
     {
       id: "retirement",
-      title: "Retirement Benefits",
+      title: "Retirement",
       icon: "piggy-bank",
       pages: [
         {
@@ -941,7 +1139,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
     },
     {
       id: "time-off",
-      title: "Time Off Benefits",
+      title: "Time Off",
       icon: "calendar",
       pages: [
         {
@@ -1023,7 +1221,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
     },
     {
       id: "benefits-strategy",
-      title: "Benefits Strategy & Planning",
+      title: "Benefits and Strategy",
       icon: "strategy",
       pages: [
         {
