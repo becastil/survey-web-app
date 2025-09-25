@@ -19,7 +19,9 @@ import "survey-core/defaultV2.css";
 
 StylesManager.applyTheme("defaultV2");
 
-FunctionFactory.Instance.register("getTierName", (rowIndex: number, rateStructureType: string) => {
+FunctionFactory.Instance.register("getTierName", (params: unknown[]) => {
+  const [rowIndexParam, rateStructureTypeParam] = params ?? [];
+
   const tiersByStructure: Record<string, string[]> = {
     structure1: [
       "Employee Only",
@@ -35,9 +37,15 @@ FunctionFactory.Instance.register("getTierName", (rowIndex: number, rateStructur
     ]
   };
 
-  const key = rateStructureType && tiersByStructure[rateStructureType] ? rateStructureType : "structure1";
-  const tiers = tiersByStructure[key];
-  const normalizedIndex = typeof rowIndex === "number" ? rowIndex : parseInt(String(rowIndex), 10);
+  const rateStructureType =
+    typeof rateStructureTypeParam === "string" && tiersByStructure[rateStructureTypeParam]
+      ? rateStructureTypeParam
+      : "structure1";
+
+  const tiers = tiersByStructure[rateStructureType];
+  const normalizedIndex = typeof rowIndexParam === "number"
+    ? rowIndexParam
+    : parseInt(String(rowIndexParam ?? 0), 10);
 
   if (Number.isNaN(normalizedIndex) || normalizedIndex < 0 || normalizedIndex >= tiers.length) {
     return "Coverage Tier";
