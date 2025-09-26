@@ -10,6 +10,54 @@ import { FileUploader } from '../../components/excel/FileUploader';
 import { SheetSelector } from '../../components/excel/SheetSelector';
 import type { ChartConfig, ParsedSheet } from '../../types/excel';
 
+// Sample healthcare survey data for demonstration
+const sampleHealthcareData: ParsedSheet[] = [
+  {
+    name: "Medical Plan Enrollment",
+    headers: ["Coverage Tier", "Enrolled", "Monthly Rate", "Employee Contribution", "Employer Share"],
+    rows: [
+      { "Coverage Tier": "Employee Only", "Enrolled": 142, "Monthly Rate": 785, "Employee Contribution": 125, "Employer Share": 660 },
+      { "Coverage Tier": "Employee + Spouse", "Enrolled": 89, "Monthly Rate": 1580, "Employee Contribution": 285, "Employer Share": 1295 },
+      { "Coverage Tier": "Employee + Child(ren)", "Enrolled": 67, "Monthly Rate": 1420, "Employee Contribution": 245, "Employer Share": 1175 },
+      { "Coverage Tier": "Employee + Family", "Enrolled": 156, "Monthly Rate": 2140, "Employee Contribution": 385, "Employer Share": 1755 }
+    ]
+  },
+  {
+    name: "Employee Demographics",
+    headers: ["Category", "Count", "Percentage", "Avg Salary"],
+    rows: [
+      { "Category": "Full-Time", "Count": 398, "Percentage": 87.5, "Avg Salary": 68500 },
+      { "Category": "Part-Time", "Count": 57, "Percentage": 12.5, "Avg Salary": 42300 },
+      { "Category": "Union", "Count": 123, "Percentage": 27.0, "Avg Salary": 71200 },
+      { "Category": "Non-Union", "Count": 332, "Percentage": 73.0, "Avg Salary": 66800 },
+      { "Category": "Management", "Count": 45, "Percentage": 9.9, "Avg Salary": 95400 },
+      { "Category": "Non-Management", "Count": 410, "Percentage": 90.1, "Avg Salary": 64200 }
+    ]
+  },
+  {
+    name: "Budget Trends",
+    headers: ["Year", "Medical Budget", "Dental Budget", "Vision Budget", "Total Budget", "Increase %"],
+    rows: [
+      { "Year": "2021", "Medical Budget": 3240000, "Dental Budget": 185000, "Vision Budget": 45000, "Total Budget": 3470000, "Increase %": 0 },
+      { "Year": "2022", "Medical Budget": 3564000, "Dental Budget": 198000, "Vision Budget": 48000, "Total Budget": 3810000, "Increase %": 9.8 },
+      { "Year": "2023", "Medical Budget": 3920400, "Dental Budget": 207900, "Vision Budget": 50400, "Total Budget": 4178700, "Increase %": 9.7 },
+      { "Year": "2024", "Medical Budget": 4312440, "Dental Budget": 218295, "Vision Budget": 52920, "Total Budget": 4583655, "Increase %": 9.7 },
+      { "Year": "2025", "Medical Budget": 4743684, "Dental Budget": 229210, "Vision Budget": 55566, "Total Budget": 5028460, "Increase %": 9.7 }
+    ]
+  },
+  {
+    name: "Benefit Satisfaction",
+    headers: ["Benefit Type", "Very Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very Dissatisfied", "Avg Rating"],
+    rows: [
+      { "Benefit Type": "Medical Plans", "Very Satisfied": 145, "Satisfied": 198, "Neutral": 78, "Dissatisfied": 25, "Very Dissatisfied": 9, "Avg Rating": 3.9 },
+      { "Benefit Type": "Dental Plans", "Very Satisfied": 167, "Satisfied": 213, "Neutral": 56, "Dissatisfied": 15, "Very Dissatisfied": 4, "Avg Rating": 4.2 },
+      { "Benefit Type": "Vision Plans", "Very Satisfied": 189, "Satisfied": 201, "Neutral": 45, "Dissatisfied": 18, "Very Dissatisfied": 2, "Avg Rating": 4.2 },
+      { "Benefit Type": "Retirement Plan", "Very Satisfied": 134, "Satisfied": 176, "Neutral": 98, "Dissatisfied": 34, "Very Dissatisfied": 13, "Avg Rating": 3.7 },
+      { "Benefit Type": "Time Off Policy", "Very Satisfied": 201, "Satisfied": 189, "Neutral": 45, "Dissatisfied": 16, "Very Dissatisfied": 4, "Avg Rating": 4.2 }
+    ]
+  }
+];
+
 const defaultChartConfig: ChartConfig = {
   type: 'bar',
   xKey: null,
@@ -21,8 +69,8 @@ const defaultChartConfig: ChartConfig = {
 };
 
 export default function ExcelVisualizerPage() {
-  const [sheets, setSheets] = useState<ParsedSheet[]>([]);
-  const [selectedSheetName, setSelectedSheetName] = useState<string | null>(null);
+  const [sheets, setSheets] = useState<ParsedSheet[]>(sampleHealthcareData);
+  const [selectedSheetName, setSelectedSheetName] = useState<string | null>(sampleHealthcareData[0]?.name ?? null);
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [chartConfig, setChartConfig] = useState<ChartConfig>(defaultChartConfig);
 
@@ -31,6 +79,7 @@ export default function ExcelVisualizerPage() {
   }, [sheets, selectedSheetName]);
 
   const handleSheetsParsed = useCallback((parsed: ParsedSheet[]) => {
+    // If user uploads new data, replace sample data with uploaded data
     setSheets(parsed);
     if (parsed.length) {
       setSelectedSheetName(parsed[0].name);
@@ -117,7 +166,8 @@ export default function ExcelVisualizerPage() {
           <div className="space-y-3">
             <h1 className="text-3xl font-bold text-slate-900">Excel Survey Visualizer</h1>
             <p className="max-w-3xl text-sm text-slate-600">
-              Upload an Excel workbook to explore survey responses. Select a sheet, choose the columns to analyse, and generate interactive charts and tables — all without leaving your browser.
+              Upload an Excel workbook to explore survey responses. Select a sheet, choose the columns to analyse, and generate interactive charts and tables — all without leaving your browser. 
+              <span className="font-medium text-blue-700"> Sample healthcare data is pre-loaded for demonstration.</span>
             </p>
           </div>
           <div className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-xs text-blue-800">
