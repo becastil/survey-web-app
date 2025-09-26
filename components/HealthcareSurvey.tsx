@@ -7,8 +7,15 @@
 
 'use client';
 
+import Link from "next/link";
 import type { ReactNode } from "react";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { FunctionFactory, Model, StylesManager } from "survey-core";
 import { Survey } from "survey-react-ui";
 import { useRouter } from "next/navigation";
@@ -18,6 +25,85 @@ import { SurveySection } from "../types/survey.types";
 import "survey-core/defaultV2.css";
 
 StylesManager.applyTheme("defaultV2");
+
+const STORAGE_KEY = "survey-responses";
+
+const sanitizeSurveyData = (data: any) => {
+  try {
+    return JSON.parse(JSON.stringify(data ?? {}));
+  } catch (error) {
+    console.warn("Unable to sanitize survey data:", error);
+    return {};
+  }
+};
+
+type FlattenedSurveyRecord = Record<string, string>;
+
+const flattenSurveyData = (input: any): FlattenedSurveyRecord => {
+  const result: FlattenedSurveyRecord = {};
+
+  const traverse = (value: any, path: string) => {
+    if (value === null || value === undefined) {
+      if (path) {
+        result[path] = "";
+      }
+      return;
+    }
+
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+      result[path] = String(value);
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      if (value.length === 0) {
+        if (path) {
+          result[path] = "[]";
+        }
+        return;
+      }
+
+      value.forEach((item, index) => {
+        const nextPath = path ? `${path}[${index}]` : `[${index}]`;
+        traverse(item, nextPath);
+      });
+      return;
+    }
+
+    if (typeof value === "object") {
+      const entries = Object.entries(value);
+      if (entries.length === 0) {
+        if (path) {
+          result[path] = "{}";
+        }
+        return;
+      }
+
+      entries.forEach(([key, val]) => {
+        const nextPath = path ? `${path}.${key}` : key;
+        traverse(val, nextPath);
+      });
+      return;
+    }
+
+    result[path] = String(value);
+  };
+
+  traverse(input, "");
+
+  return result;
+};
+
+const escapeCsvValue = (input: string) => input.replace(/"/g, """");
+
+const createCsvContent = (flattened: FlattenedSurveyRecord): string => {
+  const lines = ['"Field","Value"'];
+  Object.entries(flattened).forEach(([field, value]) => {
+    const normalizedValue = value.replace(/\r?\n/g, " ");
+    lines.push(`"${escapeCsvValue(field)}","${escapeCsvValue(normalizedValue)}"`);
+  });
+  return lines.join("\n");
+};
 
 FunctionFactory.Instance.register("getTierName", (params: unknown[]) => {
   const [rowIndexParam, rateStructureTypeParam] = params ?? [];
@@ -264,24 +350,34 @@ interface ProgressBarProps {
   current: number;
   total: number;
   sectionTitle: string;
+  rightSlot?: ReactNode;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ current, total, sectionTitle }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ current, total, sectionTitle, rightSlot }) => {
   const percentage = (current / total) * 100;
 
   return (
     <div className="bg-white border-b border-gray-200 px-6 py-4">
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-sm font-medium text-gray-700">{sectionTitle}</h3>
-        <span className="text-sm text-gray-500">
-          Section {current} of {total}
-        </span>
-      </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
-        <div
-          className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-          style={{ width: `${percentage}%` }}
-        />
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-medium text-gray-700">{sectionTitle}</h3>
+            <span className="text-sm text-gray-500">
+              Section {current} of {total}
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${percentage}%` }}
+            />
+          </div>
+        </div>
+        {rightSlot ? (
+          <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+            {rightSlot}
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -322,7 +418,7 @@ export default function HealthcareBenefitsSurvey() {
     if (!url || !key) {
       if (process.env.NODE_ENV !== "production") {
         console.warn(
-          "Supabase environment variables are not set. Auto-save and submission features are disabled." 
+          "Supabase environment variables are not set. Auto-save and submission features are disabled."
         );
       }
       return null;
@@ -330,10 +426,92 @@ export default function HealthcareBenefitsSurvey() {
 
     return createClient(url, key);
   }, []);
+
+  const initialResponses = useMemo<Record<string, any>>(() => {
+    if (typeof window === "undefined") {
+      return {};
+    }
+
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : {};
+    } catch (error) {
+      console.error("Failed to parse stored survey responses:", error);
+      return {};
+    }
+  }, []);
+
+  const initialCompletedSet = useMemo(() => {
+    const seeded = new Set<number>();
+    healthcareBenefitsSurvey.sections.forEach((section, index) => {
+      const data = initialResponses[section.id];
+      if (data && Object.keys(data).length > 0) {
+        seeded.add(index);
+      }
+    });
+    return seeded;
+  }, [initialResponses]);
+
   const [surveyModel, setSurveyModel] = useState<Model | null>(null);
   const [currentSection, setCurrentSection] = useState(0);
-  const [completedSections, setCompletedSections] = useState(new Set<number>());
+  const [completedSections, setCompletedSections] = useState<Set<number>>(() => new Set(initialCompletedSet));
   const [isSaving, setIsSaving] = useState(false);
+  const [allResponses, setAllResponses] = useState<Record<string, any>>(initialResponses);
+
+  const allResponsesRef = useRef<Record<string, any>>(initialResponses);
+
+  useEffect(() => {
+    allResponsesRef.current = allResponses;
+  }, [allResponses]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(allResponses));
+    } catch (error) {
+      console.error("Failed to persist survey responses:", error);
+    }
+  }, [allResponses]);
+
+  const downloadFile = useCallback((filename: string, content: string, mimeType: string) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const blob = new Blob([content], { type: mimeType });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    window.setTimeout(() => window.URL.revokeObjectURL(url), 0);
+  }, []);
+
+  const hasResponses = useMemo(() => {
+    return Object.values(allResponses).some(sectionData => sectionData && Object.keys(sectionData).length > 0);
+  }, [allResponses]);
+
+  const handleExportJson = useCallback(() => {
+    if (!hasResponses) {
+      return;
+    }
+    const content = JSON.stringify(allResponses, null, 2);
+    downloadFile("healthcare-benefits-survey.json", content, "application/json");
+  }, [allResponses, downloadFile, hasResponses]);
+
+  const handleExportCsv = useCallback(() => {
+    if (!hasResponses) {
+      return;
+    }
+
+    const flattened = flattenSurveyData(allResponses);
+    const csvContent = createCsvContent(flattened);
+    downloadFile("healthcare-benefits-survey.csv", csvContent, "text/csv");
+  }, [allResponses, downloadFile, hasResponses]);
 
   const saveSectionData = useCallback(
     async (sectionIndex: number, data: any) => {
@@ -343,12 +521,13 @@ export default function HealthcareBenefitsSurvey() {
 
       setIsSaving(true);
       try {
+        const sanitized = sanitizeSurveyData(data);
         const { error } = await supabase
           .from("survey_responses")
           .upsert({
             survey_id: healthcareBenefitsSurvey.id,
             section_id: healthcareBenefitsSurvey.sections[sectionIndex].id,
-            response_data: data,
+            response_data: sanitized,
             updated_at: new Date().toISOString()
           });
 
@@ -382,13 +561,19 @@ export default function HealthcareBenefitsSurvey() {
 
   const handleSectionComplete = useCallback(
     async (sectionIndex: number, data: any) => {
+      const sectionId = healthcareBenefitsSurvey.sections[sectionIndex].id;
+      const sanitized = sanitizeSurveyData(data);
+
+      setAllResponses(prev => ({ ...prev, [sectionId]: sanitized }));
+      allResponsesRef.current = { ...allResponsesRef.current, [sectionId]: sanitized };
+
       setCompletedSections(prev => {
         const next = new Set(prev);
         next.add(sectionIndex);
         return next;
       });
 
-      await saveSectionData(sectionIndex, data);
+      await saveSectionData(sectionIndex, sanitized);
 
       if (sectionIndex < healthcareBenefitsSurvey.sections.length - 1) {
         setCurrentSection(sectionIndex + 1);
@@ -409,7 +594,8 @@ export default function HealthcareBenefitsSurvey() {
   );
 
   useEffect(() => {
-    const section = healthcareBenefitsSurvey.sections[currentSection];
+    const sectionIndex = currentSection;
+    const section = healthcareBenefitsSurvey.sections[sectionIndex];
     const model = new Model(convertSectionToSurveyJS(section));
 
     model.showProgressBar = "top";
@@ -419,12 +605,18 @@ export default function HealthcareBenefitsSurvey() {
     model.showQuestionNumbers = "onPage";
     model.questionsOnPageMode = "singlePage";
 
+    const storedSectionData = sanitizeSurveyData(allResponsesRef.current[section.id]);
+    model.data = storedSectionData;
+
     model.onValueChanged.add((sender) => {
-      debouncedSave(currentSection, sender.data);
+      const sanitized = sanitizeSurveyData(sender.data);
+      allResponsesRef.current = { ...allResponsesRef.current, [section.id]: sanitized };
+      setAllResponses(prev => ({ ...prev, [section.id]: sanitized }));
+      debouncedSave(sectionIndex, sanitized);
     });
 
     model.onComplete.add((sender) => {
-      handleSectionComplete(currentSection, sender.data);
+      handleSectionComplete(sectionIndex, sender.data);
     });
 
     setSurveyModel(model);
@@ -442,6 +634,41 @@ export default function HealthcareBenefitsSurvey() {
     );
   }
 
+  const actionControls = (
+    <>
+      <button
+        type="button"
+        onClick={handleExportJson}
+        disabled={!hasResponses}
+        className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${
+          hasResponses
+            ? "border-blue-600 text-blue-600 hover:bg-blue-50"
+            : "border-blue-200 text-blue-300 cursor-not-allowed"
+        }`}
+      >
+        Export JSON
+      </button>
+      <button
+        type="button"
+        onClick={handleExportCsv}
+        disabled={!hasResponses}
+        className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${
+          hasResponses
+            ? "border-blue-600 text-blue-600 hover:bg-blue-50"
+            : "border-blue-200 text-blue-300 cursor-not-allowed"
+        }`}
+      >
+        Export CSV
+      </button>
+      <Link
+        href="/survey/summary"
+        className="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700"
+      >
+        Review Summary
+      </Link>
+    </>
+  );
+
   return (
     <div className="flex h-screen bg-gray-50">
       <SurveyNavigation
@@ -456,6 +683,7 @@ export default function HealthcareBenefitsSurvey() {
           current={currentSection + 1}
           total={healthcareBenefitsSurvey.sections.length}
           sectionTitle={healthcareBenefitsSurvey.sections[currentSection].title}
+          rightSlot={actionControls}
         />
 
         <div className="max-w-4xl mx-auto p-6">
