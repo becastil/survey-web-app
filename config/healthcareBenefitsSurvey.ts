@@ -1261,7 +1261,7 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
                   name: "organization_name",
                   title: "Organization Name",
                   isRequired: true,
-                  placeholder: "e.g., Pomona Valley Hospital Medical Center"
+                  placeholder: ""
                 },
                 {
                   type: "text",
