@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef, type ReactElement } from 'react';
 import { toPng } from 'html-to-image';
 import {
   Area,
@@ -224,6 +224,109 @@ export function ChartDisplay({ dataRows, config }: ChartDisplayProps) {
     };
   }, [config, dataRows]);
 
+  const chartElement = useMemo<ReactElement | null>(() => {
+    if (!chartData.length) {
+      return null;
+    }
+
+    switch (config.type) {
+      case 'bar':
+        return (
+          <BarChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis dataKey={xDataKey} tick={{ fill: '#475569', fontSize: 12 }} interval="preserveStartEnd" height={50} angle={-15} textAnchor="end" />
+            <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
+            <Tooltip />
+            {seriesKeys.length > 1 && <Legend />}
+            {seriesKeys.map((series, index) => (
+              <Bar
+                key={series}
+                dataKey={series}
+                fill={COLOR_PALETTE[index % COLOR_PALETTE.length]}
+                radius={[4, 4, 0, 0]}
+              />
+            ))}
+          </BarChart>
+        );
+      case 'line':
+        return (
+          <LineChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis dataKey={xDataKey} tick={{ fill: '#475569', fontSize: 12 }} interval="preserveStartEnd" height={50} angle={-15} textAnchor="end" />
+            <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
+            <Tooltip />
+            {seriesKeys.length > 1 && <Legend />}
+            {seriesKeys.map((series, index) => (
+              <Line
+                key={series}
+                type="monotone"
+                dataKey={series}
+                stroke={COLOR_PALETTE[index % COLOR_PALETTE.length]}
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                activeDot={{ r: 5 }}
+              />
+            ))}
+          </LineChart>
+        );
+      case 'area':
+        return (
+          <AreaChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis dataKey={xDataKey} tick={{ fill: '#475569', fontSize: 12 }} interval="preserveStartEnd" height={50} angle={-15} textAnchor="end" />
+            <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
+            <Tooltip />
+            {seriesKeys.length > 1 && <Legend />}
+            {seriesKeys.map((series, index) => (
+              <Area
+                key={series}
+                type="monotone"
+                dataKey={series}
+                stroke={COLOR_PALETTE[index % COLOR_PALETTE.length]}
+                fillOpacity={0.2}
+                fill={COLOR_PALETTE[index % COLOR_PALETTE.length]}
+              />
+            ))}
+          </AreaChart>
+        );
+      case 'pie':
+        return (
+          <PieChart>
+            <Tooltip />
+            <Legend />
+            <Pie
+              data={chartData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              innerRadius={60}
+              outerRadius={120}
+              label
+            >
+              {chartData.map((entry, index) => (
+                <Cell key={`slice-${entry.name}-${index}`} fill={COLOR_PALETTE[index % COLOR_PALETTE.length]} />
+              ))}
+            </Pie>
+          </PieChart>
+        );
+      case 'scatter': {
+        const yKey = seriesKeys[0] ?? 'value';
+        return (
+          <ScatterChart>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis dataKey={xDataKey} tick={{ fill: '#475569', fontSize: 12 }} type="number" />
+            <YAxis dataKey={yKey} tick={{ fill: '#475569', fontSize: 12 }} type="number" />
+            <Tooltip cursor={{ strokeDasharray: '4 4' }} />
+            <Scatter data={chartData} fill={COLOR_PALETTE[0]} />
+          </ScatterChart>
+        );
+      }
+      default:
+        return null;
+    }
+  }, [chartData, config.type, seriesKeys, xDataKey]);
+
   const handleExportChart = useCallback(async () => {
     if (!chartContainerRef.current) {
       return;
@@ -265,93 +368,9 @@ export function ChartDisplay({ dataRows, config }: ChartDisplayProps) {
         </button>
       </div>
       <div className="h-[360px] px-4 py-4" ref={chartContainerRef}>
-        {canRender ? (
+        {canRender && chartElement ? (
           <ResponsiveContainer width="100%" height="100%">
-            {config.type === 'bar' && (
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey={xDataKey} tick={{ fill: '#475569', fontSize: 12 }} interval="preserveStartEnd" height={50} angle={-15} textAnchor="end" />
-                <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
-                <Tooltip />
-                {seriesKeys.length > 1 && <Legend />}
-                {seriesKeys.map((series, index) => (
-                  <Bar
-                    key={series}
-                    dataKey={series}
-                    fill={COLOR_PALETTE[index % COLOR_PALETTE.length]}
-                    radius={[4, 4, 0, 0]}
-                  />
-                ))}
-              </BarChart>
-            )}
-            {config.type === 'line' && (
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey={xDataKey} tick={{ fill: '#475569', fontSize: 12 }} interval="preserveStartEnd" height={50} angle={-15} textAnchor="end" />
-                <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
-                <Tooltip />
-                {seriesKeys.length > 1 && <Legend />}
-                {seriesKeys.map((series, index) => (
-                  <Line
-                    key={series}
-                    type="monotone"
-                    dataKey={series}
-                    stroke={COLOR_PALETTE[index % COLOR_PALETTE.length]}
-                    strokeWidth={2}
-                    dot={{ r: 3 }}
-                    activeDot={{ r: 5 }}
-                  />
-                ))}
-              </LineChart>
-            )}
-            {config.type === 'area' && (
-              <AreaChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey={xDataKey} tick={{ fill: '#475569', fontSize: 12 }} interval="preserveStartEnd" height={50} angle={-15} textAnchor="end" />
-                <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
-                <Tooltip />
-                {seriesKeys.length > 1 && <Legend />}
-                {seriesKeys.map((series, index) => (
-                  <Area
-                    key={series}
-                    type="monotone"
-                    dataKey={series}
-                    stroke={COLOR_PALETTE[index % COLOR_PALETTE.length]}
-                    fillOpacity={0.2}
-                    fill={COLOR_PALETTE[index % COLOR_PALETTE.length]}
-                  />
-                ))}
-              </AreaChart>
-            )}
-            {config.type === 'pie' && (
-              <PieChart>
-                <Tooltip />
-                <Legend />
-                <Pie
-                  data={chartData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={120}
-                  label
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell key={`slice-${entry.name}-${index}`} fill={COLOR_PALETTE[index % COLOR_PALETTE.length]} />
-                  ))}
-                </Pie>
-              </PieChart>
-            )}
-            {config.type === 'scatter' && (
-              <ScatterChart>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey={xDataKey} tick={{ fill: '#475569', fontSize: 12 }} type="number" />
-                <YAxis dataKey={seriesKeys[0]} tick={{ fill: '#475569', fontSize: 12 }} type="number" />
-                <Tooltip cursor={{ strokeDasharray: '4 4' }} />
-                <Scatter data={chartData} fill={COLOR_PALETTE[0]} />
-              </ScatterChart>
-            )}
+            {chartElement}
           </ResponsiveContainer>
         ) : (
           <div className="flex h-full items-center justify-center rounded-lg bg-slate-50 text-sm text-slate-500">
