@@ -94,7 +94,7 @@ const flattenSurveyData = (input: any): FlattenedSurveyRecord => {
   return result;
 };
 
-const escapeCsvValue = (input: string) => input.replace(/"/g, """");
+const escapeCsvValue = (input: string) => input.replace(/"/g, "\"\"");
 
 const createCsvContent = (flattened: FlattenedSurveyRecord): string => {
   const lines = ['"Field","Value"'];
