@@ -247,6 +247,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "medical-plan-1",
       title: "Medical Plan 1",
       icon: "hospital",
+      navigationGroup: {
+        id: "medical-plans",
+        title: "Medical Plans",
+        icon: "hospital"
+      },
       pages: [
         {
           id: "medical-plan-collection",
@@ -549,6 +554,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "medical-plan-2",
       title: "Medical Plan 2",
       icon: "hospital",
+      navigationGroup: {
+        id: "medical-plans",
+        title: "Medical Plans",
+        icon: "hospital"
+      },
       pages: [
         {
           id: "medical-plan-2-placeholder",
@@ -567,6 +577,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "medical-plan-3",
       title: "Medical Plan 3",
       icon: "hospital",
+      navigationGroup: {
+        id: "medical-plans",
+        title: "Medical Plans",
+        icon: "hospital"
+      },
       pages: [
         {
           id: "medical-plan-3-placeholder",
@@ -585,6 +600,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "medical-plan-4",
       title: "Medical Plan 4",
       icon: "hospital",
+      navigationGroup: {
+        id: "medical-plans",
+        title: "Medical Plans",
+        icon: "hospital"
+      },
       pages: [
         {
           id: "medical-plan-4-placeholder",
@@ -603,6 +623,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "medical-plan-5",
       title: "Medical Plan 5",
       icon: "hospital",
+      navigationGroup: {
+        id: "medical-plans",
+        title: "Medical Plans",
+        icon: "hospital"
+      },
       pages: [
         {
           id: "medical-plan-5-placeholder",
@@ -621,6 +646,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "dental-plan-1",
       title: "Dental Plan 1",
       icon: "tooth",
+      navigationGroup: {
+        id: "dental-plans",
+        title: "Dental Plans",
+        icon: "tooth"
+      },
       pages: [
         {
           id: "dental-plan-collection",
@@ -735,6 +765,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "dental-plan-2",
       title: "Dental Plan 2",
       icon: "tooth",
+      navigationGroup: {
+        id: "dental-plans",
+        title: "Dental Plans",
+        icon: "tooth"
+      },
       pages: [
         {
           id: "dental-plan-2-placeholder",
@@ -753,6 +788,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "dental-plan-3",
       title: "Dental Plan 3",
       icon: "tooth",
+      navigationGroup: {
+        id: "dental-plans",
+        title: "Dental Plans",
+        icon: "tooth"
+      },
       pages: [
         {
           id: "dental-plan-3-placeholder",
@@ -771,6 +811,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "dental-plan-4",
       title: "Dental Plan 4",
       icon: "tooth",
+      navigationGroup: {
+        id: "dental-plans",
+        title: "Dental Plans",
+        icon: "tooth"
+      },
       pages: [
         {
           id: "dental-plan-4-placeholder",
@@ -789,6 +834,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "dental-plan-5",
       title: "Dental Plan 5",
       icon: "tooth",
+      navigationGroup: {
+        id: "dental-plans",
+        title: "Dental Plans",
+        icon: "tooth"
+      },
       pages: [
         {
           id: "dental-plan-5-placeholder",
@@ -807,6 +857,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "vision-plan-1",
       title: "Vision Plan 1",
       icon: "eye",
+      navigationGroup: {
+        id: "vision-plans",
+        title: "Vision Plans",
+        icon: "eye"
+      },
       pages: [
         {
           id: "vision-plan-collection",
@@ -936,6 +991,11 @@ export const healthcareBenefitsSurvey: SurveyConfiguration = {
       id: "vision-plan-2",
       title: "Vision Plan 2",
       icon: "eye",
+      navigationGroup: {
+        id: "vision-plans",
+        title: "Vision Plans",
+        icon: "eye"
+      },
       pages: [
         {
           id: "vision-plan-2-placeholder",

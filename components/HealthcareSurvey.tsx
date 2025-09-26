@@ -67,38 +67,190 @@ const SurveyNavigation: React.FC<SurveyNavigationProps> = ({
   onSectionChange,
   completedSections
 }) => {
+  const groupedSections = useMemo(() => {
+    type NavigationGroup = {
+      id: string;
+      title: string;
+      icon?: string;
+      isCollapsible: boolean;
+      items: Array<{ section: SurveySection; index: number }>;
+    };
+
+    const groups: NavigationGroup[] = [];
+    const groupIndexMap = new Map<string, number>();
+
+    sections.forEach((section, index) => {
+      if (section.navigationGroup) {
+        const { id, title, icon } = section.navigationGroup;
+        const existingGroupIndex = groupIndexMap.get(id);
+
+        if (existingGroupIndex !== undefined) {
+          groups[existingGroupIndex].items.push({ section, index });
+        } else {
+          groups.push({
+            id,
+            title,
+            icon: icon ?? section.icon,
+            isCollapsible: true,
+            items: [{ section, index }]
+          });
+          groupIndexMap.set(id, groups.length - 1);
+        }
+      } else {
+        groups.push({
+          id: section.id,
+          title: section.title,
+          icon: section.icon,
+          isCollapsible: false,
+          items: [{ section, index }]
+        });
+      }
+    });
+
+    return groups;
+  }, [sections]);
+
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => new Set());
+
+  useEffect(() => {
+    const activeGroup = groupedSections.find(group =>
+      group.items.some(item => item.index === currentSection)
+    );
+
+    if (activeGroup?.isCollapsible) {
+      setOpenGroups(prev => {
+        if (prev.has(activeGroup.id)) {
+          return prev;
+        }
+        const next = new Set(prev);
+        next.add(activeGroup.id);
+        return next;
+      });
+    }
+  }, [currentSection, groupedSections]);
+
+  const toggleGroup = useCallback((groupId: string) => {
+    setOpenGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(groupId)) {
+        next.delete(groupId);
+      } else {
+        next.add(groupId);
+      }
+      return next;
+    });
+  }, []);
+
   return (
     <nav className="w-64 bg-white border-r border-gray-200 h-screen sticky top-0 overflow-y-auto">
       <div className="p-4">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Survey Sections</h2>
         <ul className="space-y-1">
-          {sections.map((section, index) => {
-            const isActive = currentSection === index;
-            const isCompleted = completedSections.has(index);
+          {groupedSections.map(group => {
+            const groupHasActive = group.items.some(item => item.index === currentSection);
+            const groupCompleted = group.items.length > 0 && group.items.every(item => completedSections.has(item.index));
+
+            if (!group.isCollapsible) {
+              const { section, index } = group.items[0];
+              const isActive = currentSection === index;
+              const isCompleted = completedSections.has(index);
+
+              return (
+                <li key={group.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSectionChange(index)}
+                    className={`
+                      w-full text-left px-3 py-2 rounded-lg transition-colors
+                      flex items-center justify-between
+                      ${isActive
+                        ? "bg-blue-50 text-blue-700 border-l-4 border-blue-700"
+                        : "hover:bg-gray-50 text-gray-700"
+                      }
+                    `}
+                  >
+                    <div className="flex items-center">
+                      <span className="mr-2">{getIcon(section.icon)}</span>
+                      <span className="text-sm font-medium">{section.title}</span>
+                    </div>
+                    {(isCompleted || groupCompleted) && (
+                      <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </button>
+                </li>
+              );
+            }
+
+            const isOpen = openGroups.has(group.id);
 
             return (
-              <li key={section.id}>
+              <li key={group.id}>
                 <button
-                  onClick={() => onSectionChange(index)}
+                  type="button"
+                  onClick={() => toggleGroup(group.id)}
                   className={`
                     w-full text-left px-3 py-2 rounded-lg transition-colors
                     flex items-center justify-between
-                    ${isActive
+                    ${groupHasActive
                       ? "bg-blue-50 text-blue-700 border-l-4 border-blue-700"
                       : "hover:bg-gray-50 text-gray-700"
                     }
                   `}
                 >
                   <div className="flex items-center">
-                    <span className="mr-2">{getIcon(section.icon)}</span>
-                    <span className="text-sm font-medium">{section.title}</span>
+                    <span className={`mr-2 transition-transform ${isOpen ? "rotate-90" : ""}`}>
+                      <ChevronRightIcon />
+                    </span>
+                    <span className="mr-2">{getIcon(group.icon)}</span>
+                    <span className="text-sm font-semibold">{group.title}</span>
                   </div>
-                  {isCompleted && (
+                  {groupCompleted && (
                     <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   )}
                 </button>
+
+                {isOpen && (
+                  <ul className="mt-1 space-y-1 pl-6">
+                    {group.items.map(({ section, index }) => {
+                      const isActive = currentSection === index;
+                      const isCompleted = completedSections.has(index);
+
+                      return (
+                        <li key={section.id}>
+                          <button
+                            type="button"
+                            onClick={() => onSectionChange(index)}
+                            className={`
+                              w-full text-left px-3 py-2 rounded-lg transition-colors
+                              flex items-center justify-between text-sm
+                              ${isActive
+                                ? "bg-blue-50 text-blue-700 border-l-4 border-blue-700"
+                                : "hover:bg-gray-50 text-gray-600"
+                              }
+                            `}
+                          >
+                            <div className="flex items-center">
+                              <span className="mr-2 text-gray-400">
+                                <DotIcon />
+                              </span>
+                              <span className="mr-2">{getIcon(section.icon)}</span>
+                              <span className="font-medium">{section.title}</span>
+                            </div>
+                            {isCompleted && (
+                              <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                            )}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </li>
             );
           })}
@@ -386,5 +538,17 @@ const CalendarIcon = () => (
 const StrategyIcon = () => (
   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+  </svg>
+);
+
+const ChevronRightIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+  </svg>
+);
+
+const DotIcon = () => (
+  <svg className="w-2 h-2" fill="currentColor" viewBox="0 0 8 8">
+    <circle cx="4" cy="4" r="3" />
   </svg>
 );

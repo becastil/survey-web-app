@@ -20,10 +20,17 @@ export interface SurveySection {
   title: string;
   description?: string;
   icon?: string;
+  navigationGroup?: SurveyNavigationGroup;
   pages: SurveyPage[];
   isRepeatable?: boolean;
   maxInstances?: number;
   conditionalVisibility?: ConditionalRule;
+}
+
+export interface SurveyNavigationGroup {
+  id: string;
+  title: string;
+  icon?: string;
 }
 
 export interface SurveyPage {
