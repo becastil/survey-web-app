@@ -124,7 +124,7 @@ export default function SurveyPage() {
     data: surveyData,
     enabled: surveyStatus !== 'submitted',
     interval: 5000,
-    onSave: async (data) => {
+    onSave: async (data: Partial<SurveyData>) => {
       if (!token) return;
 
       await fetch(`/api/surveys/${surveyId}`, {
@@ -136,7 +136,7 @@ export default function SurveyPage() {
         body: JSON.stringify({ data })
       });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       console.error('Auto-save error:', error);
     }
   });

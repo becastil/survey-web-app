@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import type { SurveyData } from '@/types/survey';
+import type { SurveyData, MedicalPlan, DentalPlan, RateTier } from '@/types/survey';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -39,7 +39,7 @@ function validateSurveyData(data: Partial<SurveyData>): ValidationError[] {
 
   // Validate Medical Plans
   if (data.medicalPlans && data.medicalPlans.length > 0) {
-    data.medicalPlans.forEach((plan, index) => {
+    data.medicalPlans.forEach((plan: MedicalPlan, index: number) => {
       if (!plan.planName?.trim()) {
         errors.push({ field: `medicalPlans[${index}].planName`, message: 'Plan name is required', type: 'required' });
       }
@@ -52,7 +52,7 @@ function validateSurveyData(data: Partial<SurveyData>): ValidationError[] {
         let totalEmployerContribution = 0;
         let totalEmployeeContribution = 0;
 
-        plan.rateTiers.forEach((tier, tierIndex) => {
+        plan.rateTiers.forEach((tier: RateTier, tierIndex: number) => {
           if (tier.monthlyPremium <= 0) {
             errors.push({ field: `medicalPlans[${index}].rateTiers[${tierIndex}].monthlyPremium`, message: 'Monthly premium must be positive', type: 'range' });
           }
@@ -82,7 +82,7 @@ function validateSurveyData(data: Partial<SurveyData>): ValidationError[] {
 
   // Validate Dental Plans
   if (data.dentalPlans && data.dentalPlans.length > 0) {
-    data.dentalPlans.forEach((plan, index) => {
+    data.dentalPlans.forEach((plan: DentalPlan, index: number) => {
       if (!plan.planName?.trim()) {
         errors.push({ field: `dentalPlans[${index}].planName`, message: 'Plan name is required', type: 'required' });
       }

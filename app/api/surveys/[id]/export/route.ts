@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import Papa from 'papaparse';
-import type { SurveyData } from '@/types/survey';
+import type { SurveyData, MedicalPlan, DentalPlan, VisionPlan } from '@/types/survey';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -42,7 +42,7 @@ function flattenSurveyData(data: Partial<SurveyData>): Record<string, any>[] {
 
   // Medical Plans
   if (data.medicalPlans) {
-    data.medicalPlans.forEach((plan, index) => {
+    data.medicalPlans.forEach((plan: MedicalPlan, index: number) => {
       rows.push({
         Section: `Medical Plan ${index + 1}`,
         Field: 'Plan Name',
@@ -81,7 +81,7 @@ function flattenSurveyData(data: Partial<SurveyData>): Record<string, any>[] {
 
   // Dental Plans
   if (data.dentalPlans) {
-    data.dentalPlans.forEach((plan, index) => {
+    data.dentalPlans.forEach((plan: DentalPlan, index: number) => {
       rows.push({
         Section: `Dental Plan ${index + 1}`,
         Field: 'Plan Name',
@@ -102,7 +102,7 @@ function flattenSurveyData(data: Partial<SurveyData>): Record<string, any>[] {
 
   // Vision Plans
   if (data.visionPlans) {
-    data.visionPlans.forEach((plan, index) => {
+    data.visionPlans.forEach((plan: VisionPlan, index: number) => {
       rows.push({
         Section: `Vision Plan ${index + 1}`,
         Field: 'Plan Name',

@@ -12,16 +12,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tanstack/react-table": "^8.15.5",
     "@supabase/supabase-js": "^2.45.0",
-    "next": "14.2.7",
+    "@tanstack/react-table": "^8.15.5",
+    "@types/papaparse": "^5.3.16",
+    "clsx": "^2.1.1",
     "html-to-image": "^1.11.11",
+    "next": "14.2.7",
     "papaparse": "^5.4.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "recharts": "^2.10.4",
     "survey-core": "^1.9.133",
     "survey-react-ui": "^1.9.133",
+    "tailwind-merge": "^3.3.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

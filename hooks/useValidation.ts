@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { debounce } from '@/lib/utils';
-import type { SurveyData } from '@/types/survey';
+import type { SurveyData, MedicalPlan, DentalPlan, RateTier } from '@/types/survey';
 
 export interface ValidationError {
   field: string;
@@ -129,7 +129,7 @@ export function useValidation({
 
     // Medical Plans Validations
     if (surveyData.medicalPlans) {
-      surveyData.medicalPlans.forEach((plan, index) => {
+      surveyData.medicalPlans.forEach((plan: MedicalPlan, index: number) => {
         if (!plan.planName?.trim()) {
           errors.push({
             field: `medicalPlans[${index}].planName`,
@@ -168,7 +168,7 @@ export function useValidation({
 
         // Rate Tier Validations
         if (plan.rateTiers) {
-          plan.rateTiers.forEach((tier, tierIndex) => {
+          plan.rateTiers.forEach((tier: RateTier, tierIndex: number) => {
             if (tier.monthlyPremium <= 0) {
               errors.push({
                 field: `medicalPlans[${index}].rateTiers[${tierIndex}].monthlyPremium`,
@@ -252,7 +252,7 @@ export function useValidation({
 
     // Dental Plans Validations
     if (surveyData.dentalPlans) {
-      surveyData.dentalPlans.forEach((plan, index) => {
+      surveyData.dentalPlans.forEach((plan: DentalPlan, index: number) => {
         if (!plan.planName?.trim()) {
           errors.push({
             field: `dentalPlans[${index}].planName`,
