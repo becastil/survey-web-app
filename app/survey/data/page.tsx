@@ -38,7 +38,7 @@ export default function SurveyDataPage() {
             ← Back to Survey
           </Link>
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Healthcare Benefits Survey 2022
+            Healthcare Benefits Survey
           </h1>
           <p className="text-gray-600">
             Data visualization and analysis of healthcare benefits trends
