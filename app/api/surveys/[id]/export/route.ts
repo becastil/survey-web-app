@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 import Papa from 'papaparse';
 import type { SurveyData, MedicalPlan, DentalPlan, VisionPlan } from '@/types/survey';
 
+export const dynamic = 'force-dynamic';
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
