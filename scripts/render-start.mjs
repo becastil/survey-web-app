@@ -3,7 +3,7 @@ import { spawn } from "node:child_process";
 
 const run = (command, args) =>
   new Promise((resolve, reject) => {
-    console.log(`Starting static file server: ${command} ${args.join(" ")}`);
+    console.log(`Starting Next.js server: ${command} ${args.join(" ")}`);
     const child = spawn(command, args, { stdio: "inherit", shell: false });
     child.on("close", (code) => {
       if (code !== 0) {
@@ -16,9 +16,8 @@ const run = (command, args) =>
   });
 
 try {
-  // Ignore any extra arguments that Render might append
-  // Just serve the static files from the 'out' directory
-  await run("npx", ["serve", "out", "-s"]);
+  // Start Next.js production server
+  await run("npx", ["--yes", "next@14.2.7", "start"]);
 } catch (error) {
   console.error("Failed to start server:", error);
   process.exit(1);
