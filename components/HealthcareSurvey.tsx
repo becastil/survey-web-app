@@ -661,6 +661,12 @@ export default function HealthcareBenefitsSurvey() {
         Export CSV
       </button>
       <Link
+        href="/survey/data"
+        className="rounded-md border border-green-600 px-3 py-1.5 text-sm font-medium text-green-600 hover:bg-green-50 transition-colors"
+      >
+        📊 View Survey Data
+      </Link>
+      <Link
         href="/excel"
         className="rounded-md border border-green-600 px-3 py-1.5 text-sm font-medium text-green-600 hover:bg-green-50 transition-colors"
       >
